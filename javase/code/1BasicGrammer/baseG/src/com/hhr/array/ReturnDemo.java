@@ -1,15 +1,17 @@
 package com.hhr.array;/*
 
-return����������;
-	1�����ط����ķ���ֵ
-	2����ֹ��ǰ����
-		
+/*
+
+return有两基本用途
+	1、返回方法的返回值
+	2、终止当前程序
+
 */
 
 public class ReturnDemo{
-	
+
 	public static void main(String[] args){
-		
+
 		System.out.println(get());
 		for(int i = 0;i<10;i++){
 			System.out.println(i);
@@ -17,11 +19,11 @@ public class ReturnDemo{
 				return;
 				//System.exit(100);
 			}
-			System.out.println("����ִ��");
+			System.out.println("接着执行");
 		}
-		
+
 	}
-	
+
 	public static int get(){
 		return 100;
 	}

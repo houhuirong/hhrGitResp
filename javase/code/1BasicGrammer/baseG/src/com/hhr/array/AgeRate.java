@@ -2,18 +2,18 @@ package com.hhr.array;
 
 import java.util.Scanner;
 public class AgeRate{
-	
+
 	public static void main(String[] args){
-		
-		//����Scanner����
+
+		//定义Scanner对象
 		Scanner sc = new Scanner(System.in);
-		//�洢����30�������
+		//存储大于30岁的人数
 		int ageUp = 0;
-		//�洢С��30�������
+		//存储小于30岁的人数
 		int ageDown = 0;
-		
+
 		for(int i = 0;i<10;i++){
-			System.out.println("�������"+i+"λ�˿͵����䣺");
+			System.out.println("请输入第"+i+"位顾客的年龄：");
 			int age = sc.nextInt();
 			if(age>30){
 				ageUp++;
@@ -21,9 +21,9 @@ public class AgeRate{
 				ageDown++;
 			}
 		}
-		
-		System.out.println("����30������������ǣ�"+(ageUp/10.0*100)+"%");
-		System.out.println("С��30������������ǣ�"+(ageDown/10.0*100)+"%");
+
+		System.out.println("超过30岁的人数比率是："+(ageUp/10.0*100)+"%");
+		System.out.println("小于30岁的人数比率是："+(ageDown/10.0*100)+"%");
 	}
-	
+
 }
