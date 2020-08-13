@@ -1,7 +1,7 @@
 package com.lamada.why3;
 
-import com.mashibing.why.Student;
-import com.mashibing.why2.StudentFilter;
+import com.lamada.why.Student;
+import com.lamada.why2.StudentFilter;
 
 import java.util.ArrayList;
 
