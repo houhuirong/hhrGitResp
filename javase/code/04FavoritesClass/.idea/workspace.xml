@@ -2,6 +2,37 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a3b8ab9-9a9d-422a-b628-e992aa5ceb9b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/01mybatis的介绍及使用/mybatis_helloworld/mybatis_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/02mybatis的基本使用/mybatis_helloworld/mybatis_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/02mybatis的基本使用/mybatis_sqlmapping/mybatis_sqlmapping.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/03mybatis的基本使用2/mybatis_sqlmapping/mybatis_sqlmapping.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/mybatis_generator/mybatis_generator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/mybatis_sqlmapping/mybatis_sqlmapping.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/ssm/ssm.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/05mybatis-plus/mybatis_plus_helloworld/mybatis_plus_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/06mybatis-plus2/mybatis_plus_generator/mybatis_plus_generator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/06mybatis-plus2/mybatis_plus_helloworld/mybatis_plus_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/01spring框架的介绍及使用/code/spring_study/spring_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/01spring框架的介绍及使用/code/why_ioc/why_ioc.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/02springIOC容器的配置使用1/spring_study2/spring_study2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/03springIOC容器的配置使用2/spring_study2/spring_study2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/04SpringIOC的注解使用/code/spring_annotation_study/spring_annotation_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/05SpringAOP的引入及配置使用/code/spring_aop_study/spring_aop_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/06SpringAOP的详细讲解/code/spring_aop_study/spring_aop_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/07SpringAOP的详细讲解2/spring_aop_study/spring_aop_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/07SpringAOP的详细讲解2/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/08Spring源码讲解/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/09动态代理源码分析/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/01SpringMVC的介绍及使用/my_servlet/my_servlet.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/01SpringMVC的介绍及使用/springmvc_helloworld/springmvc_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/01SpringMVC的介绍及使用/springmvc_helloworld_xml/springmvc_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/02SpringMVC的基本使用1/springmvc_helloworld/springmvc_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/02SpringMVC的基本使用1/springmvc_rest/springmvc_rest.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/03SpringMVC的基本使用2/springmvc_response/springmvc_response.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/04SpringMVC的基本使用3/springmvc_response/springmvc_response.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/05SpringMVC的基本使用4/springmvc_json/springmvc_json.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/06SpringMVC的基本使用5/springmvc_json/springmvc_json.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/01baseGrammer.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/Excepton2.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/ExerciseDemo.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/FinallyDemo.class" afterDir="false" />
@@ -90,12 +121,7 @@
       <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/other/Test.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../03Abnormal/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../03Abnormal/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/description.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/project-template.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../03Abnormal/03Abnormal.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/description.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/modules.xml" afterDir="false" />
@@ -170,10 +196,17 @@
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/Point.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/Test.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/mashibing/PackageTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../4FavoritesClass/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../4FavoritesClass/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../4FavoritesClass/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../3Abnormal/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/5CollectionsFramework.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../6IO/6IO.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../6IO/io_demo/io_demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/7MultithreadingAndThreadPool.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/8NetworkProgramming.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/network.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../9NewFeaturesJDK/9NewFeaturesJDK.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../9NewFeaturesJDK/lamada.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../03Abnormal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../03Abnormal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/1BasicGrammer1.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/AgeRate.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ArgsDemo.java" beforeDir="false" />
@@ -205,7 +238,7 @@
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/IdentifiedDemo.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/IfDemo.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/OperatorDemo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/untitled.iml" beforeDir="false" afterPath="$PROJECT_DIR$/untitled104.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/untitled.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/java_thread.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/Administrator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/CodeBlockDemo.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/FieldDemo.java" beforeDir="false" />
@@ -224,6 +257,11 @@
       <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/GenderException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/TestException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/TryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/collection/utils/CollectionPanNull.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/collection/utils/EmptyUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/date/utils/DateUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/string/utils/StringPanNull.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/string/utils/StringUtils.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,64 +273,18 @@
   </component>
   <component name="ProjectId" id="1g4slDdBycAInXDIp0YeD4iwhuK" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="company" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\hhrGitResp\javase\code\04FavoritesClass\src\com" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.test">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -340,5 +332,27 @@
       <updated>1597385347130</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="716" height="166" key="GridCell.Tab.0.bottom" timestamp="1597385663610">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="716" height="166" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597385663610" />
+    <state width="716" height="166" key="GridCell.Tab.0.center" timestamp="1597385663610">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="716" height="166" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1597385663610" />
+    <state width="716" height="166" key="GridCell.Tab.0.left" timestamp="1597385663610">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="716" height="166" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1597385663610" />
+    <state width="716" height="166" key="GridCell.Tab.0.right" timestamp="1597385663610">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="716" height="166" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1597385663610" />
+    <state x="107" y="0" key="new project wizard" timestamp="1597385662003">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="107" y="0" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1597385662003" />
   </component>
 </project>

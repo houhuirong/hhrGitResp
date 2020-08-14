@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/01baseGrammer.iml" filepath="$PROJECT_DIR$/01baseGrammer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../03Abnormal/03Abnormal.iml" filepath="$PROJECT_DIR$/../03Abnormal/03Abnormal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../04FavoritesClass/04FavoritesClass.iml" filepath="$PROJECT_DIR$/../04FavoritesClass/04FavoritesClass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../06IO/06IO.iml" filepath="$PROJECT_DIR$/../06IO/06IO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../07MultithreadAndThreadPool/07MultithreadAndThreadPool.iml" filepath="$PROJECT_DIR$/../07MultithreadAndThreadPool/07MultithreadAndThreadPool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../08NetworkProgram/08NetworkProgram.iml" filepath="$PROJECT_DIR$/../08NetworkProgram/08NetworkProgram.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../02ObjectOriented/2ObjectOriented.iml" filepath="$PROJECT_DIR$/../02ObjectOriented/2ObjectOriented.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../05CollectionsFramework/5CollectionsFramework.iml" filepath="$PROJECT_DIR$/../05CollectionsFramework/5CollectionsFramework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../09NewFeaturesJDK/9NewFeaturesJDK.iml" filepath="$PROJECT_DIR$/../09NewFeaturesJDK/9NewFeaturesJDK.iml" />
+    </modules>
+  </component>
+</project>

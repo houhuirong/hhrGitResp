@@ -1,7 +1,304 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="750949a9-db1c-4326-b382-a7908017fe41" name="Default Changelist" comment="" />
+    <list default="true" id="750949a9-db1c-4326-b382-a7908017fe41" name="Default Changelist" comment="网络编程初始化">
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/02mybatis的基本使用/mybatis_helloworld/mybatis_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/02mybatis的基本使用/mybatis_sqlmapping/mybatis_sqlmapping.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/mybatis_generator/mybatis_generator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/mybatis_sqlmapping/mybatis_sqlmapping.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/04mybatis的基本使用3/ssm/ssm.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/05mybatis-plus/mybatis_plus_helloworld/mybatis_plus_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/06mybatis-plus2/mybatis_plus_generator/mybatis_plus_generator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/mybatis/06mybatis-plus2/mybatis_plus_helloworld/mybatis_plus_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/01spring框架的介绍及使用/code/spring_study/spring_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/01spring框架的介绍及使用/code/why_ioc/why_ioc.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/02springIOC容器的配置使用1/spring_study2/spring_study2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/03springIOC容器的配置使用2/spring_study2/spring_study2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/04SpringIOC的注解使用/code/spring_annotation_study/spring_annotation_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/05SpringAOP的引入及配置使用/code/spring_aop_study/spring_aop_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/07SpringAOP的详细讲解2/spring_aop_study/spring_aop_study.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/07SpringAOP的详细讲解2/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/08Spring源码讲解/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/spring/09动态代理源码分析/spring_aop_tx/spring_aop_tx.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/01SpringMVC的介绍及使用/springmvc_helloworld/springmvc_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/02SpringMVC的基本使用1/springmvc_helloworld/springmvc_helloworld.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/02SpringMVC的基本使用1/springmvc_rest/springmvc_rest.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/03SpringMVC的基本使用2/springmvc_response/springmvc_response.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/04SpringMVC的基本使用3/springmvc_response/springmvc_response.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/05SpringMVC的基本使用4/springmvc_json/springmvc_json.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../javaframework/springmvc/06SpringMVC的基本使用5/springmvc_json/springmvc_json.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/.idea/libraries/commons_io_2_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/01baseGrammer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/Excepton2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/ExerciseDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/FinallyDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/GenderException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/Num.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/03Abnormal/com/company/base/TestException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/Dog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/FinalDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/FinalSubClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/Pet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/abstracts/Test2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/Administrator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/CodeBlockDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/ImportDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/PackageDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/StaticDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/StringDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/Student.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/Teacher.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/base/ThisDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/A.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/B.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/C.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/Dog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/Penguin.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/Pet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/PetTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/extend/Student.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/homework/Bus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/homework/Car.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo/DoorBell.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo/Lock.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo/LockDoor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo/TestLockDoor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo2/AAA.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo2/Mouse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo2/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo2/UPan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo2/Usb.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo3/CopyMechine.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo3/InkBox.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo3/InterfaceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo3/Paper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/AmdCpu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/CPU.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/HardDisk.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/InterCpu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/JSDHardDisk.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/Memory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo4/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo5/A.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inface/demo5/B.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo1/InnerClassDemo$InnerClass$InnerInner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo1/TestInnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/MethodInnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/NoNameInnerClassDemo$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/NoNameInnerClassDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/Outer$Inner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/Outer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/Runner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/inner/demo2/StaticClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/other/AccessControlDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/other/Dog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/other/DogTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../01baseGrammer/out/production/2ObjectOriented/com/company/other/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../03Abnormal/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../03Abnormal/03Abnormal.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../06IO/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../06IO/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../06IO/06IO.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../07MultithreadAndThreadPool/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../07MultithreadAndThreadPool/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../07MultithreadAndThreadPool/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../07MultithreadAndThreadPool/07MultithreadAndThreadPool.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/description.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/project-template.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/2ObjectOriented.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/abstracts/AbstractTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/abstracts/FinalDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/abstracts/FinalSubClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/abstracts/Pet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/abstracts/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/extend/B.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/extend/C.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/extend/Dog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/extend/Penguin.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/extend/Pet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/homework/Bus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/homework/Car.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/homework/MotoVehicle.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/homework/TestMotoVehicle.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/homework/Track.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo/Door.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo/DoorBell.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo/Lock.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo/LockDoor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo/TestLockDoor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo2/AAA.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo2/Usb.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo3/CopyMechine.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo3/InkBox.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo3/InterfaceDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo3/Paper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo4/CPU.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo4/HardDisk.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo4/JSDHardDisk.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo4/Memory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo4/SXHardDisk.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo5/B.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inface/demo5/C.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo1/InnerClassDemo$InnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo1/InnerClassDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo1/TestInnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/MethodInnerClass$1InnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/MethodInnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/NoNameInnerClassDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/Outer$Inner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/Runner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/StaticClass$InnerClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/inner/demo2/StaticClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/AccessControlDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/ArgumentDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/Cat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/Dog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../2ObjectOriented/out/production/2ObjectOriented/com/company/other/Test.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/ArraysDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/CollectionDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/CollectionsDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/FanXingClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/FanXingInterface.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/FanXingInterfaceSub.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/FanXingMethod.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/ListDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/ListTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/MapDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/Person.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/SetDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/VectorDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/base/map/MapDemo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../5CollectionsFramework/out/production/5CollectionsFramework/com/company/listRemove/ListRemoveRecommend.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../6IO/6IO.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../6IO/io_demo/io_demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/.idea/8NetworkProgramming.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../8NetworkProgramming/8NetworkProgramming.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../9NewFeaturesJDK/9NewFeaturesJDK.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../03Abnormal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../03Abnormal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../04FavoritesClass/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../04FavoritesClass/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06IO/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../06IO/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/1BasicGrammer1.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/AgeRate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ArgsDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ArrayDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ArraySort.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/BreakDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/BuyChicken.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ContinueDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/Fibonacci.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ForDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ManyFor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/ReturnDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/TenToTwo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/TwoArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/array/WhileDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/DateDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/EventEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/Gender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/IntegerDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/MathDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/StringBufferDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/StringDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/common/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/AddCust.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/ConstantAndVar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/DataTypeDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/HelloWorld.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/IdentifiedDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/IfDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/src/com/hhr/firste/OperatorDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1BasicGrammer/baseG/untitled.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../8NetworkProgramming/network.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/Administrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/CodeBlockDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/FieldDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/ImportDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/PackageDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/Point.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/StaticDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/StringDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/Teacher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/ThisDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2ObjectOriented/src/com/company/base/VarDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/Excepton2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/ExerciseDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/FinallyDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/GenderException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/TestException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3Abnormal/exception/src/com/exception/base/TryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/collection/utils/CollectionPanNull.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/collection/utils/EmptyUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/date/utils/DateUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/string/utils/StringPanNull.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4FavoritesClass/src/com/string/utils/StringUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/demo/RunnableDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/demo/ThreadDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/exercise/Test1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/JoinTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/MyRun.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/SleepTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/ThreadApiDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/ThreadDemo01.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/other/YieldTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc/Goods.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc/Producer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc2/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc2/Goods.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc2/Producer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc2/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc3/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc3/Goods.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc3/Producer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc3/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc4/ConsumerQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc4/Goods.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc4/ProducerQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/pc4/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/proxy/JiaShi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/proxy/KindWomen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/proxy/PanJinLian.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/proxy/WangPo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/proxy/XiMenQing.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/ticket/TicketRunnable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/ticket/TicketRunnable2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/ticket/TicketRunnable3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/thread/base/ticket/TicketThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/ThreadPoolDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/ArrayBlockingQueue/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/ArrayBlockingQueue/MainClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/ArrayBlockingQueue/Producer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/Synchronousqueue/SynchronousQueueExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/delayqueue/DelayQueueTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/priorityqueue/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/blockingqueue/priorityqueue/UsePriorityBlockingQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/callable/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/callable/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/CacheThreadPoolDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/FixedThreadPoolDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/ScheduledThreadPoolDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/ScheduledThreadPoolDemo2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/SingleThreadPoolDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/demo/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/forkjoin/ForJoinPollTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/forkjoin/ForkJoinPoolAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/forkjoin/PrintTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/forkjoin/SumTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../7MultithreadingAndThreadPool/src/com/threadPool/base/forkjoin/newWorkStealingPoolTest.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,68 +308,38 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
   <component name="ProjectId" id="1g4vLxqbPGBUA3emR2Q20HPFHhG" />
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="untitled104" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="company" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../9NewFeaturesJDK" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\hhrGitResp\javase\code\08NetworkProgram\src" />
+      <recent name="E:\hhrGitResp\javase\code\08NetworkProgram\src\com\network" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.LambdaDemo">
+    <configuration name="LambdaDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lamada.LambdaDemo" />
+      <module name="9NewFeaturesJDK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lamada.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.network.Main" />
       <module name="08NetworkProgram" />
@@ -83,6 +350,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.LambdaDemo" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.LambdaDemo" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -95,12 +371,40 @@
       <option name="presentableId" value="Default" />
       <updated>1597386626081</updated>
     </task>
+    <task id="LOCAL-00001" summary="网络编程初始化">
+      <created>1597386771637</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597386771637</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="网络编程初始化" />
+    <option name="LAST_COMMIT_MESSAGE" value="网络编程初始化" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="0" y="0" key="SettingsEditor" timestamp="1597386726456">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1597386827344">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597386726456" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1597386827344" />
+    <state x="300" y="70" key="FileChooserDialogImpl" timestamp="1597387031859">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="300" y="70" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1597387031859" />
+    <state x="160" y="60" key="NewModule_or_Project.wizard" timestamp="1597387037979">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="160" y="60" key="NewModule_or_Project.wizard/0.0.1366.728@0.0.1366.728" timestamp="1597387037979" />
+    <state x="0" y="0" key="SettingsEditor" timestamp="1597387039808">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="0" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597387039808" />
+    <state x="550" y="156" key="Vcs.Push.Dialog.v2" timestamp="1597386784709">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="550" y="156" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1597386784709" />
   </component>
 </project>

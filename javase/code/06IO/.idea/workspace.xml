@@ -122,54 +122,6 @@
       <change afterPath="$PROJECT_DIR$/../03Abnormal/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../03Abnormal/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../03Abnormal/03Abnormal.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/description.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/project-template.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-io-2.6.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/CopyFile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/InputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/OutputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/StreamDemo2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/StreamDemo3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/Stream/StreamDemo4.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/commonsio/Commons_ioTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/exercise/BaiDuTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/exercise/ExitTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/exercise/ExitTest2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/handlerStream/InputStreamReaderDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/handlerStream/OutputStreamWriterDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/123.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/FileDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/RandomAccessFileTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/aaa.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/abc.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/baidu.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/doc.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/other/writer.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/BufferedReaderTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/BufferedWriterTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/CharArrayReaderTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/CopyPicture.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/PrintStreamTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/ReaderDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/ReaderDemo2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/ReaderDemo3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/WriterDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/readerOrWriter/charArrayWriterTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/BufferedInputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/BufferedOutputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/ByteArrayInputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/ByteArrayOutputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/DataDemp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/ObjectInputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/ObjectOutputStreamDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/io/streamtype/Person.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/description.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../2ObjectOriented/.idea/modules.xml" afterDir="false" />
@@ -380,9 +332,25 @@
       <option name="presentableId" value="Default" />
       <updated>1597385845036</updated>
     </task>
+    <task id="LOCAL-00001" summary="io初始化">
+      <created>1597386183770</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597386183770</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="io初始化" />
+    <option name="LAST_COMMIT_MESSAGE" value="io初始化" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="321" y="0" key="CommitChangelistDialog2" timestamp="1597386181663">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="321" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1597386181663" />
     <state x="484" y="118" key="FileChooserDialogImpl" timestamp="1597386157045">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -391,5 +359,13 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1597386160346" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1597386186165">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1597386186165" />
+    <state x="53" y="0" key="new project wizard" timestamp="1597386244022">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="53" y="0" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1597386244022" />
   </component>
 </project>
