@@ -1,6 +1,6 @@
 package com.network.server;
 
-import com.mashibing.client.User;
+import com.network.client.User;
 
 import java.io.DataOutputStream;
 import java.io.InputStream;
