@@ -1,6 +1,6 @@
 package com.lamada.why2;
 
-import com.mashibing.why.Student;
+import com.lamada.why.Student;
 
 /**
  * @author: 马士兵教育
