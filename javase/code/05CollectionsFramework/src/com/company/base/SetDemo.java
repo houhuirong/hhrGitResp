@@ -1,7 +1,6 @@
 package com.company.base;
 
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author: 马士兵教育
@@ -25,41 +24,41 @@ import java.util.TreeSet;
 * */
 public class SetDemo implements Comparator<Person> {
     public static void main(String[] args) {
-//        Set set = new HashSet();
-//        set.add("123");
-//        set.add(1);
-//        set.add(true);
-//        set.add("123");
-//        System.out.println(set);
-//        Iterator iterator = set.iterator();
-//        while (iterator.hasNext()){
-//            System.out.println(iterator.next());
-//        }
-//        System.out.println("---------");
-//        //将while循环改成for循环,推荐使用
-//        for(Iterator iter = set.iterator(); iter.hasNext();){
-//            System.out.println(iter.next());
-//        }
+        Set set = new HashSet();
+        set.add("123");
+        set.add(1);
+        set.add(true);
+        set.add("123");
+        System.out.println(set);
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+        System.out.println("---------");
+        //将while循环改成for循环,推荐使用
+        for(Iterator iter = set.iterator(); iter.hasNext();){
+            System.out.println(iter.next());
+        }
 
-//        TreeSet treeSet = new TreeSet();
-//        treeSet.add(34);
-//        treeSet.add(1);
-//        treeSet.add(65);
-//        System.out.println(treeSet.ceiling(1));
-//        System.out.println(treeSet);
-//        HashSet hashSet = new HashSet();
-//        hashSet.add(new Person("zhangsan",12));
-//        hashSet.add(new Person("zhangsan",12));
-//        hashSet.add(new Person("lisi",13));
-//        System.out.println(hashSet);
-
-        TreeSet treeSet = new TreeSet(new SetDemo());
-        treeSet.add(new Person("lisi",15));
-        treeSet.add(new Person("wangwu",13));
-        treeSet.add(new Person("maliu",12));
-        treeSet.add(new Person("zhangsan",19));
-        treeSet.add(new Person("zhangsan",12));
+        TreeSet treeSet = new TreeSet();
+        treeSet.add(34);
+        treeSet.add(1);
+        treeSet.add(65);
+        System.out.println(treeSet.ceiling(1));
         System.out.println(treeSet);
+        HashSet hashSet = new HashSet();
+        hashSet.add(new Person("zhangsan",12));
+        hashSet.add(new Person("zhangsan",12));
+        hashSet.add(new Person("lisi",13));
+        System.out.println(hashSet);
+
+        TreeSet treeSet1 = new TreeSet(new SetDemo());
+        treeSet1.add(new Person("lisi",15));
+        treeSet1.add(new Person("wangwu",13));
+        treeSet1.add(new Person("maliu",12));
+        treeSet1.add(new Person("zhangsan",19));
+        treeSet1.add(new Person("zhangsan",12));
+        System.out.println(treeSet1);
 
 
     }

@@ -8,7 +8,7 @@ import java.util.List;
  * @author: 马士兵教育
  * @create: 2019-09-22 15:04
  */
-public class CollectionsDemo {
+public class CollectionSortDemo {
     public static void main(String[] args) {
 
         List<String> list = new ArrayList<String>();

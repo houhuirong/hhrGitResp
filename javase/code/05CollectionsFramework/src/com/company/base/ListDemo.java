@@ -50,6 +50,20 @@ public class ListDemo {
         System.out.println(list1);
 //        List of = List.of(1,2,3,4);
 //        System.out.println(of);
+
+        List list2 = new ArrayList();
+        Dog d1 = new Dog("大黄","red");
+        Dog d2 = new Dog("二黄","block");
+        Dog d3 = new Dog("三黄","green");
+        list2.add(d1);
+        list2.add(d2);
+        list2.add(d3);
+        System.out.println(list2);
+        System.out.println(list2.size());
+        list2.remove(d1);
+        System.out.println(list2);
+        Dog d4 = new Dog("二黄","block");
+        System.out.println(list2.contains(d4));
     }
 }
 

@@ -2,6 +2,7 @@ package com.company.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author: 马士兵教育
@@ -62,6 +63,10 @@ public class CollectionDemo {
         collection.add("a");
         System.out.println(collection);
 
-
+        Collection c=new HashSet();
+        c.add("Javase");
+        c.add("Java");
+        c.add("JavaWeb");
+        c.forEach(obj-> System.out.println("迭代集合元素："+obj));
     }
 }

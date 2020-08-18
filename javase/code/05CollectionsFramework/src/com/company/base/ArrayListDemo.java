@@ -1,4 +1,4 @@
-package com.company.list;
+package com.company.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;

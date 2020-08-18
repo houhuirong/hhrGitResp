@@ -1,4 +1,4 @@
-package com.company.base;
+package com.company.base.fanxing;
 
 /**
  * @author: 马士兵教育
