@@ -1,4 +1,6 @@
-package com.company.base;
+package com.company.base.set;
+
+import com.company.base.Person;
 
 import java.util.*;
 

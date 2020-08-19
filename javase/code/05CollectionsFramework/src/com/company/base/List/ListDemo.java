@@ -1,4 +1,6 @@
-package com.company.base;
+package com.company.base.List;
+
+import com.company.base.Dog;
 
 import java.util.ArrayList;
 import java.util.List;
