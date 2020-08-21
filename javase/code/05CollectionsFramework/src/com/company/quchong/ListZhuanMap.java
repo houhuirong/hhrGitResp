@@ -1,6 +1,7 @@
 package com.company.quchong;
 
 import java.util.*;
+//import org.springframework.util.CollectionUtils;
 
 /**
  * @Auther: hhr
@@ -18,7 +19,7 @@ public class ListZhuanMap {
      */
     public static List<Map<String, Object>> removeRepeatMapByKey(List<Map<String, Object>>
                                                                          list, String mapKey){
-        if (CollectionUtils.isNullOrEmpty(list)) return null;
+      //  if (CollectionUtils.isNullOrEmpty(list)) return null;
         //把list中的数据转换成msp,去掉同一id值多余数据，保留查找到第一个id值对应的数据
         List<Map<String, Object>> listMap = new ArrayList<>();
         Map<String, Map> msp = new HashMap<>();

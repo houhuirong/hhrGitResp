@@ -1,6 +1,8 @@
 package com.company.quchong;
 
 import java.util.*;
+import net.sf.json.JSONArray;
+
 
 /**
  * @Auther: hhr
@@ -61,8 +63,5 @@ public class Lislt {
         }
 
         return null;
-    }
-    Enum JavaType{
-        Integer[],String[],
     }
 }
