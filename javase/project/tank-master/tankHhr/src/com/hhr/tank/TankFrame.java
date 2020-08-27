@@ -1,14 +1,10 @@
 package com.hhr.tank;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.security.KeyStore;
 
 /**
  * @Auther: hhr
@@ -17,10 +13,9 @@ import java.security.KeyStore;
  * @version: 1.0
  */
 public class TankFrame extends Frame {
-    int x=200;
-    int y=200;
-    Dir dir=Dir.LEFT;
-    final int SPEED=10;
+
+    Tank myTank=new Tank(200,200,Dir.UP);
+
     public TankFrame(){
         setSize(800,600);
         setResizable(false);
@@ -38,23 +33,7 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
-        g.fillRect(x,y,50,50);
-        switch (dir) {
-            case UP:
-                y+=SPEED;
-                break;
-            case DOWN:
-                y-=SPEED;
-                break;
-            case LEFT:
-                x-=SPEED;
-                break;
-            case RIGHT:
-                x+=SPEED;
-                break;
-            default:break;
-        }
+       myTank.paint(g);
 
     }
 
@@ -84,15 +63,13 @@ public class TankFrame extends Frame {
                     break;
             }
             setMainTankDir();
-            //x+=20;
-            //repaint();
         }
 
         private void setMainTankDir() {
-            if(bD) dir=Dir.DOWN;
-            if(bL) dir=Dir.LEFT;
-            if (bR) dir=Dir.RIGHT;
-            if(bU) dir=Dir.UP;
+            if(bD) myTank.setDir(Dir.DOWN);
+            if(bL) myTank.setDir(Dir.LEFT);
+            if(bR) myTank.setDir(Dir.RIGHT);
+            if(bU) myTank.setDir(Dir.UP);
         }
 
         @Override
@@ -112,8 +89,6 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = false;
                     break;
-
-
                 default:
                     break;
             }
