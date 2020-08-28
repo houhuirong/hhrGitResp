@@ -35,8 +35,10 @@ public class Tank {
     }
 
     public void paint(Graphics g){
-        System.out.println("paint");
+        Color c=g.getColor();
+        g.setColor(Color.YELLOW);
         g.fillRect(x,y,50,50);
+        g.setColor(c);
         move();
     }
     private void move(){

@@ -16,8 +16,9 @@ public class TankFrame extends Frame {
 
     Tank myTank=new Tank(200,200,Dir.UP);
 Bullet bullet=new Bullet(300,300,Dir.DOWN);
+    static final int GAME_WIGTH=800,Game_HEIGHT=600;
     public TankFrame(){
-        setSize(800,600);
+        setSize(GAME_WIGTH,Game_HEIGHT);
         setResizable(false);
         setTitle("tank war");
         setVisible(true);
@@ -30,12 +31,29 @@ Bullet bullet=new Bullet(300,300,Dir.DOWN);
         });
 
     }
+    Image offScreenImage = null;
+
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIGTH, Game_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIGTH, Game_HEIGHT);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
+    }
 
     @Override
     public void paint(Graphics g) {
        myTank.paint(g);
         bullet.paint(g);
     }
+
+
 
     class MyKeyListener extends KeyAdapter{
         boolean bL = false;
