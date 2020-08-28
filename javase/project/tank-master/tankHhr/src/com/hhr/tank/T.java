@@ -1,9 +1,5 @@
 package com.hhr.tank;
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 /**
  * @Auther: hhr
  * @Date: 2020/8/27 - 08 - 27 - 15:18

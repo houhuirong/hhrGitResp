@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Auther: hhr
@@ -15,8 +17,9 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     Tank myTank=new Tank(200,200,Dir.UP,this);
-    Bullet bullet=new Bullet(300,300,Dir.DOWN);
+    Bullet bullet=new Bullet(300,300,Dir.DOWN,this);
     static final int GAME_WIGTH=800,Game_HEIGHT=600;
+    List<Bullet> bulletS=new ArrayList<Bullet>();
 
     public TankFrame(){
         setSize(GAME_WIGTH,Game_HEIGHT);
@@ -49,8 +52,15 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        Color color=g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("子弹数量:"+bulletS.size(),10,60);
+        g.setColor(color);
        myTank.paint(g);
-        bullet.paint(g);
+        //bullet.paint(g);
+       for (Bullet b:bulletS){
+           b.paint(g);
+       }
     }
 
 
@@ -75,9 +85,6 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = true;
-                    break;
-                case KeyEvent.VK_CONTROL:
-                    myTank.fire();
                     break;
                 default:
                     break;
@@ -110,6 +117,9 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();
                     break;
                 default:
                     break;
