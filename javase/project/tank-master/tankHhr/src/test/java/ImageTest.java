@@ -19,6 +19,8 @@ public class ImageTest {
         try {
             BufferedImage image = ImageIO.read(new File("C:\\Users\\Administrator.PC-20200319WBHM\\Pictures\\QQ图片20200416105700.jpg"));
             assertNotNull(image);
+            BufferedImage image1 = ImageIO.read(ImageTest.class.getClassLoader().getResourceAsStream("images\\0.gif"));
+            assertNotNull(image1);
         } catch (IOException e) {
             e.printStackTrace();
         }
