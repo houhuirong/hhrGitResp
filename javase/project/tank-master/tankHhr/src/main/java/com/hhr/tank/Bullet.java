@@ -15,7 +15,7 @@ public class Bullet {
     private static final int WIDTH=30,HEIGHT=30;
     private int x,y;
     private Dir dir;
-    private boolean live=true;
+    public boolean live=true;
     TankFrame tf=null;
     public Bullet(int x,int y,Dir dir,TankFrame tf){
         this.x=x;

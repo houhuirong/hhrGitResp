@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,9 +59,16 @@ public class TankFrame extends Frame {
         g.setColor(color);
        myTank.paint(g);
         //bullet.paint(g);
-       for (Bullet b:bulletS){
+/*       for (Bullet b:bulletS){
            b.paint(g);
-       }
+       }*/
+        for (int i=0;i<bulletS.size();i++){
+            bulletS.get(i).paint(g);
+        }
+        for (Iterator<Bullet> it=bulletS.iterator();it.hasNext();){
+            Bullet bb=it.next();
+            if (!bb.live) it.remove();
+        }
     }
 
 
