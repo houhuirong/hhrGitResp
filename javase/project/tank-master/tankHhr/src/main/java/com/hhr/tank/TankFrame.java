@@ -21,6 +21,7 @@ public class TankFrame extends Frame {
     Bullet bullet=new Bullet(300,300,Dir.DOWN,this);
     static final int GAME_WIGTH=800,Game_HEIGHT=600;
     List<Bullet> bulletS=new ArrayList<Bullet>();
+    List<Tank> tanks=new ArrayList<Tank>();
 
     public TankFrame(){
         setSize(GAME_WIGTH,Game_HEIGHT);
@@ -68,6 +69,10 @@ public class TankFrame extends Frame {
         for (Iterator<Bullet> it=bulletS.iterator();it.hasNext();){
             Bullet bb=it.next();
             if (!bb.live) it.remove();
+        }
+
+        for (int i=0;i<tanks.size();i++){
+            tanks.get(i).paint(g);
         }
     }
 
