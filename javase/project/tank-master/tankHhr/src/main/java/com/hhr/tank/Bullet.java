@@ -1,7 +1,5 @@
 package com.hhr.tank;
 
-import com.sun.javafx.scene.traversal.WeightedClosestCorner;
-
 import java.awt.*;
 
 /**
@@ -12,11 +10,11 @@ import java.awt.*;
  */
 public class Bullet {
     private static final int SPEED=2;
-    public static final int WIDTH=ResourceMgr.bulletD.getWidth();
-    public static final int HEIGHT=ResourceMgr.bulletD.getHeight();
+    public static int WIDTH=ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT=ResourceMgr.bulletD.getHeight();
     private int x,y;
     private Dir dir;
-    public boolean live=true;
+    public boolean living =true;
     TankFrame tf=null;
     public Bullet(int x,int y,Dir dir,TankFrame tf){
         this.x=x;
@@ -25,7 +23,7 @@ public class Bullet {
         this.tf=tf;
     }
     public void paint(Graphics g){
-        if(!live){
+        if(!living){
             tf.bulletS.remove(this);
         }
         switch (dir){
@@ -61,6 +59,20 @@ public class Bullet {
                 break;
             default:break;
         }
-        if(x<0||y<0||x>TankFrame.Game_HEIGHT||y>TankFrame.GAME_WIGTH)live=false;
+        if(x<0||y<0||x>TankFrame.Game_HEIGHT||y>TankFrame.GAME_WIGTH) living =false;
+    }
+
+    public void collideWith(Tank tank) {
+        Rectangle rect=new Rectangle(this.x,this.y,WIDTH,HEIGHT);
+        Rectangle rect2=new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
+        if (rect.intersects(rect2)){
+            tank.die();
+            this.die();
+        }
+
+    }
+
+    private void die() {
+        living=false;
     }
 }
