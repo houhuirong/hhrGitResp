@@ -2,7 +2,9 @@ package com.mashibing.springboot.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pagehelper.PageInfo;
+import com.mashibing.springboot.RespStat;
 import com.mashibing.springboot.mapper.AccountMapper;
 import com.mashibing.springboot.mapper.MenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +88,10 @@ public class AccountController {
 		model.addAttribute("page", page);
 		return "/account/list";
 	}
-	
+
+	@RequestMapping("/deleteById")
+	@ResponseBody
+	public RespStat deleteById(Integer id){
+		return accountSrv.deleteById(id);
+	}
 }
