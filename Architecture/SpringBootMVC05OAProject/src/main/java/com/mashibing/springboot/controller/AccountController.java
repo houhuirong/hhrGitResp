@@ -10,13 +10,17 @@ import com.mashibing.springboot.mapper.MenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mashibing.springboot.entity.Account;
 import com.mashibing.springboot.service.AccountService;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -93,5 +97,33 @@ public class AccountController {
 	@ResponseBody
 	public RespStat deleteById(Integer id){
 		return accountSrv.deleteById(id);
+	}
+
+	@RequestMapping("/profile")
+	public String profile(){
+		try{
+			File path=new File(ResourceUtils.getURL("classpath:").getPath());
+			File upload = new File(path.getAbsolutePath(), "static/upload/");
+			System.out.println(upload.getAbsolutePath());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "account/profile";
+	}
+
+	@RequestMapping("/fileUploadController")
+	@ResponseBody
+	public String fileUpload(MultipartFile filename,String password){
+		System.out.println("password"+password);
+		System.out.println("file"+filename.getOriginalFilename());
+		try{
+		File path=new File(ResourceUtils.getURL("classpath:").getPath());
+		File upload=new File(path.getAbsolutePath(),"static/upload");
+			System.out.println("upload"+upload);
+			filename.transferTo(new File(upload+"/"+filename.getOriginalFilename()));
+		}catch(Exception e){
+		e.printStackTrace();
+		}
+		return "account/profile";
 	}
 }
