@@ -82,7 +82,7 @@ public class AccountController {
 	@RequestMapping("/list")
 	public String list(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5" ) int pageSize, Model model) {
 		
-		List<Account> page = accountSrv.findByPage(pageNum,pageSize);
+		PageInfo<Account> page = accountSrv.findByPage(pageNum,pageSize);
 		model.addAttribute("page", page);
 		return "/account/list";
 	}

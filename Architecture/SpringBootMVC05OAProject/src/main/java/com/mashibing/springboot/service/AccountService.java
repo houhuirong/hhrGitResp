@@ -50,13 +50,13 @@ public class AccountService {
 		return null;
 	}
 
-	public List<Account> findByPage(int pageNum, int pageSize) {
+	public PageInfo<Account> findByPage(int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum, pageSize);
 
 		Map<String, Object> map = new HashMap<>();
-		return accMapper.selectByMap(map);
-		/*PageInfo<Account> pageInfo = new PageInfo<Account>(accMapper.selectByMap(map), 5);
-		return pageInfo;*/
+		/*return accMapper.selectByMap(map);*/
+		PageInfo<Account> pageInfo = new PageInfo<Account>(accMapper.selectByMap(map), 5);
+		return pageInfo;
 	}
 }
