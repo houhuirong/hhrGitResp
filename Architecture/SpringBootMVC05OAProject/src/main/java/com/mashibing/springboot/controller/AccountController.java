@@ -37,6 +37,14 @@ public class AccountController {
 	
 	@Autowired
 	AccountService accountSrv;
+
+
+	@RequestMapping("regist")
+	@ResponseBody
+	public RespStat regist(Account account){
+		System.out.println(account.getLoginName()+"-------------"+account.getPassword());
+		return accountSrv.insertAccount(account);
+	}
 	
 	@RequestMapping("login")
 	public String login() {

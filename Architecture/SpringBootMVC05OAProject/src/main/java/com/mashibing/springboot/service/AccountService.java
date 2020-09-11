@@ -1,5 +1,7 @@
 package com.mashibing.springboot.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +9,14 @@ import java.util.Map;
 import com.mashibing.springboot.RespStat;
 import com.mashibing.springboot.mapper.AccountExample;
 import com.mashibing.springboot.mapper.AccountMapper;
+import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mashibing.springboot.entity.Account;
+import sun.security.provider.MD2;
 
 @Service
 public class AccountService {
@@ -68,6 +72,33 @@ public class AccountService {
 			return RespStat.build(200);
 		}else{
 			return RespStat.build(500,"删除出错");
+		}
+	}
+
+    public RespStat insertAccount(Account account) {
+		String psword=account.getPassword();
+		MessageDigest md= null;
+		StringBuffer buf=new StringBuffer("");
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.update(psword.getBytes());
+			byte[] byteDigest=md.digest();
+			int i;
+			for (int offset=0;offset<byteDigest.length;offset++){
+				i=byteDigest[offset];
+				if (i<0) i+=256;
+				if (i<16) buf.append("0");
+				buf.append(Integer.toHexString(i));
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		account.setPassword(buf.toString());
+		int insert = accMapper.insert(account);
+		if (insert==1){
+			return RespStat.build(200);
+		}else {
+			return RespStat.build(500,"注册出错");
 		}
 	}
 }
