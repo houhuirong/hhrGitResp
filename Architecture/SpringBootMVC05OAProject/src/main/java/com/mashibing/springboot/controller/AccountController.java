@@ -38,14 +38,22 @@ public class AccountController {
 	@Autowired
 	AccountService accountSrv;
 
-
+/**
+ * 改进：密码是用户名加密码后再加密
+ * 判断两次输入密码是否一致
+ * */
 	@RequestMapping("regist")
 	@ResponseBody
 	public RespStat regist(Account account){
 		System.out.println(account.getLoginName()+"-------------"+account.getPassword());
 		return accountSrv.insertAccount(account);
 	}
-	
+	@RequestMapping("updatePassword")
+	@ResponseBody
+	public RespStat updatePassword(Account account){
+		return accountSrv.updatePassword(account);
+	}
+
 	@RequestMapping("login")
 	public String login() {
 		return "account/login";

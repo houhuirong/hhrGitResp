@@ -9,6 +9,7 @@ import java.util.Map;
 import com.mashibing.springboot.RespStat;
 import com.mashibing.springboot.mapper.AccountExample;
 import com.mashibing.springboot.mapper.AccountMapper;
+import com.mashibing.springboot.util.MD5util;
 import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class AccountService {
 				.andPasswordEqualTo(password);
 		Map<String, Object> map = new HashMap<>();
 		map.put("login_name", loginName);
-		map.put("password", password);
+		map.put("password", MD5util.code(password));
 
 		// password
 		// 1. 没有
@@ -76,29 +77,36 @@ public class AccountService {
 	}
 
     public RespStat insertAccount(Account account) {
-		String psword=account.getPassword();
-		MessageDigest md= null;
-		StringBuffer buf=new StringBuffer("");
-		try {
-			md = MessageDigest.getInstance("MD5");
-			md.update(psword.getBytes());
-			byte[] byteDigest=md.digest();
-			int i;
-			for (int offset=0;offset<byteDigest.length;offset++){
-				i=byteDigest[offset];
-				if (i<0) i+=256;
-				if (i<16) buf.append("0");
-				buf.append(Integer.toHexString(i));
-			}
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+		if(null==account.getLoginName()||"".equals(account.getLoginName())) {
+			return RespStat.build(500, "用户名不可以为空");
 		}
-		account.setPassword(buf.toString());
+		if (null==account.getPassword()||"".equals(account.getPassword())){
+			return RespStat.build(500,"密码不可以为空");
+		}
+		account.setPassword(MD5util.code(account.getPassword()));
 		int insert = accMapper.insert(account);
 		if (insert==1){
 			return RespStat.build(200);
 		}else {
 			return RespStat.build(500,"注册出错");
+		}
+	}
+
+	public RespStat updatePassword(Account account) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("login_name",account.getLoginName());
+		List<Account> accounts = accMapper.selectByMap(map);
+		if (null==accounts||accounts.size()<=0){
+			return RespStat.build(500,"用户名错误");
+		}else{
+			account.setId(accounts.get(0).getId());
+			account.setPassword(MD5util.code(account.getPassword()));
+		}
+		int id = accMapper.updateById(account);
+		if (id==1){
+			return RespStat.build(200,"修改成功！");
+		}else {
+			return RespStat.build(500,"修改失败！");
 		}
 	}
 }
