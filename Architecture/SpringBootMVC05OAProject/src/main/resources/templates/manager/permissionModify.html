@@ -92,9 +92,6 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           
-          <!-- 头像 -->
-          <img style=" width: 22px; margin-right: 8px;" th:src="@{${session.account.location}}" alt="..." class="img-rounded">
-          
           欢迎你 : [[${session.account.loginName}]] <span class="caret"></span> </a>
           <ul class="dropdown-menu">
             <li><a href="/account/profile">个人信息</a></li>
@@ -116,15 +113,78 @@
 
 
 <!--  导航栏                      结束  			↑       -->
+<h1>修改/添加 权限</h1>
 
-<!--  巨幕       开始   ↓ -->
-<div class="jumbotron">
-  <h1>欢迎使用无纸化办公系统</h1>
-  <p>.version 1.0 </p>
-  <p></p>
-</div>
-<!--  巨幕       结束   ↑ -->
+<form id="p">
+权限名称： <input name="name" type="text" th:value="${p}==null?'':${p.name}">  <br>
+URI： <input name="uri" type="text" th:value="${p}==null?'':${p.uri}"><br>
 
+权限：  
+<input type="checkbox" id="c" th:checked="${p}==null?'false':${p.c}"> c
+<input type="checkbox" id="r" th:checked="${p}==null?'false':${p.r}"> r
+<input type="checkbox" id="u" th:checked="${p}==null?'false':${p.u}"> u
+<input type="checkbox" id="d" th:checked="${p}==null?'false':${p.d}"/> d
+
+<input type="text" name="id" th:value="${p}==null?'':${p.id}">
+<br>
+<a class="btn btn-danger" href="javascript:smt();">提交</a>
+</form>
+
+
+<br>
+
+
+<script type="text/javascript">
+function smt(){
+	var formObject = {};
+	
+	var data = $("#p").serializeArray();
+	$.each(data,function(i,item){
+		
+		formObject[item.name] = item.value
+	});
+	
+	
+	formObject["c"] = $("#c").is(':checked');
+	formObject["r"] = $("#r").is(':checked');
+	formObject["u"] = $("#u").is(':checked');
+	formObject["d"] = $("#d").is(':checked');
+	
+	
+	// 提交json对象 到controller
+	console.log("data" + data);
+	console.log("formObject" + formObject);
+	console.log("formObject" + JSON.stringify(formObject));
+	
+	// 有没有 id 传过来
+	var url = "/api/v1/manager/permission/add";
+	
+//	$.post(url,formObject,function(data){
+//		console.log(data)
+		
+//	})
+
+
+	$.ajax({
+		
+		type : "post",
+		url : url,
+		contentType : "application/json" ,
+		data : JSON.stringify(formObject),
+		dataType : "json",
+		
+		success : function (msg){
+			console.log("sucess:" +JSON.stringify(msg) )
+		},
+		error : function (msg){
+			console.log("error:" + msg)
+		}
+	})
+	
+}
+
+
+</script>
 
 
 </body>

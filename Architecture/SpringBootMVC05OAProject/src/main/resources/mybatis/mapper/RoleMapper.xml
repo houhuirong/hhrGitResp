@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mashibing.springboot.mapper.MenuMapper">
-  <resultMap id="BaseResultMap" type="com.mashibing.springboot.entity.Menu">
+<mapper namespace="com.mashibing.springboot.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.mashibing.springboot.entity.Role">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="roles" jdbcType="VARCHAR" property="roles" />
-    <result column="index" jdbcType="VARCHAR" property="index" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +64,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, roles, `index`
+    id, `name`
   </sql>
-  <select id="selectByExample" parameterType="com.mashibing.springboot.mapper.MenuExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mashibing.springboot.mapper.RoleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from menu
+    from role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,58 +91,44 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from menu
+    from role
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from menu
+    delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mashibing.springboot.mapper.MenuExample">
-    delete from menu
+  <delete id="deleteByExample" parameterType="com.mashibing.springboot.mapper.RoleExample">
+    delete from role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.mashibing.springboot.entity.Menu" useGeneratedKeys="true">
-    insert into menu (`name`, roles, `index`
-      )
-    values (#{name,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR}, #{index,jdbcType=VARCHAR}
-      )
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.mashibing.springboot.entity.Role" useGeneratedKeys="true">
+    insert into role (`name`)
+    values (#{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.mashibing.springboot.entity.Menu" useGeneratedKeys="true">
-    insert into menu
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.mashibing.springboot.entity.Role" useGeneratedKeys="true">
+    insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
         `name`,
-      </if>
-      <if test="roles != null">
-        roles,
-      </if>
-      <if test="index != null">
-        `index`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="roles != null">
-        #{roles,jdbcType=VARCHAR},
-      </if>
-      <if test="index != null">
-        #{index,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mashibing.springboot.mapper.MenuExample" resultType="java.lang.Long">
-    select count(*) from menu
+  <select id="countByExample" parameterType="com.mashibing.springboot.mapper.RoleExample" resultType="java.lang.Long">
+    select count(*) from role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update menu
+    update role
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -152,47 +136,31 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.roles != null">
-        roles = #{record.roles,jdbcType=VARCHAR},
-      </if>
-      <if test="record.index != null">
-        `index` = #{record.index,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update menu
+    update role
     set id = #{record.id,jdbcType=INTEGER},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      roles = #{record.roles,jdbcType=VARCHAR},
-      `index` = #{record.index,jdbcType=VARCHAR}
+      `name` = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mashibing.springboot.entity.Menu">
-    update menu
+  <update id="updateByPrimaryKeySelective" parameterType="com.mashibing.springboot.entity.Role">
+    update role
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="roles != null">
-        roles = #{roles,jdbcType=VARCHAR},
-      </if>
-      <if test="index != null">
-        `index` = #{index,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mashibing.springboot.entity.Menu">
-    update menu
-    set `name` = #{name,jdbcType=VARCHAR},
-      roles = #{roles,jdbcType=VARCHAR},
-      `index` = #{index,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.mashibing.springboot.entity.Role">
+    update role
+    set `name` = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

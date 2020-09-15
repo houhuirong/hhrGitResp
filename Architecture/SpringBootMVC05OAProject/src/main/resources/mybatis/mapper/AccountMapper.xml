@@ -10,6 +10,87 @@
     <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="role" jdbcType="VARCHAR" property="role" />
   </resultMap>
+  
+  <!--  自定义： 包含一对多关系 包含两个集合   roleList  permissionList-->
+  <resultMap type="com.mashibing.springboot.entity.Account" id="selectByPermissionResultMap">
+  
+    <id column="aid" jdbcType="INTEGER" property="id" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+  
+	  <collection property="roleList" ofType="com.mashibing.springboot.entity.Role">
+	  	
+		  <id column="rid" jdbcType="INTEGER" property="id" />
+	      <result column="rname" jdbcType="VARCHAR" property="name" />
+	  </collection>
+	  <collection property="permissionList" ofType="com.mashibing.springboot.entity.Permission">
+		  	
+	    <id column="pid" jdbcType="INTEGER" property="id" />
+	    <result column="uri" jdbcType="VARCHAR" property="uri" />
+	    <result column="pname" jdbcType="VARCHAR" property="name" />
+	    <result column="c" jdbcType="BIT" property="c" />
+	    <result column="r" jdbcType="BIT" property="r" />
+	    <result column="u" jdbcType="BIT" property="u" />
+	    <result column="d" jdbcType="BIT" property="d" />
+	  </collection>
+  
+  </resultMap>
+  
+  <select id="selectByPermission" resultMap="selectByPermissionResultMap">
+  
+  <!-- 
+  	SELECT * FROM account as a 
+	inner join account_role as ar 
+		on a.id = ar.account_id
+    inner join role as r 
+		on ar.role_id = r.id
+SELECT
+	a.id as aid, 
+	a.login_name ,
+	a.password,
+	a.location,
+	r.id as rid,
+	r.name as rname
+FROM account as a 
+	inner join account_role as ar 
+		on a.id = ar.account_id
+    inner join role as r 
+		on ar.role_id = r.id
+   -->
+   
+   SELECT
+	a.id as aid, 
+	a.login_name ,
+	a.password,
+	a.location,
+	r.id as rid,
+	r.name as rname,
+    p.id as pid,
+    p.uri,
+    p.c,
+    p.u,
+    p.d,
+    p.r,
+    p.name as pname
+FROM account as a 
+	inner join account_role as ar 
+		on a.id = ar.account_id
+    inner join role as r 
+		on ar.role_id = r.id
+        
+	left join role_permission rp 
+		on r.id =rp.role_id
+	left join permission p 
+		on p.id = rp.permission_id
+ 
+  </select>
+  
+  
+  
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -165,9 +246,6 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-  </select>
-  <select id="findAll" resultType="com.mashibing.springboot.entity.Account">
-    select * from account limit offset
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update account

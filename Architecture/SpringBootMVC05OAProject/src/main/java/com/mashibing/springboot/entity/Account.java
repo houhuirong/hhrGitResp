@@ -1,16 +1,13 @@
 package com.mashibing.springboot.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * account
  * @author 
  */
 public class Account implements Serializable {
-    @TableId(value = "id",type= IdType.AUTO)
     private Integer id;
 
     private String loginName;
@@ -24,8 +21,14 @@ public class Account implements Serializable {
     private String location;
 
     private String role;
+    
+    // 角色
+   // private List<Role> roleList;
+    
+    // 具体的权限
+   // private List<Permission> permissionList;
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;
@@ -118,21 +121,5 @@ public class Account implements Serializable {
         return result;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", loginName=").append(loginName);
-        sb.append(", password=").append(password);
-        sb.append(", nickName=").append(nickName);
-        sb.append(", age=").append(age);
-        sb.append(", location=").append(location);
-        sb.append(", role=").append(role);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
+
 }

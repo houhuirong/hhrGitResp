@@ -2,26 +2,22 @@ package com.mashibing.springboot.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pagehelper.PageInfo;
 import com.mashibing.springboot.RespStat;
-import com.mashibing.springboot.mapper.AccountMapper;
-import com.mashibing.springboot.mapper.MenuMapper;
+import com.mashibing.springboot.entity.Account;
+import com.mashibing.springboot.entity.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mashibing.springboot.entity.Account;
 import com.mashibing.springboot.service.AccountService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
 
 
 /**
@@ -37,6 +33,8 @@ public class AccountController {
 	
 	@Autowired
 	AccountService accountSrv;
+	@Autowired
+	Config config;
 
 /**
  * 改进：密码是用户名加密码后再加密
@@ -55,7 +53,8 @@ public class AccountController {
 	}
 
 	@RequestMapping("login")
-	public String login() {
+	public String login(Model model) {
+		model.addAttribute("config",config);
 		return "account/login";
 	}
 	
