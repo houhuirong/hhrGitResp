@@ -23,10 +23,26 @@ public class Account implements Serializable {
     private String role;
     
     // 角色
-   // private List<Role> roleList;
-    
+    private List<Role> roleList;
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
+
     // 具体的权限
-   // private List<Permission> permissionList;
+    private List<Permission> permissionList;
 
 	private static final long serialVersionUID = 1L;
 

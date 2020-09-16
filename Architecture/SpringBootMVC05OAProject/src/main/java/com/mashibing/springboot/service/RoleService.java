@@ -18,9 +18,8 @@ public class RoleService {
 	public PageInfo<Account> findByPage(int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum, pageSize);
-
-		Map<String, Object> map = new HashMap<>();
-		PageInfo<Account> pageInfo = new PageInfo<Account>(accMapper.selectByMap(map), 5);
+        AccountExample example = new AccountExample();
+		PageInfo<Account> pageInfo = new PageInfo<Account>(accMapper.selectByExample(example), 5);
 		return pageInfo;
 	}
 	}

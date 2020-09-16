@@ -2,7 +2,6 @@ package com.mashibing.springboot.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mashibing.springboot.entity.Account;
-import com.mashibing.springboot.entity.Permission;
 import com.mashibing.springboot.service.AccountService;
 import com.mashibing.springboot.service.PermissionService;
 import com.mashibing.springboot.service.RoleService;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Auther: hhr
