@@ -1,7 +1,5 @@
 package com.mashibing.springboot.mapper;
 
-import com.mashibing.springboot.entity.Permission;
-
 import org.springframework.stereotype.Repository;
 
 /**

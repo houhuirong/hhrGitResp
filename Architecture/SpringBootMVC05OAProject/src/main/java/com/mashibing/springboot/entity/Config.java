@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Config {
 
-	@Value(value = "${config.systemName}")
-	private String systemName;
+    @Value(value = "${config.systemName}")
+    private String systemName;
 
-	public String getSystemName() {
-		return systemName;
-	}
+    public String getSystemName() {
+        return systemName;
+    }
 
-	public void setSystemName(String systemName) {
-		this.systemName = systemName;
-	}
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
+    }
 }

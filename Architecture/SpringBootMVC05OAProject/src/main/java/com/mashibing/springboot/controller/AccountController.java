@@ -1,12 +1,10 @@
 package com.mashibing.springboot.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.github.pagehelper.PageInfo;
-import com.mashibing.springboot.RespStat;
 import com.mashibing.springboot.entity.Account;
 import com.mashibing.springboot.entity.Config;
 import com.mashibing.springboot.service.AccountService;
+import com.mashibing.springboot.util.RespStat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +12,9 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 
 
@@ -30,11 +28,11 @@ import java.io.File;
 @RequestMapping("/account")
 public class AccountController {
 
-	
+
+    @Autowired
+    private AccountService accountSrv;
 	@Autowired
-	AccountService accountSrv;
-	@Autowired
-	Config config;
+    Config config;
 
 /**
  * 改进：密码是用户名加密码后再加密

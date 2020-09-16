@@ -2,7 +2,6 @@ package com.mashibing.springboot.mapper;
 
 import java.util.List;
 
-import com.mashibing.springboot.entity.Account;
 import org.springframework.stereotype.Repository;
 
 /**

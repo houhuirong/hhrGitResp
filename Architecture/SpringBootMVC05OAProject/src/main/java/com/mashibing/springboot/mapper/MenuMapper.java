@@ -1,6 +1,5 @@
 package com.mashibing.springboot.mapper;
 
-import com.mashibing.springboot.entity.Menu;
 import org.springframework.stereotype.Repository;
 
 /**
