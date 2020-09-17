@@ -68,27 +68,27 @@ public class AccountFilter implements Filter {
 		
 		
 		// 已登录用户是否有权限访问当前页面
-//		if(!hasAuth(account.getPermissionList(),uri)) {
-//			
-//			request.setAttribute("msg", "您无权访问当前页面:" + uri);
-//			request.getRequestDispatcher("/errorPage").forward(request, response);
-//			return;
-//		}
+		if(!hasAuth(account.getPermissionList(),uri)) {
+
+			request.setAttribute("msg", "您无权访问当前页面:" + uri);
+			request.getRequestDispatcher("/errorPage").forward(request, response);
+			return;
+		}
 		
 		System.out.println("----filter----" + uri);
 		chain.doFilter(request, response);
 		
 	}
 
-//	private boolean hasAuth(List<Permission> permissionList, String uri) {
-//		// TODO Auto-generated method stub
-//		for (Permission permission : permissionList) {
-//			if(uri.startsWith(permission.getUri())) {
-//				return true;
-//			}
-//		}
-//		return false;	
-//	}
+	private boolean hasAuth(List<Permission> permissionList, String uri) {
+		// TODO Auto-generated method stub
+		for (Permission permission : permissionList) {
+			if(uri.startsWith(permission.getUri())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private boolean canPassIgnore(String uri) {
 
