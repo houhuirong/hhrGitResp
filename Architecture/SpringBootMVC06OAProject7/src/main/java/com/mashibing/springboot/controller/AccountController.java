@@ -3,11 +3,23 @@ package com.mashibing.springboot.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.github.tobato.fastdfs.domain.fdfs.MetaData;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
@@ -33,7 +45,8 @@ import com.mashibing.springboot.service.AccountService;
 @RequestMapping("/account")
 public class AccountController {
 
-	
+	@Autowired
+	FastFileStorageClient fc;
 	@Autowired
 	AccountService accountSrv;
 	
@@ -137,9 +150,12 @@ public class AccountController {
 		
 		
 		Account account = (Account)request.getSession().getAttribute("account");
-		
+
 		try {
-		
+			// 元数据
+			Set<MetaData> metaDataSet = new HashSet<MetaData>();
+			metaDataSet.add(new MetaData("Author", "yimingge"));
+			metaDataSet.add(new MetaData("CreateDate", "2016-01-05"));
 		// 当前项目的路径
 //		File path = new File(ResourceUtils.getURL("classpath:").getPath());
 //        File upload = new File(path.getAbsolutePath(), "static/uploads/");
@@ -149,8 +165,22 @@ public class AccountController {
         
         // 文件转存
 		// 文件重名
-        filename.transferTo(new File("c:/dev/uploads/"+filename.getOriginalFilename()));
-        
+       // filename.transferTo(new File("c:/dev/uploads/"+filename.getOriginalFilename()));
+			try {
+				StorePath uploadFile = null;
+				//uploadFile = fc.uploadFile(filename.getInputStream(), filename.getSize(), FilenameUtils.getExtension(filename.getOriginalFilename()), metaDataSet);
+				StorePath storePath = fc.uploadImageAndCrtThumbImage(filename.getInputStream(), filename.getSize(), FilenameUtils.getExtension(filename.getOriginalFilename()), null);
+				System.out.println("yuan 路径："+storePath.getFullPath());
+				account.setPassword(password);
+				//account.setLocation(uploadFile.getPath());
+
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+
         account.setPassword(password);
         account.setLocation(filename.getOriginalFilename());
         
@@ -165,6 +195,17 @@ public class AccountController {
 		}
 		return "account/profile";
 	}
-	
-	
+
+	@RequestMapping("/down")
+	@ResponseBody
+	public ResponseEntity<byte[]> down(HttpServletResponse resp) {
+
+		DownloadByteArray cb = new DownloadByteArray();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentDispositionFormData("attachment", "aaa.xx");
+		byte[] bs = fc.downloadFile("group1", "M00/00/00/wKiWDV0vAb-AcOaYABf1Yhcsfws9181.xx", cb);
+
+		return new ResponseEntity<>(bs,headers, HttpStatus.OK);
+	}
 }
