@@ -1,11 +1,19 @@
 server:
-  port: 8761
+  port: 8881
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: peer1
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true #把自身当做客户端注册到其他Eureka服务器
+    fetchRegistry: true #在本地缓存所有实例注册信息
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      #设置与Eureka Server交互的地址，查询服务和注册服务都需要依赖这个地址。
+      ##指向另一个注册中心
+      defaultZone: http://peer2:8882/eureka/
+
+spring:
+  #profiles: peer1  #没做环境配置，注释掉
+  application:
+    name: tmsapi-discovery-server
