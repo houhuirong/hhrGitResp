@@ -1,6 +1,7 @@
 package com.hhr.proxy;
 
 import com.hhr.service.Calculator;
+import com.hhr.util.LogUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -22,10 +23,21 @@ public class CaculatorProxy {
         //用来执行被代理类需要执行的方法
         InvocationHandler handler=new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                System.out.println(method.getName()+"方法开始执行"+"参数是:"+ Arrays.asList(args));
+
                 //开始调用被代理类的方法
-                Object result=method.invoke(calculator,args);
-                System.out.println(method.getName()+"方法开始结束"+"结果是:"+ Arrays.asList(result));
+                Object result=null;
+               try{
+                   LogUtil.start(method,args);
+                   result=method.invoke(calculator,args);
+                   LogUtil.stop(method,result);
+               }catch(Exception e){
+                   LogUtil.logException(method,e);
+                   e.printStackTrace();
+               }finally {
+                   LogUtil.logFinally(method);
+               }
+
+
                 return result;
             }
         };

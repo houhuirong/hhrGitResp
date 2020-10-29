@@ -18,5 +18,8 @@ public class MyTest {
 
         Calculator calculator= CaculatorProxy.getCalculator(new MyCalculator());
         calculator.add(1,1);
+        calculator.sub(1,1);
+        calculator.mul(1,1);
+        calculator.div(1,0);
     }
 }
