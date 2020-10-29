@@ -14,12 +14,17 @@ import java.util.Arrays;
  * @Description: com.hhr.proxy
  * @version: 1.0
  */
+/**
+ * 必须要有接口，如果没有接口，不能使用，这种方式是用jdk提供的reflect包下的类
+ * 但是在生产环境中我不能保证每个类都有实现的接口，所以有第二种方式cglib
+ * cglib在实现的时候有没有接口都无所谓
+ */
 public class CaculatorProxy {
-    public static Calculator getCalculator(final Calculator calculator){
+    public static Object getProxy(final Object object){
         //获取被代理对象的类加载器
-        ClassLoader loader=calculator.getClass().getClassLoader();
+        ClassLoader loader=object.getClass().getClassLoader();
         //被代理对象的所有接口
-        Class<?>[] interfaces=calculator.getClass().getInterfaces();
+        Class<?>[] interfaces=object.getClass().getInterfaces();
         //用来执行被代理类需要执行的方法
         InvocationHandler handler=new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -28,7 +33,7 @@ public class CaculatorProxy {
                 Object result=null;
                try{
                    LogUtil.start(method,args);
-                   result=method.invoke(calculator,args);
+                   result=method.invoke(object,args);
                    LogUtil.stop(method,result);
                }catch(Exception e){
                    LogUtil.logException(method,e);
@@ -42,6 +47,6 @@ public class CaculatorProxy {
             }
         };
         Object o = Proxy.newProxyInstance(loader, interfaces, handler);
-        return (Calculator)o;
+        return o;
     }
 }

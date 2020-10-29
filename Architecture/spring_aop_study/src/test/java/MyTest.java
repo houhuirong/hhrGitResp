@@ -1,3 +1,5 @@
+import com.hhr.myiniter.MyInterface;
+import com.hhr.myiniter.MySubClass;
 import com.hhr.proxy.CaculatorProxy;
 import com.hhr.service.Calculator;
 import com.hhr.service.MyCalculator;
@@ -16,10 +18,13 @@ public class MyTest {
         System.out.println(myCalculator.add(1,2));
         System.out.println(myCalculator.div(1,2));*/
 
-        Calculator calculator= CaculatorProxy.getCalculator(new MyCalculator());
+        Calculator calculator= (Calculator) CaculatorProxy.getProxy(new MyCalculator());
         calculator.add(1,1);
         calculator.sub(1,1);
         calculator.mul(1,1);
         calculator.div(1,0);
+
+        MyInterface proxy = (MyInterface) CaculatorProxy.getProxy(new MySubClass());
+        proxy.show(100);
     }
 }
