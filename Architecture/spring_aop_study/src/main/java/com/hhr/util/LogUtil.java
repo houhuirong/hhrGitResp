@@ -1,5 +1,8 @@
 package com.hhr.util;
 
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -9,18 +12,35 @@ import java.util.Arrays;
  * @Description: com.hhr.util
  * @version: 1.0
  */
+/**
+ * 通知注解有以下几种类型：
+ *
+ * @Before:前置通知，在方法执行之前完成
+ * @After：后置通知，在方法执行完成之后执行
+ * @AfterReturing：返回通知：在返回结果之后运行
+ * @AfterThrowing：异常通知：出现异常的时候使用
+ * @Around：环绕通知
+ *
+ * 在方法的参数列表中不要随便添加参数值，会有异常信息
+ */
+@Aspect
+@Component
 public class LogUtil {
-    public static void start(Method method,Object...objects){
-        System.out.println(method.getName()+"方法开始执行：参数是："+ Arrays.asList(objects));
+    @Before("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
+    public static void start(){
+        System.out.println("方法开始执行：参数是：");
     }
-    public static void stop(Method method,Object...objects){
-        System.out.println(method.getName()+"方法开始执行结束：结果是："+ Arrays.asList(objects));
+    @AfterReturning("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
+    public static void stop(){
+        System.out.println("方法开始执行结束：结果是：");
     }
-    public static void logException(Method method,Exception e){
-        System.out.println(method.getName()+"抛出。。。。异常"+e.getMessage());
+    @AfterThrowing("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
+    public static void logException(){
+        System.out.println("抛出。。。。异常");
     }
-    public static void logFinally(Method method){
-        System.out.println(method.getName()+"方法执行结束。。。。。。over");
+    @After("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
+    public static void logFinally(){
+        System.out.println("方法执行结束。。。。。。over");
 
     }
 }

@@ -20,7 +20,7 @@ import java.util.Arrays;
  * cglib在实现的时候有没有接口都无所谓
  */
 public class CaculatorProxy {
-    public static Object getProxy(final Object object){
+    public static Object getProxy(final Calculator object){
         //获取被代理对象的类加载器
         ClassLoader loader=object.getClass().getClassLoader();
         //被代理对象的所有接口
@@ -32,14 +32,14 @@ public class CaculatorProxy {
                 //开始调用被代理类的方法
                 Object result=null;
                try{
-                   LogUtil.start(method,args);
+                   //LogUtil.start(method,args);
                    result=method.invoke(object,args);
-                   LogUtil.stop(method,result);
+                  // LogUtil.stop(method,result);
                }catch(Exception e){
-                   LogUtil.logException(method,e);
+                   //LogUtil.logException(method,e);
                    e.printStackTrace();
                }finally {
-                   LogUtil.logFinally(method);
+                  // LogUtil.logFinally(method);
                }
 
 
@@ -47,6 +47,6 @@ public class CaculatorProxy {
             }
         };
         Object o = Proxy.newProxyInstance(loader, interfaces, handler);
-        return o;
+        return (Calculator)o;
     }
 }

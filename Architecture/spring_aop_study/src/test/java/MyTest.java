@@ -4,6 +4,7 @@ import com.hhr.proxy.CaculatorProxy;
 import com.hhr.service.Calculator;
 import com.hhr.service.MyCalculator;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @Auther: hhr
@@ -24,7 +25,15 @@ public class MyTest {
         calculator.mul(1,1);
         calculator.div(1,0);
 
-        MyInterface proxy = (MyInterface) CaculatorProxy.getProxy(new MySubClass());
-        proxy.show(100);
+     /*   MyInterface proxy = (MyInterface) CaculatorProxy.getProxy(new MySubClass());
+        proxy.show(100);*/
+    }
+    @Test
+    public void test02() throws NoSuchMethodException {
+        ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+        Calculator calculator = context.getBean("myCalculator",Calculator.class);
+        calculator.add(1,2);
+
+
     }
 }

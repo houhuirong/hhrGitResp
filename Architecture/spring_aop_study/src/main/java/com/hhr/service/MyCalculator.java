@@ -1,6 +1,7 @@
 package com.hhr.service;
 
 import com.hhr.util.LogUtil;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 
@@ -10,6 +11,7 @@ import java.lang.reflect.Method;
  * @Description: com.hhr.service
  * @version: 1.0
  */
+@Service
 public class MyCalculator implements Calculator {
     public Integer add(Integer i, Integer j) throws NoSuchMethodException {
 //        Method add = MyCalculator.class.getMethod("add", Integer.class, Integer.class);
