@@ -32,6 +32,7 @@ public class MyTest {
     public void test02() throws NoSuchMethodException {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
         Calculator calculator = context.getBean("myCalculator",Calculator.class);
-        calculator.div(1,0);
+//        calculator.div(1,0);
+        calculator.add(1, 1);
     }
 }

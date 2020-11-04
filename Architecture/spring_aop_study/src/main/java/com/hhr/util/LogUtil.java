@@ -28,23 +28,30 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LogUtil {
-    @Before("execution( public Integer com.hhr.service.MyCalculator.*(..))")
+    @Pointcut("execution(public Integer com.hhr.service.MyCalculator.*(Integer,Integer))")
+    public void myPointCut(){}
+    @Pointcut("execution(* *(..))")
+    public void myPointCut1(){
+
+    }
+
+    @Before(value = "myPointCut1()")
     public static void start(JoinPoint joinPoint){
         Signature signature = joinPoint.getSignature();
-
-        System.out.println(signature.getName()+"方法开始执行：参数是："+joinPoint.getArgs());
+        Object[] args = joinPoint.getArgs();
+        System.out.println(signature.getName()+"方法开始执行：参数是："+Arrays.asList(args));
     }
-    @AfterReturning(value = "execution( public Integer com.hhr.service.MyCalculator.*(..))",returning = "result")
+    @AfterReturning(value = "myPointCut()",returning = "result")
     public static void stop(JoinPoint joinPoint,Object result){
         Signature signature = joinPoint.getSignature();
         System.out.println(signature.getName()+"方法开始执行结束：结果是："+result);
     }
-    @AfterThrowing(value = "execution( public Integer com.hhr.service.MyCalculator.*(..))",throwing = "e")
+    @AfterThrowing(value = "myPointCut()",throwing = "e")
     public static void logException(JoinPoint joinPoint,Exception e){
         Signature signature = joinPoint.getSignature();
         System.out.println(signature.getName()+"抛出。。。。异常"+e);
     }
-    @After("execution( public Integer com.hhr.service.MyCalculator.*(..))")
+    @After(value = "myPointCut()")
     public static void logFinally(JoinPoint joinPoint){
         Signature signature = joinPoint.getSignature();
         System.out.println(signature.getName()+"方法执行结束。。。。。。over");
