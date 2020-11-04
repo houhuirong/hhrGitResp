@@ -1,5 +1,7 @@
 package com.hhr.util;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
@@ -26,21 +28,26 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LogUtil {
-    @Before("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
-    public static void start(){
-        System.out.println("方法开始执行：参数是：");
+    @Before("execution( public Integer com.hhr.service.MyCalculator.*(..))")
+    public static void start(JoinPoint joinPoint){
+        Signature signature = joinPoint.getSignature();
+
+        System.out.println(signature.getName()+"方法开始执行：参数是："+joinPoint.getArgs());
     }
-    @AfterReturning("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
-    public static void stop(){
-        System.out.println("方法开始执行结束：结果是：");
+    @AfterReturning(value = "execution( public Integer com.hhr.service.MyCalculator.*(..))",returning = "result")
+    public static void stop(JoinPoint joinPoint,Object result){
+        Signature signature = joinPoint.getSignature();
+        System.out.println(signature.getName()+"方法开始执行结束：结果是："+result);
     }
-    @AfterThrowing("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
-    public static void logException(){
-        System.out.println("抛出。。。。异常");
+    @AfterThrowing(value = "execution( public Integer com.hhr.service.MyCalculator.*(..))",throwing = "e")
+    public static void logException(JoinPoint joinPoint,Exception e){
+        Signature signature = joinPoint.getSignature();
+        System.out.println(signature.getName()+"抛出。。。。异常"+e);
     }
-    @After("execution( public Integer com.hhr.service.MyCalculator.add(Integer,Integer))")
-    public static void logFinally(){
-        System.out.println("方法执行结束。。。。。。over");
+    @After("execution( public Integer com.hhr.service.MyCalculator.*(..))")
+    public static void logFinally(JoinPoint joinPoint){
+        Signature signature = joinPoint.getSignature();
+        System.out.println(signature.getName()+"方法执行结束。。。。。。over");
 
     }
 }
