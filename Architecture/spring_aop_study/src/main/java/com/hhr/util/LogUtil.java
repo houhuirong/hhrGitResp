@@ -27,9 +27,9 @@ import java.util.Arrays;
  *
  * 在方法的参数列表中不要随便添加参数值，会有异常信息
  */
-@Aspect
+/*@Aspect
 @Component
-@Order(200)
+@Order(200)*/
 public class LogUtil {
     @Pointcut("execution(public Integer com.hhr.service.MyCalculator.*(Integer,Integer))")
     public void myPointCut(){}
