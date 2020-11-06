@@ -3,6 +3,7 @@ package com.hhr.service;
 import com.hhr.dao.BookDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,15 +17,15 @@ public class BookService {
     @Autowired
     private BookDao bookDao;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void buyBook(){
         bookDao.getPrice(1);
         bookDao.updateBalance("zhangsan",100);
-        try{
-            int i=1/0;
-        }catch(Exception e){
-
-        }
         bookDao.updateStock(1);
+        int i=1/0;
+    }
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updatePrice(){
+        bookDao.updatePrice(1);
     }
 }
