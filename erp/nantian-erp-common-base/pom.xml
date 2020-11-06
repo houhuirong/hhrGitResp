@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.1.22</version>
+			<version>1.2.25.sec10</version>
 		</dependency>
 		<!--安全认证 begin 
 		<dependency>
