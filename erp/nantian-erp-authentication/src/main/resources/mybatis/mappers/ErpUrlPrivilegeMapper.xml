@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpUrlPrivilegeMapper">
+<!-- 获取urlId -->
+	<select id="urlIdByPrivilegeAccess" resultType="com.nantian.erp.authentication.data.model.ErpSysPrivilege">
+		SELECT PrivilegeValue,privilegeAccessValue 
+		FROM Sys_Privilege 
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeAccess = 1
+	</select>
+	
+	<!-- 获取urlPath -->
+	<select id="getUrlData" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpSysUrl">
+		SELECT urlID,urlPath,urlDesc FROM Sys_Url where urlID = #{urlId}
+	</select>
+</mapper>

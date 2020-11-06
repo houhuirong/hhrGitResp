@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- mybatis逆向工程配置 -->
+<generatorConfiguration>
+  <!-- 数据库驱动jar包路径 自己根据jar存在路径修改-->
+  <classPathEntry location="E:\java_environment\mysql-connector-java-5.1.39-bin.jar" />
+  <context id="SDN-NET" targetRuntime="MyBatis3">
+  	<property name="javaFileEncoding" value="UTF-8"/>
+  	<commentGenerator>
+    	<property name="suppressAllComments" value="true"/>
+    	<property name="addRemarkCommonts" value="false"/>
+    </commentGenerator>
+    
+     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://10.12.248.13:3306/nantianerp"
+        userId="nantian"
+        password="835152">
+    </jdbcConnection>
+
+    <!-- <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver> -->
+	
+	<!-- 生成的java model类配置 -->
+    <javaModelGenerator targetPackage="com.nantian.erp.authentication.data.model" targetProject="nantian-erp-authentication/src/main/java">
+      <property name="enableSubPackages" value="false" />
+      <property name="trimStrings" value="true" />
+      <property name="constructorBased" value="true"/>
+    </javaModelGenerator>
+	
+	<!-- 生成的sqlmapper xml文件 -->
+   <sqlMapGenerator  targetPackage="mybatis.mappers"  targetProject="nantian-erp-hr/src/main/resources">
+      <property name="enableSubPackages" value="false" />
+    </sqlMapGenerator>
+    
+	<!-- 生成的java mapper类配置 -->
+	<!-- TYPE值XMLMAPPER ANNOTATEDMAPPER -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.nantian.authentication.authentication.data.dao"  targetProject="nantian-erp-authentication/src/main/java">
+      <property name="enableSubPackages" value="false" />
+    </javaClientGenerator>
+  	<!-- 要生成的数据库表，根据项目要用到的表自己修改 -->
+    <table tableName="Sys_Privilege" domainObjectName="ErpSysPrivilege">
+    	<columnOverride column="PrivilegeID" javaType="java.lang.Integer"></columnOverride> 
+    	<columnOverride column="PrivilegeMaster" javaType="java.lang.Integer"></columnOverride>
+    	<columnOverride column="PrivilegeValue" javaType="java.lang.Integer"></columnOverride>
+    	<columnOverride column="PrivilegeAccess" javaType="java.lang.Integer"></columnOverride>
+    	<columnOverride column="privilegeAccessValue" javaType="java.lang.Integer"></columnOverride>
+    	<columnOverride column="PrivilegeOperation" javaType="java.lang.Integer"></columnOverride>
+    	<columnOverride column="PrivilegeOperationValue" javaType="java.lang.Integer"></columnOverride>
+    </table>
+  </context>
+</generatorConfiguration>

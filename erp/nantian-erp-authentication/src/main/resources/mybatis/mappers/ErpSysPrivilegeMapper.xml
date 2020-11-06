@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysPrivilegeMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo" >
+    <constructor >
+      <idArg column="PrivilegeID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="PrivilegeMaster" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="PrivilegeValue" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="PrivilegeAccess" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="privilegeAccessValue" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="PrivilegeOperation" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="PrivilegeOperationValue" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  
+  	<!-- 新增特权关系 -->
+  	<insert id="insertPrivilege" parameterType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		INSERT INTO Sys_Privilege(
+  			PrivilegeMaster,
+  			PrivilegeValue,
+  			PrivilegeAccess,
+  			privilegeAccessValue,
+  			PrivilegeOperation,
+  			PrivilegeOperationValue
+  		) VALUES(
+  			#{PrivilegeMaster},
+  			#{PrivilegeValue},
+  			#{PrivilegeAccess},
+  			#{privilegeAccessValue},
+  			#{PrivilegeOperation},
+  			#{PrivilegeOperationValue}
+  		)
+  	</insert>
+  	
+  	<!-- 删除角色对应的菜单、url关系 -->
+  	<delete id="deletePrivilegeByRoleId" parameterType="java.lang.Integer">
+		DELETE FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeValue = #{roleId}
+  	</delete>
+  	
+  	<!-- 删除url对应的角色关系 -->
+  	<delete id="deletePrivilegeByUrlID" parameterType="java.lang.Integer">
+  		DELETE FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeAccess = 1
+		AND PrivilegeOperation = 2
+		AND privilegeAccessValue = #{UrlID}
+  	</delete>
+  	
+  	<!-- 删除用户对应的角色关系 -->
+  	<delete id="deletePrivilegeByUserId" parameterType="java.lang.Integer">
+  		DELETE FROM Sys_Privilege
+		WHERE PrivilegeMaster = 2
+		AND PrivilegeAccess = 4
+		AND PrivilegeOperation = 1
+		AND PrivilegeValue = #{userId}
+  	</delete>
+  	
+  	<!-- 查询特权信息 -->
+  	<select id="findPrivilegeByUrlID" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		SELECT PrivilegeID,PrivilegeMaster,PrivilegeValue,PrivilegeAccess,
+  			   privilegeAccessValue,PrivilegeOperation,PrivilegeOperationValue,relativeNum
+		FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeAccess = 1
+		AND PrivilegeOperation = 2
+		AND privilegeAccessValue = #{UrlID}
+  	</select>
+  	
+  	<!-- 查询特权信息 -->
+  	<select id="findPrivilegeByRoleId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		SELECT PrivilegeID,PrivilegeMaster,PrivilegeValue,PrivilegeAccess,
+  			   privilegeAccessValue,PrivilegeOperation,PrivilegeOperationValue
+  		FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND (PrivilegeAccess = 2 or PrivilegeAccess = 3)
+		AND PrivilegeOperation = 1
+		AND PrivilegeOperationValue = 1
+		AND PrivilegeValue = #{roleId}
+  	</select>
+  	
+  	<!--通过传入的menu/button列表查询角色 -->
+	<select id="findRolePrivilegeByMenusId" resultType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		SELECT PrivilegeValue,PrivilegeAccess,
+  			   privilegeAccessValue,PrivilegeOperation,PrivilegeOperationValue,relativeNum
+  		FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeAccess = #{param1}
+		AND PrivilegeOperation = 1
+		AND PrivilegeOperationValue = 1
+		AND PrivilegeAccessValue = #{param2}
+  	</select>
+	
+	<!-- 根据查询URL与角色的关联关系 -->
+	<select id="findPrivilegeByRoleUrl" resultType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		SELECT *
+  		FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeValue = #{param1}
+		AND PrivilegeAccess = 1
+		AND PrivilegeAccessValue = #{param2}
+		AND PrivilegeOperation = 2
+		AND PrivilegeOperationValue = 1	
+  	</select>
+  	
+	<!-- 根据查询菜单与角色的关联关系 -->
+	<select id="findPrivilegeByRoleMenuBtn" resultType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		SELECT PrivilegeValue,PrivilegeAccess,
+  			   privilegeAccessValue,PrivilegeOperation,PrivilegeOperationValue,relativeNum
+  		FROM Sys_Privilege
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeValue = #{param1}
+		AND PrivilegeAccess in (2,3)
+		AND PrivilegeAccessValue = #{param2}
+		AND PrivilegeOperation = 1
+		AND PrivilegeOperationValue = 1	
+  	</select>
+  	
+  	<update id="updatePrivilegeByRoleUrl">
+	   UPDATE Sys_Privilege
+	 	SET relativeNum = relativeNum+1
+		WHERE PrivilegeMaster = 1
+		AND PrivilegeValue = #{param1}
+		AND PrivilegeAccess = 1 
+		AND PrivilegeAccessValue = #{param2}
+		AND PrivilegeOperation = 2
+		AND PrivilegeOperationValue = 1	
+    </update>
+    
+    <insert id="insertPrivilegeByRoleUrl">
+  		INSERT INTO Sys_Privilege(
+  			PrivilegeMaster,
+  			PrivilegeValue,
+  			PrivilegeAccess,
+  			privilegeAccessValue,
+  			PrivilegeOperation,
+  			PrivilegeOperationValue,
+  			relativeNum
+  		) VALUES(
+  			1,
+  		    #{param1},
+  			1,
+  			#{param2},
+  			2,
+  			1,
+  			1
+  		)
+  	</insert>
+  	
+  	<update id="addRelativeNumByPrivilegeId" parameterType="Integer">
+	   UPDATE Sys_Privilege
+	 	SET relativeNum = relativeNum+1
+		WHERE PrivilegeId = #{PrivilegeId}
+    </update>    
+      	
+  	<update id="decRelativeNumByPrivilegeId" parameterType="Integer">
+	   UPDATE Sys_Privilege
+	 	SET relativeNum = relativeNum-1
+		WHERE PrivilegeId = #{PrivilegeId}
+    </update>
+    
+    <delete id="deletePrivilegeByPrivilegeId" parameterType="java.lang.Integer">
+  		DELETE FROM Sys_Privilege
+		WHERE PrivilegeId = #{PrivilegeId}
+  	</delete>
+  	
+  	<delete id="deletePrivilegeByMenuId">
+  		DELETE FROM Sys_Privilege
+		WHERE PrivilegeAccess = #{param1} and privilegeAccessValue = #{param2}
+  	</delete>
+  	
+  	<delete id="deletePrivilege" parameterType="com.nantian.erp.authentication.data.vo.ErpSysPrivilegeVo">
+  		DELETE FROM Sys_Privilege
+		WHERE 
+			PrivilegeMaster = #{PrivilegeMaster}
+			AND PrivilegeValue = #{PrivilegeValue}
+			AND PrivilegeAccess = #{PrivilegeAccess}
+			AND privilegeAccessValue = #{PrivilegeAccessValue}
+  	</delete>
+  	
+</mapper>

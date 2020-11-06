@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpUserRoleMapper">
+
+<select id="selectRelByUserId" parameterType="com.nantian.erp.authentication.data.model.ErpUserRole" resultType="com.nantian.erp.authentication.data.model.ErpUserRole">
+	SELECT id,uId,rId
+	FROM  user_role
+	where uId=#{uId}
+</select>
+
+<insert id="insertUserRole" parameterType="com.nantian.erp.authentication.data.model.ErpUserRole">
+	INSERT INTO user_role(
+		uId,rId
+		)
+	VALUES(
+		#{uId},#{rId}
+		)
+</insert>
+
+<insert id="insert" parameterType="com.nantian.erp.authentication.data.vo.ErpUserRoleVo">
+	INSERT INTO user_role(
+		uId,rId
+		)
+	VALUES(
+		#{userId},#{roleId}
+		)
+</insert>
+
+<!-- add by cxb  -->
+<delete id="deleteUserRoleByUserId" parameterType="java.lang.Integer">
+	delete from user_role
+	where uId = #{userId}
+</delete>
+
+<!-- add by cxb  -->
+<select id="findUserRoleByUserId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpUserRole">
+	SELECT id,uId,rId
+	FROM  user_role
+	where uId = #{userId}
+</select>
+
+<insert id="insertUserRoleForHr" parameterType="java.util.Map">
+	INSERT INTO user_role(
+		uId,rId
+		)
+	VALUES(
+		#{uId},#{rId}
+		)
+</insert>
+
+<insert id="insertUserRoleForHrList" parameterType="java.util.List" useGeneratedKeys="true">
+	<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+		SELECT
+		LAST_INSERT_ID()
+	</selectKey>
+	INSERT INTO user_role(
+		uId,rId
+		)
+	VALUES
+	<foreach collection="list" item="params" index="index" separator=",">
+	(
+		#{params.uId,jdbcType=VARCHAR},#{params.rId,jdbcType=VARCHAR}
+	)
+	</foreach>
+	
+</insert>
+
+<delete id="deleteUserRoleByRoleId" parameterType="java.lang.Integer">
+	delete from user_role
+	where rId = #{roleId}
+</delete>
+
+<delete id="deleteUserRoleByUserRole" parameterType="java.lang.Integer">
+	delete from user_role
+	where uId = #{param1} and rId = #{param2}
+</delete>
+
+</mapper>

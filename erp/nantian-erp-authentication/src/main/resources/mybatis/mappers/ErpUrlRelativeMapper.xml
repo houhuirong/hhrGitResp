@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpUrlRelativeMapper" >
+	<insert id="insertUrlRelative" parameterType="map">
+		INSERT INTO urlRelative(
+	  		relativeType,
+	  		relativeId,
+	  		urlId
+	  		) 
+	  	VALUES(
+	  		#{relativeType},
+	  		#{relativeId},
+	  		#{urlId}
+	  		)
+	</insert>
+	
+	<select id="selectUrlRelativeByUrlId" parameterType="Integer" resultType="map">
+		select id,relativeType,relativeId,urlId,m.MenuNo,b.BtnNo
+		from urlRelative u
+		LEFT JOIN Sys_Menu m ON m.MenuID = u.relativeId
+		LEFT JOIN Sys_Button b ON b.BtnID = u.relativeId
+		where urlId=#{urlId}
+	</select>
+	<delete id="deleteUrlRelativeByID" parameterType="Integer" >
+		delete from urlRelative
+		where urlId=#{id}
+	</delete>	
+	
+	<select id="selectUrlRelativeByRelativeId" parameterType="Integer" resultType="map">
+		select *
+		from urlRelative
+		where relativeType=#{param1}
+		and relativeId=#{param2}
+	</select>
+	
+		<delete id="deleteUrlRelative" parameterType="map" >
+		delete from urlRelative
+		where relativeType=#{relativeType}
+		AND relativeId=#{relativeId}
+		AND urlId=#{urlId}
+	</delete>
+	
+</mapper>

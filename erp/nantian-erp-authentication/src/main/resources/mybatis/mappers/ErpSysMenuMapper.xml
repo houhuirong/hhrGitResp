@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.model.ErpSysMenu" >
+    <constructor >
+      <idArg column="MenuID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="MenuNo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MenuparentNo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MenuOrder" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="MenuName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="MenuUrl" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Isleaf" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Isbutton" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  
+  <!-- 查询角色对应菜单信息 -->
+  <select id="findAllMenuByRoleId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+	SELECT sm.* FROM Sys_Menu sm
+	LEFT JOIN Sys_Privilege sp ON sp.privilegeAccessValue = sm.MenuID
+	LEFT JOIN role r ON r.roleId = sp.PrivilegeValue
+	WHERE 1 = 1
+    AND r.roleId = #{roleId}
+    AND sp.PrivilegeMaster = 1
+	AND sp.PrivilegeAccess = 2
+	AND sp.PrivilegeOperation = 1
+	AND sp.PrivilegeOperationValue = 1
+  </select>
+  
+  <!-- 查询所有菜单信息 -->
+  <select id="findAllMenu" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+  	SELECT * FROM Sys_Menu
+  </select>
+  
+  <!-- 删除用户已有角色信息 -->
+  <delete id="deleteUserRole" parameterType="java.lang.Integer">
+  	DELETE FROM user_role
+	WHERE uId = #{userId}
+  </delete>
+  
+  <!-- 给用户新增角色信息 -->
+  <insert id="insertUserRole" parameterType="map">
+  	INSERT INTO user_role(
+  		uId,
+  		rId
+  	)
+	VALUES(
+		#{userId},
+		#{roleId}
+	)
+  </insert>
+  
+  <!-- 菜单资源操作 -->
+  
+  <!-- 查询角色列表 -->
+  <select id="findAllRole" resultType="map"> 
+  	SELECT roleId,name as "roleName",keyword FROM role
+  </select>
+  
+  <!-- 查询资源列表 -->
+  <select id="findAllMenuAndBtn" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+  	SELECT * FROM Sys_Menu 
+  </select>
+  
+  <!-- 根据Id查询菜单 -->
+  <select id="findMenuById" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu" parameterType="java.lang.Integer">
+  	SELECT sm.* FROM Sys_Menu As sm
+	WHERE sm.MenuID=#{MenuID}
+  </select>
+  
+  <!-- 根据Id删除-->
+  <select id="delMenu" parameterType="java.lang.Integer">
+  	DELETE FROM Sys_Menu
+	WHERE MenuID=#{MenuID}
+  </select>
+  
+  <!-- 添加 -->
+  <insert id="addMenu" parameterType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="MenuID">
+        SELECT LAST_INSERT_ID() AS MenuID
+    </selectKey>
+  	INSERT INTO Sys_Menu(
+  		MenuNo,
+  		MenuparentNo,
+  		MenuOrder,
+  		MenuName,
+  		MenuUrl,
+  		Isleaf,
+  		Isbutton) 
+  	VALUES(
+  		#{MenuNo},
+  		#{MenuparentNo},
+  		#{MenuOrder},
+  		#{MenuName},
+  		#{MenuUrl},
+  		#{IsLeaf},
+  		#{IsButton}
+  		)
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="updateMenu" parameterType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+   UPDATE Sys_Menu SET
+        MenuNo = #{MenuNo},
+        MenuparentNo = #{MenuparentNo},
+        MenuOrder = #{MenuOrder},
+        MenuName = #{MenuName},
+        MenuUrl = #{MenuUrl}
+    WHERE MenuID = #{MenuID}
+  </update>
+  
+  <!-- 删除菜单资源时，根据菜单资源的menuNo来修改父节点的isLeaf -->
+  <update id="updateIsLeafByMenuId" parameterType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+   UPDATE Sys_Menu
+ 	SET Isleaf = #{IsLeaf}
+	WHERE MenuNo = #{MenuNo}
+  </update>
+    
+  <!-- 删除菜单资源时，根据菜单资源的menuNo来修改父节点的isLeaf -->
+  <update id="updateIsButtonByMenuId" parameterType="com.nantian.erp.authentication.data.model.ErpSysMenu">
+   UPDATE Sys_Menu
+ 	SET Isbutton = #{IsButton}
+	WHERE MenuNo = #{MenuNo}
+  </update>
+  
+  <!-- 查询资源列表 -->
+  <select id="checkMenuNo" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu" parameterType="java.lang.String">
+  	SELECT * FROM Sys_Menu  
+  	WHERE MenuNo = #{menuNo}
+  </select>
+  
+   <!-- 查询该菜单的上级菜单的子菜单个数 -->
+  <select id="countNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	SELECT count(*) FROM Sys_Menu  
+  	WHERE MenuparentNo = #{MenuparentNo}
+  </select>
+  
+  
+  <!-- 查询该菜单的上级菜单的子菜单个数 -->
+  <select id="findLeafMenu" resultType="com.nantian.erp.authentication.data.model.ErpSysMenu" parameterType="java.lang.String">
+  	SELECT * FROM Sys_Menu  
+  	WHERE MenuparentNo = #{MenuNo}
+  </select>
+  
+  
+  <!-- 根据菜单编号查询菜单表信息 -->
+  <select id="findMenuIdByNo" resultType="map" parameterType="java.lang.String">
+  	SELECT * FROM Sys_Menu
+	WHERE MenuNo=#{menuNo}
+  </select>
+
+</mapper>

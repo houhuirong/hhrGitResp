@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysRecordMapper">
+
+<insert id="insertRecord" parameterType="com.nantian.erp.authentication.data.model.ErpSysRecord">
+	INSERT INTO Sys_record(
+		time,opType,opId,processor,opRecord
+		)
+	VALUES(
+		#{time},
+		#{opType},
+		#{opId},
+		#{processor},
+		#{opRecord}
+		)
+</insert>
+
+<select id="selectRecordById" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpSysRecord">
+	select *
+	from Sys_record
+	where opType = #{param1} and opId = #{param2}
+	order by time desc
+</select>
+
+</mapper>

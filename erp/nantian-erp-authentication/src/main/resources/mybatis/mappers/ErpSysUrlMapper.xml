@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysUrlMapper">
+<resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.vo.ErpSysUrlVo" >
+    <constructor >
+      <idArg column="UrlID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UrlPath" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UrlDesc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ModulId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  
+	
+	<!-- 查询所有模块信息 -->
+	<select id="findAllModul" resultType="com.nantian.erp.authentication.data.vo.ErpSysModulVo" >
+		SELECT ModulId,ModulName,ModulDesc
+		FROM Sys_Modul
+	</select>
+	
+	<!-- 根据模块ID查询url信息 -->
+	<select id="findAllUrlToModulId" resultType="com.nantian.erp.authentication.data.vo.ErpSysUrlVo" >
+		SELECT UrlID,UrlPath,UrlDesc,ModulId
+		FROM Sys_Url
+		WHERE ModulId = #{ModulId}
+		ORDER BY UrlPath
+	</select>
+	
+	<!-- 新增url信息 -->
+	<insert id="insertUrl" parameterType="com.nantian.erp.authentication.data.vo.ErpSysUrlVo" useGeneratedKeys="true" keyProperty="UrlID">
+		INSERT INTO Sys_Url(
+			UrlID,
+			UrlPath,
+			UrlDesc,
+			ModulId
+		) VALUES(
+			#{UrlID},
+			#{UrlPath},
+			#{UrlDesc},
+			#{ModulId}
+		)
+	</insert>
+	
+	<!-- 修改url信息 -->
+  	<update id="updateUrl" parameterType="com.nantian.erp.authentication.data.vo.ErpSysUrlVo">
+  		UPDATE Sys_Url 
+		SET UrlDesc = #{UrlDesc},
+			ModulId = #{ModulId},
+			UrlPath = #{UrlPath}
+		WHERE UrlID = #{UrlID}
+  	</update>
+	
+	<!-- 删除url信息 -->
+	<delete id="deleteUrl" parameterType="java.lang.Integer">
+		DELETE FROM Sys_Url
+		WHERE UrlID = #{urlId}
+	</delete>
+	
+	<!-- url路径验证 -->
+	<select id="checkUrlPath" parameterType="java.lang.String" resultType="com.nantian.erp.authentication.data.vo.ErpSysUrlVo">
+		SELECT UrlID,UrlPath,UrlDesc,ModulId
+		FROM Sys_Url
+		WHERE UrlPath = #{UrlPath}
+	</select>
+	
+	<!-- 根据urlId查询url信息 -->
+	<select id="getUrlInfoById" resultType="com.nantian.erp.authentication.data.vo.ErpSysUrlVo" >
+		SELECT UrlID,UrlPath,UrlDesc,ModulId
+		FROM Sys_Url
+		WHERE UrlID = #{urlId}
+	</select>
+	
+</mapper>

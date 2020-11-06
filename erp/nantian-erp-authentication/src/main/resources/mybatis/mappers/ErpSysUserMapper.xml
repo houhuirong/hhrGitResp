@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysUserMapper"> 
+<resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.vo.ErpSysUserVo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="userType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userPhone" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+	<!-- 查询用户信息 -->
+	<select id="findUserByEmpId" resultType="com.nantian.erp.authentication.data.vo.ErpSysUserVo" parameterType="java.lang.Integer">
+		SELECT id,username,password,userType,userId,userPhone 
+		FROM erpuser
+		WHERE userType=1
+		<if test="_parameter != null">
+		 and userId=#{_parameter,jdbcType=INTEGER}
+      </if>
+	</select>
+	
+	<!-- 查询用户信息 -->
+	<select id="findUserByUsername" parameterType="java.lang.String" resultType="com.nantian.erp.authentication.data.vo.ErpSysUserVo">
+		SELECT username,password,userType,userId,userPhone 
+		FROM erpuser
+		WHERE username = #{username}
+	</select>
+
+	<!-- 根据用户名查询用户 -->
+	<insert id="insertUser" parameterType="com.nantian.erp.authentication.data.vo.ErpSysUserVo" useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO erpuser(
+			username,password,userType,userId,userPhone
+			)
+		VALUES(
+			#{username},#{password},#{userType},#{userId},#{userPhone}
+			)
+	</insert>
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUser" parameterType="com.nantian.erp.authentication.data.vo.ErpSysUserVo" >
+	    UPDATE erpuser SET
+	    <if test="username != null">
+	        username = #{username},
+	    </if>
+	    <if test="password != null">
+	        password = #{password},
+	    </if>
+	    <if test="userType != null">
+	        userType = #{userType},
+	    </if>
+	    <if test="userId != null">
+	        userId = #{userId},
+	    </if>
+	    <if test="userPhone != null">
+	        userPhone = #{userPhone},
+	    </if>
+	    <if test="secondaryPassword != null">
+	        secondaryPassword = #{secondaryPassword},
+	    </if>
+	    <if test="id != null">
+	        id = #{id}
+	    </if>
+	    WHERE id = #{id}
+	</update>
+	  
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="java.lang.Integer">
+		delete from erpuser
+		where id = #{id}
+	</delete>
+	
+	<!-- add by caoxiubin -->
+	<select id="findRoles" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select 
+		  r.roleId
+		from
+		  erpuser eu,
+		  user_role ur,
+		  role r 
+		where eu.`id` = ur.`uId` 
+	  	and ur.`rId` = r.`roleId` 
+	  	and eu.`id` = #{id}
+	</select>
+	
+	<select id="login" parameterType="com.nantian.erp.common.base.Pojo.ErpUser" resultType="com.nantian.erp.common.base.Pojo.ErpUser">
+		SELECT id,username,password,userType,userId,userPhone
+		FROM  erpuser
+		where 1=1
+		<if test="username !=null">
+		and username=#{username}
+		</if>
+		<if test="userPhone !=null">
+		and userPhone=#{userPhone}
+		</if>
+	</select>
+	
+	<!-- 根据用户ID和查询用户信息 -->
+	<select id="findUserInfoByUserId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.vo.ErpSysUserVo">
+		SELECT id,username,password,userType,userId,userPhone 
+		FROM erpuser 
+		WHERE 1=1
+		<if test="_parameter != null">
+		 and id=#{_parameter,jdbcType=INTEGER}
+      </if>
+	</select>
+	
+	<!-- 查询用户信息 -->
+	<select id="findUserByEmpIds" resultType="java.util.Map">
+		SELECT id,username,password,userType,userId,userPhone 
+		FROM erpuser
+		WHERE userType=1
+		 and userId in 
+		 <foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+      </foreach>
+	</select>
+	
+		<!-- 查询用户信息 -->
+	<select id="findEmpIdListByUserId" resultType="java.util.Map">
+		SELECT id,userId
+		FROM erpuser
+		WHERE userType=1
+		 and id in 
+		 <foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+      </foreach>
+	</select>
+	
+	<select id="loginSecondaryPassword" parameterType="com.nantian.erp.common.base.Pojo.ErpUser" resultType="com.nantian.erp.common.base.Pojo.ErpUser">
+		SELECT id,username,secondaryPassword
+		FROM  erpuser
+		where 1=1
+		<if test="id !=null">
+			and id = #{id}
+		</if>
+		<if test="password !=null">
+			and secondaryPassword = #{password}
+		</if>
+	</select>
+	
+	<!-- 查询所有临时用户信息 -->
+	<select id="findAllTempUser" resultType="java.util.Map">
+		SELECT id,username,password,userType,userId,userPhone 
+		FROM erpuser
+		WHERE userPhone+'@nantian.com.cn'= username		 
+	</select>
+	
+	<!-- 查询一个角色的所有用户 -->
+	<select id="findAllUserByRoleId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT u.id,u.userId,u.username,u.userPhone,u.userType
+		FROM erpuser u
+		LEFT JOIN user_role ur ON ur.uId=u.id
+		LEFT JOIN role r ON r.roleId=ur.rId
+		WHERE r.roleId = #{roleId}
+	</select>
+	
+	<select id="findUserByMobile" resultType="java.util.Map">
+		SELECT *
+		FROM erpuser
+		WHERE userType=1 
+		and userPhone in 
+		<foreach collection="param" item="item" index="index" open="(" close=")" separator=",">
+		 #{item}
+      	</foreach>
+	</select>
+	
+		<select id="findMobileByUserList" resultType="com.nantian.erp.common.base.Pojo.ErpUser">
+		SELECT *
+		FROM erpuser
+		WHERE userType=1 
+		and userId in 
+		<foreach collection="param" item="item" index="index" open="(" close=")" separator=",">
+		 #{item}
+      	</foreach>
+	</select>
+	<select id="findAllUser" resultType="java.util.Map">
+		SELECT id,username,userId,userPhone
+		FROM erpuser
+	</select>
+</mapper>

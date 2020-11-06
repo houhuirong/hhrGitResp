@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpSysButtonMapper" >
+  
+	<select id="getAllButtonByMenuNo" parameterType="java.lang.String" resultType="com.nantian.erp.authentication.data.model.ErpSysButton">
+		SELECT * FROM Sys_Button WHERE menuNo = #{menuNo}
+	</select>
+	
+	<select id="getButtonByMenuNoRole" parameterType="java.util.Map" resultType="com.nantian.erp.authentication.data.model.ErpSysButton">
+		SELECT * FROM Sys_Button sb left join Sys_Privilege sp on  sb.BtnID=sp.privilegeAccessValue  WHERE sp.PrivilegeMaster=1 
+		and sp.PrivilegeAccess=3 and sb.menuNo = #{menuNo} and  sp.PrivilegeValue=#{roleId}
+	</select>
+
+	<insert id="addButton" parameterType="com.nantian.erp.authentication.data.model.ErpSysButton">
+	  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="BtnID">
+        SELECT LAST_INSERT_ID() AS BtnID
+    	</selectKey>
+	    INSERT INTO Sys_Button(
+	  		BtnName,
+	  		BtnNo,
+	  		BtnClass,
+	  		BtnScript,
+	  		BtnIcon,
+	  		MenuNo,
+	  		InitStatus
+	  		) 
+	  	VALUES(
+	  		#{BtnName},
+	  		#{BtnNo},
+	  		#{BtnClass},
+	  		#{BtnScript},
+	  		#{BtnIcon},
+	  		#{MenuNo},
+	  		#{InitStatus}
+	  		)
+	</insert>
+
+	<!-- 根据ButtonNo删除btn -->
+	<delete id="delButton" parameterType="java.lang.Integer">
+		DELETE FROM Sys_Button
+		WHERE BtnNo = #{BtnNo}
+	</delete>
+
+	<!-- 根据MenuNo删除btn -->
+	<delete id="delButtonByMenuNo" parameterType="java.lang.String">
+		DELETE FROM Sys_Button
+		WHERE menuNo = #{menuNo}
+	</delete>
+	
+	<update id="updateButton" parameterType="com.nantian.erp.authentication.data.model.ErpSysButton">
+	    UPDATE Sys_Button 
+	    SET 
+	  		BtnName = #{BtnName},
+	  		BtnClass = #{BtnClass},
+	  		BtnScript = #{BtnScript},
+	  		BtnIcon = #{BtnIcon},
+	  		InitStatus = #{InitStatus},
+	  		BtnNo = #{BtnNo}
+	  	WHERE BtnID = #{BtnID}
+	</update>
+
+	 <!-- button编号去重 -->
+	 <select id="checkButtonNo" parameterType="java.lang.String" resultType="com.nantian.erp.authentication.data.model.ErpSysButton">
+		SELECT * FROM Sys_Button WHERE BtnNo = #{buttonNo}
+	 </select>
+	 
+	 <!-- 判断该按钮关联子菜单下的按钮个数 -->
+	 <select id="countNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT count(*) FROM Sys_Button WHERE MenuNo = #{menuNo}
+	 </select>
+	 
+	 <select id="findButtonPrivilege" parameterType="java.util.Map" resultType="java.util.Map">
+		select sb.BtnID,sb.BtnName,sb.BtnNo,sb.BtnClass,sb.BtnIcon,sb.BtnScript,sb.MenuNo,sb.InitStatus,
+		sp.PrivilegeOperationValue
+		from Sys_Privilege sp
+		left join Sys_Button sb on sb.BtnID=sp.privilegeAccessValue
+		where sp.PrivilegeMaster=1 and sp.PrivilegeAccess=3
+		and sb.MenuNo=#{menuNo}
+		and sp.PrivilegeValue in 
+		<foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+			#{roleId} 
+		</foreach>
+	 </select>
+	
+	  <!-- 根据菜单编号查询菜单表信息 -->
+	 <select id="findButtonIdByNo" resultType="map" parameterType="java.lang.String">
+	  	SELECT * FROM Sys_Button
+		WHERE  BtnNo = #{buttonNo}
+	 </select>
+	 
+	  <!-- 根据菜单编号查询菜单表信息 -->
+	 <select id="findButtonInfoById" resultType="com.nantian.erp.authentication.data.model.ErpSysButton" parameterType="java.lang.Integer">
+	  	SELECT * FROM Sys_Button
+		WHERE  BtnID = #{BtnID}
+	 </select>
+
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpUserMapper"> 
+<resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.model.ErpRole" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="userType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userPhone" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+<select id="findRoleByUserName" parameterType="java.lang.String" resultType="com.nantian.erp.authentication.data.model.ErpRole">
+select 
+  r.roleId,r.name,r.keyword
+from
+  erpuser eu,
+  user_role ur,
+  role r 
+where eu.`id` = ur.`uId` 
+  and ur.`rId` = r.`roleId` 
+  and eu.`username` = #{username}
+</select>
+
+<select id="countByUserName" parameterType="com.nantian.erp.common.base.Pojo.ErpUser" resultType="java.lang.Integer">
+	SELECT count(*)
+	FROM  erpuser
+	where username=#{username}
+</select>
+
+<insert id="insertErpUser" parameterType="com.nantian.erp.common.base.Pojo.ErpUser">
+	INSERT INTO erpuser(
+		username,password,userType,userId,userPhone
+		)
+	VALUES(
+		#{username},#{password},#{userType},#{userId},#{userPhone}
+		)
+</insert>
+
+<delete id="deleteErpUser" parameterType="java.lang.String">
+	delete from erpuser
+	where username = #{username}
+</delete>
+
+<select id="findIdByName" parameterType="java.lang.String"  resultType="java.lang.Integer">
+select 
+  id
+from
+  erpuser eu
+where eu.username = #{username};
+</select>
+
+<!-- add by caoxiubin -->
+<select id="findRoleId" parameterType="java.lang.String" resultType="java.lang.String">
+	select 
+	  r.roleId
+	from
+	  erpuser eu,
+	  user_role ur,
+	  role r 
+	where eu.`id` = ur.`uId` 
+  	and ur.`rId` = r.`roleId` 
+  	and eu.`username` = #{username}
+</select>
+
+<insert id="insertErpUserForHr" parameterType="java.util.Map" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+ 	INSERT INTO erpuser(
+		username,password,userType,userId,userPhone
+		)
+	VALUES(
+		#{username},#{password},#{userType},#{userId},#{userPhone}
+		) 
+		
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+</insert>
+<!-- add by lx -->
+<select id="findAllErpUser" resultType="java.util.Map">
+	SELECT
+		id,
+		username,
+		`password`,
+		userType,
+		userId,
+		userPhone
+	FROM
+		erpuser
+
+</select>
+
+<update id="updateErpUserforForHr" parameterType="java.util.Map" >
+    update erpuser
+    <set>
+      <if test="userPhone != null" >
+        userPhone = #{userPhone},
+      </if>
+      <if test="username != null" >
+        username = #{username},
+      </if>
+      <if test="userId != null">
+	        userId = #{userId}
+	   </if>
+    </set>
+    where userId = #{userId}
+  </update>  
+<select id="findErpUserByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT
+		id,
+		username,
+		`password`,
+		userType,
+		userId,
+		userPhone
+	FROM
+		erpuser
+	where userId = #{userId}	
+
+</select>
+
+<select id="volidateErpUserPhone" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT
+		COUNT(userPhone)
+	FROM
+		erpuser
+	where userPhone = #{userPhone}
+	</select>
+	
+<select id="getErpUserForHr" parameterType="java.util.Map" resultType="com.nantian.erp.common.base.Pojo.ErpUser">
+	SELECT
+		id,
+		username,
+		`password`,
+		userType,
+		userId,
+		userPhone
+	FROM
+		erpuser
+	where userId = #{id}
+</select>
+
+<select id="getErpUserForHrList" resultType="java.util.Map">
+	SELECT
+		id,
+		username,
+		`password`,
+		userType,
+		userId,
+		userPhone
+	FROM
+		erpuser
+	where id in
+	 <foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+      </foreach>
+</select>
+
+	<select id="findErpUserByUserIdArray"  resultType="java.util.Map">
+		SELECT
+			id,
+			username,
+			`password`,
+			userType,
+			userId,
+			userPhone
+		FROM
+			erpuser
+		where userId in ${userId}	
+	
+	</select>
+</mapper>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.authentication.data.dao.ErpRoleMapper">
+<resultMap id="BaseResultMap" type="com.nantian.erp.authentication.data.model.ErpRole" >
+    <constructor >
+      <idArg column="roleId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="keyword" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="roleType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="childRoleRight" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="fatherRoleId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="childRoleOwner" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  
+	<!-- 查询角色信息 -->
+	<select id="findByRoleId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpRole">
+		SELECT *
+		FROM  role
+		where roleId=#{roleId}
+	</select>
+	
+	<!-- 查询所有子角色信息 -->
+	<select id="findAllChildRole" resultType="com.nantian.erp.authentication.data.model.ErpRole"  parameterType="java.lang.Integer">
+		SELECT *
+		FROM role
+		where childRoleOwner=#{ownerId}
+	</select>
+	
+	<!-- 新增角色信息 -->
+  	<insert id="insertRole" parameterType="com.nantian.erp.authentication.data.model.ErpRole" useGeneratedKeys="true" keyProperty="roleId">
+  		INSERT INTO role(
+  			name,keyword,roleType,childRoleRight,fatherRoleId,childRoleOwner
+  		) VALUES(
+  			#{name},#{keyword},#{roleType},#{childRoleRight},#{fatherRoleId},#{childRoleOwner}
+  		)
+  	</insert>
+  	
+  	<!-- 修改角色信息 -->
+  	<update id="updateRole" parameterType="com.nantian.erp.authentication.data.model.ErpRole">
+  		UPDATE role 
+		SET 
+			<if test="childRoleRight != null" >
+	        	childRoleRight = #{childRoleRight},
+		    </if>
+		    name = #{name},
+			keyword = #{keyword}
+			
+		WHERE roleId = #{roleId}
+  	</update>
+  	
+  	<!-- 删除角色信息 -->
+  	<delete id="deleteRole" parameterType="java.lang.Integer">
+  		DELETE FROM role
+		WHERE roleId = #{roleId}
+  	</delete>
+  	
+  	<!-- 判断名字是否存在-->
+	<select id="checkName" resultType="com.nantian.erp.authentication.data.model.ErpRole" parameterType="java.lang.String">
+		SELECT *
+		FROM role
+		WHERE name = #{name}
+		<if test="childRoleOwner != null ">
+			AND childRoleOwner = #{childRoleOwner}
+		</if>
+	</select>
+	
+  	<!-- 判断名字是否存在-->
+	<select id="checkKeyword" resultType="com.nantian.erp.authentication.data.model.ErpRole" parameterType="java.lang.String">
+		SELECT *
+		FROM role
+		WHERE keyword = #{keyword}
+		<if test="childRoleOwner != null ">
+			AND childRoleOwner = #{childRoleOwner}
+		</if>
+	</select>
+	 
+	<!-- 根据员工ID查询角色信息 -->
+	<select id="findRoleByUserId" resultType="com.nantian.erp.authentication.data.model.ErpRole" parameterType="java.lang.Integer">
+		SELECT *
+		FROM role r LEFT JOIN user_role ur 
+		ON r.roleId = ur.rId
+		WHERE ur.uId = #{userId}
+	</select>
+	
+	
+  	
+  	<!--查询所有基础角色  -->
+	<select id="findAllBaseRole" resultType="java.util.Map">
+	SELECT
+		*
+	FROM
+		role 
+	WHERE
+		roleType = '1'
+	</select>
+  	
+  	<select id="findRoleInfoByRoleId" parameterType="Integer" resultType="com.nantian.erp.authentication.data.model.ErpRole">
+	select r.roleId,r.name,r.keyword,r.roleType from nantianauthentication.role r where r.roleId=#{rId}
+</select>
+  	
+  	<!-- 查询角色信息 -->
+	<select id="findAllChildRoleByFatherId" parameterType="java.lang.Integer" resultType="com.nantian.erp.authentication.data.model.ErpRole">
+		SELECT *
+		FROM  role
+		where fatherRoleId=#{roleId}
+	</select>
+
+	<select id="findAllChildRoleByFatherIds" resultType="java.lang.Integer">
+		SELECT roleId
+		FROM  role
+		WHERE fatherRoleId IN
+		<foreach collection="roleIdList" item="roleId" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+		OR roleId IN
+		<foreach collection="roleIdList" item="roleId" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</select>
+
+
+  	<!-- 根据employeeId查询员工所具有的角色信息 -->
+	<select id="findRoleListByEmpId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT 
+			r.*
+		FROM  
+			role r
+		inner join
+			user_role ur
+		on
+			r.roleId = ur.rId
+		inner join
+			erpuser u
+		on
+			ur.uId = u.id
+		where u.userId=#{userId}
+	</select>
+
+	<!-- 根据employeeId查询员工所具有的角色信息 -->
+	<select id="findRoleIdListByEmpId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT
+			r.roleId
+		FROM
+			role r
+		inner join
+			user_role ur
+		on
+			r.roleId = ur.rId
+		inner join
+			erpuser u
+		on
+			ur.uId = u.id
+		where u.userId=#{userId}
+	</select>
+	
+  	<select id="findAuthListByRoleId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT *
+		FROM  
+			baseRoleAuth
+		where baseRoleId=#{roleId}
+	</select>
+		
+  	<select id="findRoleByAuth" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ra.baseRoleId, r.name
+		FROM  
+			baseRoleAuth ra
+		LEFT JOIN role r ON r.roleId = ra.baseRoleId
+		WHERE 1=1
+		<if test="authType != null" >
+        	and ra.authType = #{authType}
+	    </if>
+		<if test="authId != null" >
+        	and ra.authId = #{authId}
+	    </if>
+	    ORDER BY ra.baseRoleId
+	</select>
+	
+	<insert id="insertRoleAuth" parameterType="java.util.Map">
+  		INSERT INTO baseRoleAuth(
+  			authType,authId,baseRoleId
+  		) VALUES(
+  			#{authType},#{authId},#{baseRoleId}
+  		)
+  	</insert>
+  	
+	<delete id="deleteRoleAuth" parameterType="java.util.Map">
+  		DELETE FROM baseRoleAuth
+		WHERE 1=1
+		<if test="authType != null" >
+        	and authType = #{authType}
+	    </if>
+		<if test="authId != null" >
+        	and authId = #{authId}
+	    </if>
+		<if test="baseRoleId != null" >
+        	and baseRoleId = #{baseRoleId}
+	    </if>
+  	</delete>
+
+</mapper>
