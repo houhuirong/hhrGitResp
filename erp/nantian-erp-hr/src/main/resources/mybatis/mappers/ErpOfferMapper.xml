@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpOfferMapper"> 
+
+<insert id="insertOffer" parameterType="com.nantian.erp.hr.data.model.ErpOffer">
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="offerId">
+        SELECT LAST_INSERT_ID() AS offerId
+    </selectKey>
+	insert into offer(
+		interviewId,entryTime,position,rank,socialSecurityPlace,
+		probationPeriod,contractPeriod,idCardNumber,gradCertNumber,jobPosition,channel,
+		remark,offerFileName,reportFileName,status,reason,sendUserId
+		)
+	values(
+		#{interviewId},#{entryTime},#{position},#{rank},#{socialSecurityPlace},
+		#{probationPeriod},#{contractPeriod},#{idCardNumber},#{gradCertNumber},#{jobPosition},#{channel},
+		#{remark},#{offerFileName},#{reportFileName},#{status},#{reason},#{sendUserId}
+		)
+</insert>
+
+<select id="selectCountAllValiOffer" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+select COUNT(*)
+	from offer o
+	left join employee_entry ee on o.offerId=ee.offerId
+	left join resume_post rp on rp.id=o.interviewId
+	left join post p on p.postId=rp.postId
+	where o.status = '1'  and p.postId = #{postId}
+</select>
+
+<update id="updateOffer" parameterType="com.nantian.erp.hr.data.model.ErpOffer">
+    update offer
+    <set>
+      <if test="interviewId != null" >
+        interviewId = #{interviewId},
+      </if>
+      <if test="entryTime != null" >
+        entryTime = #{entryTime},
+      </if>
+      <if test="position != null" >
+        position = #{position},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank},
+      </if>
+      <if test="socialSecurityPlace != null" >
+        socialSecurityPlace = #{socialSecurityPlace},
+      </if>
+      <if test="probationPeriod != null" >
+        probationPeriod = #{probationPeriod},
+      </if>
+      <if test="contractPeriod != null" >
+        contractPeriod = #{contractPeriod},
+      </if>
+      <if test="idCardNumber != null" >
+        idCardNumber = #{idCardNumber},
+      </if>
+      <if test="gradCertNumber != null" >
+        gradCertNumber = #{gradCertNumber},
+      </if>
+      <if test="jobPosition != null" >
+        jobPosition = #{jobPosition},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="offerFileName != null" >
+        offerFileName = #{offerFileName},
+      </if>
+      <if test="reportFileName != null" >
+        reportFileName = #{reportFileName},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason},
+      </if>
+     <if test="sendUserId != null" >
+        sendUserId = #{sendUserId}
+      </if>
+    </set>
+    where offerId = #{offerId}
+</update>
+
+<select id="selectOfferDetail" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select o.offerId,o.entryTime,o.position,o.rank,o.socialSecurityPlace,
+	o.probationPeriod,o.contractPeriod,o.idCardNumber,o.gradCertNumber,o.jobPosition,
+	o.channel,o.remark as 'offerRemark',o.offerFileName,o.reportFileName,o.reason,
+	r.resumeId,r.name,r.sex,r.birthday,r.phone,r.isTrainee,r.fileName as 'resumeFileName',r.school,r.email,
+	d1.departmentName as 'firstDepartment',d2.departmentName as 'secondDepartment',
+	prr.positionName,p.postId
+	from offer o
+	left join resume_post rp on rp.id=o.interviewId
+	left join resume r on r.resumeId=rp.resumeId
+	left join post p on p.postId=rp.postId
+	left join department d1 on d1.departmentId=p.firstDepartment
+	left join department d2 on d2.departmentId=p.secondDepartment
+	left join positionRankRelation prr on prr.positionNo=o.position
+	where o.offerId = #{offerId}
+</select>
+
+<select id="selectOfferInfoByParams" parameterType="java.util.Map" resultType="java.util.Map">
+	select o.offerId,o.entryTime,o.position,o.rank,o.reason,o.reportFileName,
+	r.resumeId,r.name,r.sex,r.birthday,r.phone,r.isTrainee,r.degree,r.fileName,r.school,
+	d1.departmentName as 'firstDepartment',d2.departmentName as 'secondDepartment',
+	prr.positionName,p.postId
+	from offer o
+	left join resume_post rp on rp.id=o.interviewId
+	left join resume r on r.resumeId=rp.resumeId
+	left join post p on p.postId=rp.postId
+	left join department d1 on d1.departmentId=p.firstDepartment
+	left join department d2 on d2.departmentId=p.secondDepartment
+	left join positionRankRelation prr on prr.positionNo=o.position
+	where 1=1
+	<if test="isTrainee != null" >
+        and r.isTrainee = #{isTrainee}
+    </if>
+	<if test="status != null" >
+        and o.status = #{status}
+    </if>
+    <if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+</select>
+
+<select id="selectOfferAutomaticInvalid" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.ErpOffer">
+	select o.offerId,o.entryTime,o.status
+	from offer o
+	where DATEDIFF(NOW(),o.entryTime) &gt;= 3 and status = '1'
+</select>
+
+<select id="selectCountAllOffer" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*)
+	from offer o
+	left join resume_post rp on rp.id=o.interviewId
+	left join post p on p.postId=rp.postId
+	where o.status in (1,2) and p.postId=#{postId}
+</select>
+
+<select id="selsectAllInvalidOffer" parameterType="java.util.Map" resultType="java.util.Map">
+select o.offerId,o.entryTime,o.position,o.rank,o.reason,o.reportFileName,o.status,
+	r.resumeId,r.name,r.sex,r.birthday,r.phone,r.isTrainee,r.degree,r.fileName,r.school,
+	d1.departmentName as 'firstDepartment',d2.departmentName as 'secondDepartment',
+	prr.positionName,p.postId
+	from offer o
+	left join resume_post rp on rp.id=o.interviewId
+	left join resume r on r.resumeId=rp.resumeId
+	left join post p on p.postId=rp.postId
+	left join department d1 on d1.departmentId=p.firstDepartment
+	left join department d2 on d2.departmentId=p.secondDepartment
+	left join positionRankRelation prr on prr.positionNo=o.position
+	where 1=1 and o.status in (2,3,4)
+	<if test="isTrainee != null" >
+        and r.isTrainee = #{isTrainee}
+    </if>
+</select>
+
+<!-- 根据面试id列表查询该简历的offer记录id列表 -->
+<select id="findIdsByResumePostIds" resultType="java.lang.Integer">
+	select offerId from offer where interviewId in 
+		<foreach collection="resumePostIds" item="resumePostId" open="(" separator="," close=")">
+			#{resumePostId} 
+		</foreach>
+</select>
+
+<!-- 根据offerid列表修改offer为失效 -->
+<update id="updateValidFalseByOfferIds">
+	update offer set status = 3 where offerId in 
+		<foreach collection="offerIds" item="offerId" open="(" separator="," close=")">
+			#{offerId} 
+		</foreach>
+</update>
+
+	<!-- 所有offer -->
+	<select id="findAllOffer" parameterType="map" resultType="map">
+		select
+		info.resumeId,
+		info.name,
+		info.phone,
+		info.personalEmail,
+		info.sex,
+		info.position,
+		info.positionName,
+		info.rank,
+		info.entryTime,
+		info.firstDepartment,
+		info.firstDepartmentId,
+		info.secondDepartment,
+		info.secondDepartmentId,
+		info.status,
+		info.postId,
+		info.offerId,
+		info.postName,
+		info.isTrainee,
+		info.currentPersonID,
+		info.currentProcessor
+		from
+		(select
+		r.resumeId,
+		r.`name`,
+		r.`phone`,
+		r.`sex`,
+		r.email personalEmail,
+		r.`isTrainee`,
+		o.`position`,
+		prr.positionName,
+		o.`rank`,
+		o.`entryTime`,
+		o.offerId,
+		p.postName,
+		p.postId,
+		d1.`departmentName` AS firstDepartment,
+		d1.departmentId  AS firstDepartmentId,
+		d2.`departmentName` AS secondDepartment,
+		d2.departmentId  AS secondDepartmentId,
+		ee.`status`,
+		ee.`currentPersonID`,
+		e.`name` AS currentProcessor
+		from
+		offer o INNER JOIN resume_post rp ON rp.id=o.interviewId
+		INNER JOIN resume r ON rp.resumeId=r.resumeId
+		INNER JOIN post p ON rp.`postId` = p.`postId`
+		INNER JOIN department d1 ON p.`firstDepartment` = d1.`departmentId`
+		INNER JOIN department d2 ON p.`secondDepartment` = d2.`departmentId`
+		LEFT JOIN employee_entry ee ON o.`offerId` = ee.`offerId`
+		INNER JOIN admin_dic a ON a.dic_code=o.`status` and a.dic_type='OFFER_STATUS_TYPE'
+		LEFT JOIN employee e ON ee.currentPersonID=e.employeeId and ee.`status` in('1','2','3')
+		LEFT JOIN positionRankRelation prr ON prr.positionNo = o.position
+		where  1=1
+		<if test="superLeaderId != null">
+			AND d1.superLeader=#{superLeaderId}
+		</if>
+		<if test="leaderId != null">
+			AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+		</if>
+		<if test="secondLeaderId != null">
+			AND d2.userId=#{secondLeaderId}
+		</if>
+		<if test="startTime != null and endTime !=null">
+			AND o.entryTime BETWEEN #{startTime} AND #{endTime}
+		</if>
+		) as info ORDER BY entryTime
+	</select>
+
+</mapper>

@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpDepartmentMapper">
+
+<insert id="insertDepartment" parameterType="com.nantian.erp.hr.data.model.ErpDepartment">
+	insert into department(
+		departmentName,rank,upperDepartment,userId,departmentManagerEmail,departmentDuty,
+		departmentType,superLeader,departmentOrder
+		)
+	values(
+		#{departmentName},#{rank},#{upperDepartment},#{userId},#{departmentManagerEmail},#{departmentDuty}
+		,#{departmentType},#{superLeader},#{departmentOrder}
+		)
+</insert>
+
+<insert id="insertDepartment2">
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="departmentId">
+		SELECT LAST_INSERT_ID() AS departmentId
+	</selectKey>
+	insert into department
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="departmentName != null">
+			departmentName,
+		</if>
+		<if test="rank != null">
+			rank,
+		</if>
+		<if test="upperDepartment != null">
+			upperDepartment,
+		</if>
+		<if test="userId != null">
+			userId,
+		</if>
+		<if test="departmentManagerEmail != null">
+			departmentManagerEmail,
+		</if>
+		<if test="departmentDuty != null">
+			departmentDuty,
+		</if>
+		<if test="departmentType != null">
+			departmentType,
+		</if>
+		<if test="superLeader != null">
+			superLeader,
+		</if>
+		<if test="departmentOrder != null">
+			departmentOrder
+		</if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="departmentName != null">
+			#{departmentName},
+		</if>
+		<if test="rank != null">
+			#{rank},
+		</if>
+		<if test="upperDepartment != null">
+			#{upperDepartment},
+		</if>
+		<if test="userId != null">
+			#{userId},
+		</if>
+		<if test="departmentManagerEmail != null">
+			#{departmentManagerEmail},
+		</if>
+		<if test="departmentDuty != null">
+			#{departmentDuty},
+		</if>
+		<if test="departmentType != null">
+			#{departmentType},
+		</if>
+		<if test="superLeader != null">
+			#{superLeader},
+		</if>
+		<if test="departmentOrder != null">
+			#{departmentOrder}
+		</if>
+	</trim>
+
+</insert>
+
+<delete id="deleteDepartment" parameterType="java.lang.Integer">
+	delete from department
+	where departmentId = #{departmentId}
+</delete>
+
+<update id="updateDepartment" parameterType="com.nantian.erp.hr.data.model.ErpDepartment">
+    update department
+    <set>
+      <if test="departmentName != null" >
+        departmentName = #{departmentName},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank},
+      </if>
+      <if test="upperDepartment != null" >
+        upperDepartment = #{upperDepartment},
+      </if>
+        <if test="userId != null">
+      	userId = #{userId},
+      </if>
+      <if test="departmentManagerEmail != null" >
+        departmentManagerEmail = #{departmentManagerEmail},
+      </if>
+      <if test="departmentDuty != null" >
+        departmentDuty = #{departmentDuty},
+      </if>
+      <if test="departmentType != null" >
+        departmentType = #{departmentType},
+      </if>
+      <if test="superLeader != null" >
+        superLeader = #{superLeader},
+      </if>
+       <if test="departmentOrder != null" >
+        departmentOrder = #{departmentOrder}
+      </if>
+    </set>
+    where departmentId = #{departmentId}
+ </update>
+
+<select id="findEmployeeList" resultType="java.util.Map" parameterType="java.lang.Integer">
+	SELECT * 
+	FROM employee e
+	WHERE 1 = 1 
+		and e.STATUS in (0,1,2,3) 
+		and (firstDepartment=#{departmentId} or secondDepartment=#{departmentId})
+</select>
+
+<!-- 查询所有部门 -->
+<select id="findAllDepartment" resultType="com.nantian.erp.hr.data.model.ErpDepartment" >
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader,departmentOrder
+	FROM department
+	where inValid='0'
+	order by departmentOrder,departmentId
+</select>
+
+<select id="findByDepartmentId" resultType="com.nantian.erp.hr.data.model.ErpDepartment" parameterType="java.lang.Integer">
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader,departmentOrder
+	FROM department
+	WHERE departmentId = #{departmentId}
+</select>
+
+	<select id="findByDepartmentIdAndValid" resultType="com.nantian.erp.hr.data.model.ErpDepartment" parameterType="java.lang.Integer">
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader
+	FROM department
+	WHERE departmentId = #{departmentId}
+	AND inValid = '0'
+	AND departmentType = '0'
+</select>
+
+<select id="findAllFirstDepartment" resultType="java.util.Map">
+	SELECT d.departmentId,d.departmentName,d.rank,d.upperDepartment,d.userId,
+	d.departmentManagerEmail,d.departmentDuty,d.departmentType,d.superLeader,
+	a.dic_name as "departmentTypeName"
+	FROM department d
+	left join admin_dic a on a.dic_code=d.departmentType
+	WHERE d.rank='1' and a.dic_type='DEPARTMENT_TYPE' and inValid='0'
+</select>
+
+<select id="findAllFirstDepartmentByParams" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT d.departmentId,d.departmentName,d.rank,d.upperDepartment,d.userId,
+	d.departmentManagerEmail,d.departmentDuty,d.departmentType,d.superLeader,
+	a.dic_name as "departmentTypeName"
+	FROM department d
+	left join admin_dic a on a.dic_code=d.departmentType
+	WHERE d.rank='1' and a.dic_type='DEPARTMENT_TYPE'  and inValid='0'
+	<if test="userId != null" >
+        and (d.userId = #{userId} or d.superLeader = #{userId})
+    </if>
+	<if test="departmentType != null" >
+        and d.departmentType = #{departmentType}
+    </if>
+	<if test="superLeader != null" >
+        and d.superLeader = #{superLeader}
+    </if>
+</select>
+
+<select id="findAllSecondDepartmentByFirDepId" parameterType="java.lang.Integer" resultType="java.util.Map">
+	SELECT departmentId,departmentName,d.rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader,e.employeeId
+	FROM department d,employee e
+	WHERE e.secondDepartment = d.departmentId
+	AND d.rank='2' and upperDepartment = #{departmentId} and inValid='0' and departmentType = '0'
+	GROUP BY d.departmentId;
+</select>
+<select id="findAllSecondDepartmentBySupperId" parameterType="java.lang.Integer" resultType="java.util.Map">
+	SELECT departmentId,departmentName,d.rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader,e.employeeId
+	FROM department d
+	LEFT JOIN employee e ON e.secondDepartment = d.departmentId
+	WHERE d.rank='2' and upperDepartment = #{departmentId} and inValid='0' and departmentType = '0'
+	GROUP BY d.departmentId
+</select>
+
+<select id="findByDepartmentManagerEmail" resultType="com.nantian.erp.hr.data.model.ErpDepartment" parameterType="java.lang.String">
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader
+	FROM department
+	WHERE rank='1' and departmentManagerEmail = #{departmentManagerEmail} and inValid='0'
+</select>
+
+<select id="selectIdByFirstDepartmentName" resultType="java.lang.Integer" parameterType="java.lang.String">
+	SELECT departmentId
+	FROM department
+	WHERE rank = '1' and departmentName = #{firstDepartmentName}
+</select>
+
+<select id="selectIdBySecondDepartmentName" resultType="java.lang.Integer" parameterType="java.util.Map">
+	SELECT departmentId
+	FROM department
+	WHERE rank = '2' and departmentName = #{secondDepartmentName}
+	and upperDepartment = (
+	SELECT departmentId 
+	FROM department 
+	WHERE rank = '1' and departmentName = #{firstDepartmentName}
+	)
+	<!-- SELECT departmentId
+	FROM department,
+	(
+	SELECT departmentId as pId
+	FROM department
+	WHERE rank = '1' and departmentName = #{firstDepartmentName}
+	)aaa
+	WHERE rank != '1' and departmentName = #{secondDepartmentName}
+	or upperDepartment = aaa.pId
+	limit 0,1 -->
+</select>
+
+<select id="findFirDepIdBySuperLeader" resultType="map" parameterType="map">
+	SELECT DISTINCT
+	userId currentPersonID
+	FROM
+	department
+	WHERE inValid='0'
+	<if test="superLeader !=null">
+	and superLeader = #{superLeader}
+	</if>
+</select>
+
+<select id="findDepartmentByUserID" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.ErpDepartment">
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader
+	FROM department
+	WHERE inValid='0'
+	AND departmentType = '0'
+	<if test="rank !=null">
+		and rank = #{rank}
+	</if>
+	<if test="userId !=null">
+		and (userId = #{userId} or superLeader = #{userId})
+	</if>
+	<if test="superLeader !=null">
+		and superLeader = #{superLeader}
+	</if>
+</select>
+
+<select id="findSDepMessByDepartmentID" parameterType="Integer" resultType="java.util.Map">
+	select  departmentId,departmentName,rank,upperDepartment
+	FROM department
+	where upperDepartment=#{id} and inValid='0'
+</select>
+
+<select id="findDepMessBySLeader" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT departmentId,departmentName,rank,upperDepartment,userId,
+	departmentManagerEmail,departmentDuty,departmentType,superLeader
+	FROM department
+	WHERE rank='1'  and inValid='0'
+	<if	test="role==8">
+		 and (superLeader is null or superLeader=#{sLeaderId})
+	</if>
+	<if test="role==null">
+		and superLeader=#{sLeaderId}
+	</if>
+</select>
+
+<select id="findSecondDepByFirstDep" parameterType="Integer"  resultType="java.util.Map">
+	select departmentId,departmentName,rank,upperDepartment,userId,departmentManagerEmail,departmentDuty,departmentType,superLeader
+	from department
+	where rank='2' and upperDepartment = #{sLeaderId} and inValid='0'
+</select>
+
+	<select id="findSecondDepartmentByFirstDepartmentId" parameterType="Integer"  resultType="java.util.Map">
+	select d.departmentId,d.departmentName,d.rank,d.upperDepartment
+	from department d
+	LEFT JOIN employee e ON e.secondDepartment = d.departmentId
+	where d.rank='2' and d.upperDepartment = #{departmentId} and inValid='0' and departmentType = '0'
+	AND e.employeeId IS NOT NULL
+	GROUP BY d.departmentId
+</select>
+
+
+<select id="countEmployeeNumByParams" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM employee e
+	WHERE 1 = 1 
+		and e.STATUS in (0,1,2,3) 
+		<if test="rank != null">
+		and e.rank = #{rank}
+		</if>
+		<if test="startDate != null">
+		and #{endDate} &gt;= e.entryTime 
+		and e.entryTime &gt; #{startDate}
+		</if>
+		<if test="startAge != null">
+		and SUBSTRING(e.idCardNumber, 7, 8) BETWEEN #{startAge} AND #{endAge}
+		</if>
+		<if test="departmentId != null">
+		and (e.firstDepartment=#{departmentId} or e.secondDepartment=#{departmentId})
+		</if>
+</select>
+
+<select id="coutEmployeeNumByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM empDepRelation ep
+	WHERE 1 = 1 
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+		<if test="month != null">
+		and #{month} &gt;= SUBSTRING(ep.startTime,1,7) and (ep.endTime is null or SUBSTRING(ep.endTime,1,7) &gt;= #{month})
+		</if>
+</select>
+
+<select id="coutEntryNumByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM empDepRelation ep
+	LEFT JOIN employee e ON e.employeeId = ep.employeeId
+	WHERE 1 = 1 
+		and e.entryTime = ep.startTime
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+		<if test="month != null">
+		and ep.startTime like #{month}
+		</if>
+</select>
+
+<select id="coutDimissionNumByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM empDepRelation ep
+	LEFT JOIN dimission d ON d.employeeId = ep.employeeId
+	WHERE 1 = 1 
+		and d.dimissionTime = ep.endTime
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+		<if test="month != null">
+		and ep.endTime like #{month}
+		</if>
+</select>
+
+<select id="coutChangeInNumByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM empDepRelation ep
+	LEFT JOIN employee e ON e.employeeId = ep.employeeId
+	WHERE 1 = 1 
+		and (e.entryTime is null or e.entryTime != ep.startTime)
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+		<if test="month != null">
+		and ep.startTime like #{month}
+		</if>
+</select>
+
+<select id="coutChangeOutNumByMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(*)
+	FROM empDepRelation ep
+	LEFT JOIN dimission d ON d.employeeId = ep.employeeId
+	WHERE 1 = 1 
+		and (d.dimissionTime is null or d.dimissionTime != ep.endTime)
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+		<if test="month != null">
+		and ep.endTime like #{month}
+		</if>
+</select>
+
+<select id="getDepartmentStartTime" parameterType="java.util.Map" resultType="java.lang.String">
+	SELECT MIN(startTime) 
+	FROM empDepRelation ep
+	where 1 = 1 
+		<if test="departmentId != null">
+		and ep.departmentId=#{departmentId}
+		</if>
+</select>
+
+<insert id="insertEmpDepRelation" parameterType="java.util.Map">
+	insert into empDepRelation(
+		employeeId,departmentId,departmentName,startTime,endTime
+		)
+	values(
+		#{employeeId},#{departmentId},#{departmentName},#{startTime},#{endTime}
+		)
+</insert>
+
+<select id="getEmpDepRelation" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT * 
+	FROM empDepRelation
+	where 1 = 1 
+		<if test="departmentId != null">
+		and departmentId=#{departmentId}
+		</if>
+		<if test="employeeId != null">
+		and employeeId=#{employeeId}
+		</if>
+		<if test="currentDepartment != null">
+		and endTime is null
+		</if>
+</select>
+
+<select id="updateEmpDepRelation" parameterType="java.util.Map">
+	update empDepRelation
+	<set>
+		<if test="endTime != null">
+		endTime=#{endTime},
+		</if>
+		<if test="startTime != null">
+		startTime=#{startTime},
+		</if>
+		id = #{id}
+    </set>
+    where id = #{id}
+</select>
+
+<select id="updateDepartmentName" parameterType="java.lang.Integer">
+	update empDepRelation ep, department d
+	<set>
+		ep.departmentName = d.departmentName,
+		ep.departmentId = null,
+    </set>
+    where ep.departmentId = #{departmentId}
+          and d.departmentId = ep.departmentId
+</select>
+
+<select id="findFirstDepartments" resultType="java.util.Map">
+	select * from department where rank='1' and inValid='0'
+</select>
+
+<select id="findFirstDepBySuperById" parameterType="java.util.Map" resultType="java.util.Map">
+	select * 
+	from department
+	where rank = '1' and  superLeader = #{employeeId}  and inValid='0'
+</select>
+<select id="invalidDepartment" parameterType="java.lang.Integer">
+	update department
+	<set>
+		inValid = 1,
+		inValidTime = #{year},
+    </set>
+    where departmentId = #{departmentId}
+</select>
+
+<select id="findLoginUserDepartmentByParams" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT d.departmentId,d.departmentName,d.rank,d.upperDepartment,d.userId,
+	d.departmentManagerEmail,d.departmentDuty,d.departmentType,d.superLeader,
+	a.dic_name AS "departmentTypeName"
+	FROM department d
+	LEFT JOIN admin_dic a ON a.dic_code=d.departmentType
+	WHERE d.rank='1' AND a.dic_type='DEPARTMENT_TYPE'  AND inValid ='0' AND departmentType = '0'
+	<if test="leaderId != null" >
+        and (d.userId = #{leaderId} or d.superLeader = #{leaderId})
+    </if>
+	<if test="superLeaderId != null" >
+        and d.superLeader = #{superLeaderId}
+    </if>
+	<if test="firstDeptId != null" >
+		AND d.departmentId = #{firstDeptId}
+	</if>
+   </select>
+	<select id="findSecondDepartmentByPowerParams" resultType="java.util.Map">
+		SELECT d.departmentId,d.departmentName,d.rank,d.upperDepartment,d.userId,
+		d.departmentManagerEmail,d.departmentDuty,d.departmentType,d.superLeader
+		FROM department d
+		WHERE d.rank='2' AND inValid ='0' AND departmentType = '0'
+		<if test="userId != null" >
+			and d.userId = #{userId}
+		</if>
+	</select>
+
+
+   <select id="findLoginUserSecondDeptByParams" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT d.departmentId,d.departmentName,d.rank,d.upperDepartment,d.userId,
+		d.departmentManagerEmail,d.departmentDuty,d.departmentType,d.superLeader,fd.departmentName as fdName,
+		fd.departmentId AS fdId,fd.superLeader AS fdSupperLeaderID, fd.userId as fdUserId, fd.rank as fdRank,  fd.inValid as fdInValid, a.dic_name AS "departmentTypeName",e.employeeId
+		FROM department d
+		INNER JOIN employee e ON e.secondDepartment = d.departmentId
+		LEFT JOIN department fd ON d.upperDepartment=fd.departmentId
+		LEFT JOIN admin_dic a ON a.dic_code=d.departmentType
+		WHERE d.rank='2' AND a.dic_type='DEPARTMENT_TYPE'  AND d.inValid ='0' AND d.departmentType = '0'
+		<if test="sdLeaderID != null" >
+	    	AND d.userId = #{sdLeaderID}
+	   	</if>
+	   	<if test="firstDeptId != null" >
+	       AND fd.departmentId = #{firstDeptId}
+	   	</if>
+	   <if test="secondDeptId != null" >
+		   AND d.departmentId = #{secondDeptId}
+	   </if>
+		GROUP BY d.departmentId;
+   </select>
+
+	<!-- 查询部门的兄弟部门列表 -->
+	<select id="findBrotherDepartmentList" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT d.departmentId departmentId,  d.upperDepartment upperDepartment
+		FROM department d
+		LEFT JOIN employee e ON e.secondDepartment = d.departmentId
+		WHERE
+			d.upperDepartment = (
+				SELECT upperDepartment FROM department WHERE departmentId = #{departmentId}
+			)
+			AND d.rank='2'  AND d.inValid ='0' AND d.departmentType = '0'
+			AND e.employeeId IS NOT NULL
+			GROUP BY d.departmentId
+	</select>
+
+
+
+	<select id="findFirstDepartmentAndSuperLeaderByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT d.departmentId, d.departmentName,
+		d.superLeader superLeaderId, superLeaderEmployee.name superLeaderName
+		FROM department d
+		LEFT JOIN employee superLeaderEmployee ON d.superLeader = superLeaderEmployee.employeeId
+		WHERE d.rank='1'  AND inValid ='0' AND departmentType = '0'
+		<if test="leaderId != null" >
+			and (d.userId = #{leaderId} or d.superLeader = #{leaderId})
+		</if>
+		<if test="superLeader != null" >
+			and d.superLeader = #{superLeader}
+		</if>
+	</select>
+<select id="findAllFirstDepartmentBySecDep" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT distinct fd.*,a.dic_name as "departmentTypeName"
+	FROM department d 
+	left join department fd on d.upperDepartment=fd.departmentId
+	left join admin_dic a on a.dic_code=d.departmentType
+	WHERE d.rank='2' and a.dic_type='DEPARTMENT_TYPE'  and d.inValid='0'
+	<if test="userId != null" >
+        and d.userId = #{userId}
+    </if>
+	<if test="departmentType != null" >
+        and d.departmentType = #{departmentType}
+    </if>
+	<if test="superLeader != null" >
+        and d.superLeader = #{superLeader}
+    </if>
+</select>
+
+</mapper>

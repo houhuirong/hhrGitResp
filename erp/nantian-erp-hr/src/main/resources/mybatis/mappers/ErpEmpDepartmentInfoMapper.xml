@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmpDepartmentInfoMapper"> 
+
+	<!-- 根据部门一级部门ID查询一级部门名字 -->
+	<select id="getFirstDepartment" parameterType="int" resultType="map">
+		SELECT a.departmentId,a.departmentName,a.departmentManagerEmail 
+		FROM department a
+		WHERE 1 = 1
+		<if test="departmentId != null and departmentId != ''">
+			AND a.departmentId = #{departmentId}
+		</if>
+	</select>
+	
+	<!-- 根据员工ID查询其名字及所属二级部门 -->
+	<select id="getErpEmpAndSecondDepart" parameterType="int" resultType="map">
+		SELECT e.name,e.employeeId,d.departmentName FROM employee e
+		LEFT JOIN department d 
+		ON e.secondDepartment = d.departmentId
+		WHERE 1 = 1
+		<if test="employeeId != null and employeeId != ''">
+			AND e.employeeId = #{employeeId}
+		</if>
+	</select>
+	
+	<!-- 根据简历ID查询岗位相关信息 -->
+	<select id="findPostInfo" resultType="map">
+		SELECT o.offerId,p.*
+		FROM offer o
+		LEFT JOIN resume_post r ON o.interviewId = r.id
+		LEFT JOIN post p ON p.postId = r.postId
+		WHERE 1=1
+		<if test="offerId != null and offerId != ''">
+			AND o.offerId = #{offerId}
+		</if>
+	</select>
+	
+	<!-- 试用期-员工及其部门信息 -->
+	<select id="selectAllHasHiredByUserName" resultType="map">
+		SELECT result.*,d1.departmentName as "firstDepartmentName",
+			   d2.departmentName as "secondDepartmentName" 
+			FROM (
+			SELECT info.*,d.postName FROM(
+				SELECT a.currentPerson,a.statusNum,
+						 b.reason,b.postId,
+						 c.employeeId,c.name,c.sex,c.phone,
+						 c.firstDepartment,c.secondDepartment,
+						 c.rank,c.resumeId,c.offerId,c.employeeEmail,
+						 c.entryTime,c.status,c.position,c.empFinanceNumber
+				FROM employee_entry a
+				LEFT JOIN offer b ON a.offerId = b.offerId
+				LEFT JOIN employee c ON b.offerId = c.offerId
+				WHERE 1 = 1
+				<if test="userName != null and userName != ''">
+					AND a.currentPerson = #{userName}
+				</if>
+				AND   a.statusNum = 1
+				AND   c.status = 2
+			) info,post d
+			WHERE info.postId = d.postId ) 
+		result,department d1,department d2
+		WHERE result.firstDepartment = d1.departmentId
+		AND   result.secondDepartment = d2.departmentId
+	</select>
+	
+	<!-- 转正-员工及其部门信息 -->
+	<select id="selectAllPositiveByUserName" resultType="map">
+		SELECT info.*,d1.departmentName as "firstDepartmentName",
+       		   d2.departmentName as "secondDepartmentName"
+		FROM (
+			SELECT p.employeeId,p.context,p.person,p.time,
+				   e.sex,e.name,e.position,e.rank,e.entryTime,
+				   e.resumeId,e.offerId,e.employeeEmail,e.firstDepartment,
+		           e.secondDepartment
+			FROM positive_record p
+			LEFT JOIN employee e
+			ON p.employeeId = e.employeeId
+			WHERE 1 = 1
+			<if test="userName != null and userName != ''">
+					AND p.person = #{userName}
+			</if>
+			AND   e.status = 3
+		) info,department d1,department d2
+		WHERE info.firstDepartment = d1.departmentId
+		AND   info.secondDepartment = d2.departmentId
+	</select>
+	
+	<!-- 根据员工ID查询员工及其部门-岗位信息 -->
+	<select id="selectEmpInfo" resultType="map">
+		SELECT info.*,d1.departmentName as "firstDepartmentName",
+			 d2.departmentName as "secondDepartmentName"
+		 FROM (
+			SELECT a.employeeId,a.name,a.sex,a.phone,a.firstDepartment,
+				   a.secondDepartment,a.position,a.rank,a.resumeId,a.status,
+				   a.employeeEmail,a.entryTime,a.empFinanceNumber,
+				   d.postName
+			FROM employee a,
+				 resume b,
+				 resume_post c,
+			     post d
+			WHERE a.resumeId = b.resumeId
+			AND   b.resumeId = c.resumeId
+			AND   c.postId = d.postId
+			<if test="employeeId != null and employeeId != ''">
+					AND a.employeeId = #{employeeId}
+			</if>
+		) info,department d1,department d2
+		WHERE info.firstDepartment = d1.departmentId
+		AND   info.secondDepartment = d2.departmentId
+	</select>
+	
+	
+</mapper>

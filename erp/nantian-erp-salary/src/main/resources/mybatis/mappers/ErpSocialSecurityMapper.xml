@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpSocialSecurityMapper"> 
+
+<insert id="insertSocialSecurity" parameterType="com.nantian.erp.salary.data.model.ErpSocialSecurity">
+	insert social_security
+		(start_time,end_time,
+		endowment_insurance_company_ratio,endowment_insurance_person_ratio,endowment_insurance_base_upper,endowment_insurance_base_lower,
+		unemployment_insurance_company_ratio,unemployment_insurance_person_ratio,unemployment_insurance_base_upper,unemployment_insurance_base_lower,
+		maternity_insurance_company_ratio,maternity_insurance_person_ratio,maternity_insurance_base_upper,maternity_insurance_base_lower,
+		medical_insurance_company_ratio,medical_insurance_person_ratio,medical_insurance_base_upper,medical_insurance_base_lower,
+		injury_insurance_company_ratio,injury_insurance_person_ratio,injury_insurance_base_upper,injury_insurance_base_lower,
+		accumulation_fund_company_ratio,accumulation_fund_person_ratio,accumulation_fund_base_upper,accumulation_fund_base_lower)
+	values
+		(#{startTime},#{endTime},
+		#{endowmentInsuranceCompanyRatio},#{endowmentInsurancePersonRatio},#{endowmentInsuranceBaseUpper},#{endowmentInsuranceBaseLower},
+		#{unemploymentInsuranceCompanyRatio},#{unemploymentInsurancePersonRatio},#{unemploymentInsuranceBaseUpper},#{unemploymentInsuranceBaseLower},
+		#{maternityInsuranceCompanyRatio},#{maternityInsurancePersonRatio},#{maternityInsuranceBaseUpper},#{maternityInsuranceBaseLower},
+		#{medicalInsuranceCompanyRatio},#{medicalInsurancePersonRatio},#{medicalInsuranceBaseUpper},#{medicalInsuranceBaseLower},
+		#{injuryInsuranceCompanyRatio},#{injuryInsurancePersonRatio},#{injuryInsuranceBaseUpper},#{injuryInsuranceBaseLower},
+		#{accumulationFundCompanyRatio},#{accumulationFundPersonRatio},#{accumulationFundBaseUpper},#{accumulationFundBaseLower}
+		)
+</insert>
+
+<update id="updateSocialSecurity" parameterType="com.nantian.erp.salary.data.model.ErpSocialSecurity">
+    update social_security
+    <set>
+      <if test="startTime != null" >
+        start_time = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime},
+      </if>
+      <if test="endowmentInsuranceCompanyRatio != null" >
+        endowment_insurance_company_ratio = #{endowmentInsuranceCompanyRatio},
+      </if>
+      <if test="endowmentInsurancePersonRatio != null" >
+        endowment_insurance_person_ratio = #{endowmentInsurancePersonRatio},
+      </if>
+      <if test="endowmentInsuranceBaseUpper != null" >
+        endowment_insurance_base_upper = #{endowmentInsuranceBaseUpper},
+      </if>
+      <if test="endowmentInsuranceBaseLower != null" >
+        endowment_insurance_base_lower = #{endowmentInsuranceBaseLower},
+      </if>
+      <if test="unemploymentInsuranceCompanyRatio != null" >
+        unemployment_insurance_company_ratio = #{unemploymentInsuranceCompanyRatio},
+      </if>
+      <if test="unemploymentInsurancePersonRatio != null" >
+        unemployment_insurance_person_ratio = #{unemploymentInsurancePersonRatio},
+      </if>
+      <if test="unemploymentInsuranceBaseUpper != null" >
+        unemployment_insurance_base_upper = #{unemploymentInsuranceBaseUpper},
+      </if>
+      <if test="unemploymentInsuranceBaseLower != null" >
+        unemployment_insurance_base_lower = #{unemploymentInsuranceBaseLower},
+      </if>
+      <if test="maternityInsuranceCompanyRatio != null" >
+        maternity_insurance_company_ratio = #{maternityInsuranceCompanyRatio},
+      </if>
+      <if test="maternityInsurancePersonRatio != null" >
+        maternity_insurance_person_ratio = #{maternityInsurancePersonRatio},
+      </if>
+      <if test="maternityInsuranceBaseUpper != null" >
+        maternity_insurance_base_upper = #{maternityInsuranceBaseUpper},
+      </if>
+      <if test="maternityInsuranceBaseLower != null" >
+        maternity_insurance_base_lower = #{maternityInsuranceBaseLower},
+      </if>
+      <if test="medicalInsuranceCompanyRatio != null" >
+        medical_insurance_company_ratio = #{medicalInsuranceCompanyRatio},
+      </if>
+      <if test="medicalInsurancePersonRatio != null" >
+        medical_insurance_person_ratio = #{medicalInsurancePersonRatio},
+      </if>
+      <if test="medicalInsuranceBaseUpper != null" >
+        medical_insurance_base_upper = #{medicalInsuranceBaseUpper},
+      </if>
+      <if test="medicalInsuranceBaseLower != null" >
+        medical_insurance_base_lower = #{medicalInsuranceBaseLower},
+      </if>
+      <if test="injuryInsuranceCompanyRatio != null" >
+        injury_insurance_company_ratio = #{injuryInsuranceCompanyRatio},
+      </if>
+      <if test="injuryInsurancePersonRatio != null" >
+        injury_insurance_person_ratio = #{injuryInsurancePersonRatio},
+      </if>
+      <if test="injuryInsuranceBaseUpper != null" >
+        injury_insurance_base_upper = #{injuryInsuranceBaseUpper},
+      </if>
+      <if test="injuryInsuranceBaseLower != null" >
+        injury_insurance_base_lower = #{injuryInsuranceBaseLower},
+      </if>
+      <if test="accumulationFundCompanyRatio != null" >
+        accumulation_fund_company_ratio = #{accumulationFundCompanyRatio},
+      </if>
+      <if test="accumulationFundPersonRatio != null" >
+        accumulation_fund_person_ratio = #{accumulationFundPersonRatio},
+      </if>
+      <if test="accumulationFundBaseUpper != null" >
+        accumulation_fund_base_upper = #{accumulationFundBaseUpper},
+      </if>
+      <if test="accumulationFundBaseLower != null" >
+        accumulation_fund_base_lower = #{accumulationFundBaseLower}
+      </if>
+    </set>
+    where id = #{id}
+</update>
+
+<select id="selectSocialSecurityLastOne" resultType="com.nantian.erp.salary.data.model.ErpSocialSecurity">
+	select id,start_time,end_time,
+	endowment_insurance_company_ratio,endowment_insurance_person_ratio,endowment_insurance_base_upper,endowment_insurance_base_lower,
+	unemployment_insurance_company_ratio,unemployment_insurance_person_ratio,unemployment_insurance_base_upper,unemployment_insurance_base_lower,
+	maternity_insurance_company_ratio,maternity_insurance_person_ratio,maternity_insurance_base_upper,maternity_insurance_base_lower,
+	medical_insurance_company_ratio,medical_insurance_person_ratio,medical_insurance_base_upper,medical_insurance_base_lower,
+	injury_insurance_company_ratio,injury_insurance_person_ratio,injury_insurance_base_upper,injury_insurance_base_lower,
+	accumulation_fund_company_ratio,accumulation_fund_person_ratio,accumulation_fund_base_upper,accumulation_fund_base_lower
+	from social_security
+	order by id desc
+	limit 0,1
+</select>
+
+<select id="selectSocialSecurityAll" resultType="com.nantian.erp.salary.data.model.ErpSocialSecurity">
+	select id,start_time,end_time,
+	endowment_insurance_company_ratio,endowment_insurance_person_ratio,endowment_insurance_base_upper,endowment_insurance_base_lower,
+	unemployment_insurance_company_ratio,unemployment_insurance_person_ratio,unemployment_insurance_base_upper,unemployment_insurance_base_lower,
+	maternity_insurance_company_ratio,maternity_insurance_person_ratio,maternity_insurance_base_upper,maternity_insurance_base_lower,
+	medical_insurance_company_ratio,medical_insurance_person_ratio,medical_insurance_base_upper,medical_insurance_base_lower,
+	injury_insurance_company_ratio,injury_insurance_person_ratio,injury_insurance_base_upper,injury_insurance_base_lower,
+	accumulation_fund_company_ratio,accumulation_fund_person_ratio,accumulation_fund_base_upper,accumulation_fund_base_lower
+	from social_security
+</select>
+<select id="selectSocialSecurityByTime" resultType="com.nantian.erp.salary.data.model.ErpSocialSecurity">
+	select id,start_time,end_time,
+	endowment_insurance_company_ratio,endowment_insurance_person_ratio,endowment_insurance_base_upper,endowment_insurance_base_lower,
+	unemployment_insurance_company_ratio,unemployment_insurance_person_ratio,unemployment_insurance_base_upper,unemployment_insurance_base_lower,
+	maternity_insurance_company_ratio,maternity_insurance_person_ratio,maternity_insurance_base_upper,maternity_insurance_base_lower,
+	medical_insurance_company_ratio,medical_insurance_person_ratio,medical_insurance_base_upper,medical_insurance_base_lower,
+	injury_insurance_company_ratio,injury_insurance_person_ratio,injury_insurance_base_upper,injury_insurance_base_lower,
+	accumulation_fund_company_ratio,accumulation_fund_person_ratio,accumulation_fund_base_upper,accumulation_fund_base_lower
+	from social_security
+	where start_time &lt;= #{queryTime} AND end_time &gt;= #{queryTime}
+</select>
+
+</mapper>

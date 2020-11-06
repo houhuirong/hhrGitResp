@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.PostDutyMapper">
+
+
+	
+	
+	<insert id="addPostDuty" parameterType="com.nantian.erp.hr.data.model.PostDuty">
+		insert into postDuty(
+			postdutyDescribe,postId,type)
+		values(
+			#{postdutyDescribe},#{postId},#{type})
+	</insert>
+	<insert id="addPostDutyBatch" parameterType="java.util.List">
+		insert into postDuty(
+			postdutyDescribe,postId,type)
+		values
+	 <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.postdutyDescribe,jdbcType=VARCHAR},
+             #{item.postId},
+            #{item.type}
+             
+            )
+       </foreach>
+	</insert>
+	
+	<update id="updatePostDuty" parameterType="com.nantian.erp.hr.data.model.PostDuty" >
+	    update postDuty
+	    <set>
+	      <if test="postdutyDescribe != null" >
+	        postdutyDescribe = #{postdutyDescribe},
+	      </if>
+	      <if test="postId != null" >
+	        postId = #{postId},
+	      </if>
+	      <if test="type != null" >
+	        type = #{type}
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+	<update id="updatePostDutyBatch" parameterType="java.util.List" >
+	   <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
+            UPDATE postDuty
+            <set>
+                postdutyDescribe=#{bean.postdutyDescribe}
+            </set>
+            <where>
+                id = #{bean.id}
+            </where>
+        </foreach>
+		     
+  </update>
+	<delete id="deleatePostDuty" parameterType="java.lang.Integer">
+		delete from postDuty
+		where id = #{id}
+	</delete>
+	<delete id="deletePostDutyByPostId" parameterType="java.lang.Integer">
+		delete from postDuty
+		where postId = #{postId}
+		and  type = #{type}
+	</delete>
+	<select id="findPostDutyByPostId" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.PostDuty" >
+		SELECT 
+			t.id,
+			t.postdutyDescribe,
+			t.postId,
+			t.type
+		from postDuty t
+		where 
+			t.postId = #{postId}
+		and t.type = #{type}
+	</select>
+	
+	<select id="selectPostDutyById" resultType="com.nantian.erp.hr.data.model.PostDuty" >
+		SELECT 
+			t.id,
+			t.postdutyDescribe,
+			t.postId,
+			t.type
+		from postDuty t
+		where 
+			t.id = #{id}
+	</select>
+	
+</mapper>

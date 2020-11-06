@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.DepartmentSalaryAdjustApproveRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.DepartmentSalaryAdjustApproveRecord" >
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="salary_adjust_record_id" jdbcType="INTEGER" property="salaryAdjustRecordId" />
+    <result column="adjust_status" jdbcType="INTEGER" property="adjustStatus" />
+    <result column="approverId" jdbcType="INTEGER" property="approverid" />
+    <result column="approver_time" jdbcType="TIMESTAMP" property="approverTime" />
+    <result column="former_base_wage" jdbcType="VARCHAR" property="formerBaseWage" />
+    <result column="former_post_wage" jdbcType="VARCHAR" property="formerPostWage" />
+    <result column="former_performance" jdbcType="VARCHAR" property="formerPerformance" />
+    <result column="former_allowance" jdbcType="VARCHAR" property="formerAllowance" />
+    <result column="former_tel_fare_perquisite" jdbcType="VARCHAR" property="formerTelFarePerquisite" />
+    <result column="former_social_security_base" jdbcType="VARCHAR" property="formerSocialSecurityBase" />
+    <result column="former_accumulation_fund_base" jdbcType="VARCHAR" property="formerAccumulationFundBase" />
+    <result column="adjust_base_wage" jdbcType="VARCHAR" property="adjustBaseWage" />
+    <result column="adjust_post_wage" jdbcType="VARCHAR" property="adjustPostWage" />
+    <result column="adjust_performance" jdbcType="VARCHAR" property="adjustPerformance" />
+    <result column="adjust_allowance" jdbcType="VARCHAR" property="adjustAllowance" />
+    <result column="adjust_tel_fare_perquisite" jdbcType="VARCHAR" property="adjustTelFarePerquisite" />
+    <result column="adjust_social_security_base" jdbcType="VARCHAR" property="adjustSocialSecurityBase" />
+    <result column="adjust_accumulation_fund_base" jdbcType="VARCHAR" property="adjustAccumulationFundBase" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   id, salary_adjust_record_id, adjust_status, approverId, approver_time, former_base_wage,
+    former_post_wage, former_performance, former_allowance, former_tel_fare_perquisite,
+    former_social_security_base, former_accumulation_fund_base, adjust_base_wage, adjust_post_wage,
+    adjust_performance, adjust_allowance, adjust_tel_fare_perquisite, adjust_social_security_base,
+    adjust_accumulation_fund_base  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_department_salary_adjust_approve_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_department_salary_adjust_approve_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjustApproveRecord" >
+   insert into t_department_salary_adjust_approve_record (id, salary_adjust_record_id, adjust_status,
+      approverId, approver_time, former_base_wage,
+      former_post_wage, former_performance, former_allowance,
+      former_tel_fare_perquisite, former_social_security_base,
+      former_accumulation_fund_base, adjust_base_wage,
+      adjust_post_wage, adjust_performance, adjust_allowance,
+      adjust_tel_fare_perquisite, adjust_social_security_base,
+      adjust_accumulation_fund_base)
+    values (#{id,jdbcType=INTEGER}, #{salaryAdjustRecordId,jdbcType=INTEGER}, #{adjustStatus,jdbcType=INTEGER},
+      #{approverid,jdbcType=INTEGER}, #{approverTime,jdbcType=TIMESTAMP}, #{formerBaseWage,jdbcType=VARCHAR},
+      #{formerPostWage,jdbcType=VARCHAR}, #{formerPerformance,jdbcType=VARCHAR}, #{formerAllowance,jdbcType=VARCHAR},
+      #{formerTelFarePerquisite,jdbcType=VARCHAR}, #{formerSocialSecurityBase,jdbcType=VARCHAR},
+      #{formerAccumulationFundBase,jdbcType=VARCHAR}, #{adjustBaseWage,jdbcType=VARCHAR},
+      #{adjustPostWage,jdbcType=VARCHAR}, #{adjustPerformance,jdbcType=VARCHAR}, #{adjustAllowance,jdbcType=VARCHAR},
+      #{adjustTelFarePerquisite,jdbcType=VARCHAR}, #{adjustSocialSecurityBase,jdbcType=VARCHAR},
+      #{adjustAccumulationFundBase,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjustApproveRecord" >
+    insert into t_department_salary_adjust_approve_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="salaryAdjustRecordId != null">
+        salary_adjust_record_id,
+      </if>
+      <if test="adjustStatus != null">
+        adjust_status,
+      </if>
+      <if test="approverid != null">
+        approverId,
+      </if>
+      <if test="approverTime != null">
+        approver_time,
+      </if>
+      <if test="formerBaseWage != null">
+        former_base_wage,
+      </if>
+      <if test="formerPostWage != null">
+        former_post_wage,
+      </if>
+      <if test="formerPerformance != null">
+        former_performance,
+      </if>
+      <if test="formerAllowance != null">
+        former_allowance,
+      </if>
+      <if test="formerTelFarePerquisite != null">
+        former_tel_fare_perquisite,
+      </if>
+      <if test="formerSocialSecurityBase != null">
+        former_social_security_base,
+      </if>
+      <if test="formerAccumulationFundBase != null">
+        former_accumulation_fund_base,
+      </if>
+      <if test="adjustBaseWage != null">
+        adjust_base_wage,
+      </if>
+      <if test="adjustPostWage != null">
+        adjust_post_wage,
+      </if>
+      <if test="adjustPerformance != null">
+        adjust_performance,
+      </if>
+      <if test="adjustAllowance != null">
+        adjust_allowance,
+      </if>
+      <if test="adjustTelFarePerquisite != null">
+        adjust_tel_fare_perquisite,
+      </if>
+      <if test="adjustSocialSecurityBase != null">
+        adjust_social_security_base,
+      </if>
+      <if test="adjustAccumulationFundBase != null">
+        adjust_accumulation_fund_base,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="salaryAdjustRecordId != null">
+        #{salaryAdjustRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="adjustStatus != null">
+        #{adjustStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approverid != null">
+        #{approverid,jdbcType=INTEGER},
+      </if>
+      <if test="approverTime != null">
+        #{approverTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="formerBaseWage != null">
+        #{formerBaseWage,jdbcType=VARCHAR},
+      </if>
+      <if test="formerPostWage != null">
+        #{formerPostWage,jdbcType=VARCHAR},
+      </if>
+      <if test="formerPerformance != null">
+        #{formerPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="formerAllowance != null">
+        #{formerAllowance,jdbcType=VARCHAR},
+      </if>
+      <if test="formerTelFarePerquisite != null">
+        #{formerTelFarePerquisite,jdbcType=VARCHAR},
+      </if>
+      <if test="formerSocialSecurityBase != null">
+        #{formerSocialSecurityBase,jdbcType=VARCHAR},
+      </if>
+      <if test="formerAccumulationFundBase != null">
+        #{formerAccumulationFundBase,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustBaseWage != null">
+        #{adjustBaseWage,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustPostWage != null">
+        #{adjustPostWage,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustPerformance != null">
+        #{adjustPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustAllowance != null">
+        #{adjustAllowance,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTelFarePerquisite != null">
+        #{adjustTelFarePerquisite,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustSocialSecurityBase != null">
+        #{adjustSocialSecurityBase,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustAccumulationFundBase != null">
+        #{adjustAccumulationFundBase,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjustApproveRecord" >
+    update t_department_salary_adjust_approve_record
+    <set>
+      <if test="salaryAdjustRecordId != null">
+        salary_adjust_record_id = #{salaryAdjustRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="adjustStatus != null">
+        adjust_status = #{adjustStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approverid != null">
+        approverId = #{approverid,jdbcType=INTEGER},
+      </if>
+      <if test="approverTime != null">
+        approver_time = #{approverTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="formerBaseWage != null">
+        former_base_wage = #{formerBaseWage,jdbcType=VARCHAR},
+      </if>
+      <if test="formerPostWage != null">
+        former_post_wage = #{formerPostWage,jdbcType=VARCHAR},
+      </if>
+      <if test="formerPerformance != null">
+        former_performance = #{formerPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="formerAllowance != null">
+        former_allowance = #{formerAllowance,jdbcType=VARCHAR},
+      </if>
+      <if test="formerTelFarePerquisite != null">
+        former_tel_fare_perquisite = #{formerTelFarePerquisite,jdbcType=VARCHAR},
+      </if>
+      <if test="formerSocialSecurityBase != null">
+        former_social_security_base = #{formerSocialSecurityBase,jdbcType=VARCHAR},
+      </if>
+      <if test="formerAccumulationFundBase != null">
+        former_accumulation_fund_base = #{formerAccumulationFundBase,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustBaseWage != null">
+        adjust_base_wage = #{adjustBaseWage,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustPostWage != null">
+        adjust_post_wage = #{adjustPostWage,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustPerformance != null">
+        adjust_performance = #{adjustPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustAllowance != null">
+        adjust_allowance = #{adjustAllowance,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTelFarePerquisite != null">
+        adjust_tel_fare_perquisite = #{adjustTelFarePerquisite,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustSocialSecurityBase != null">
+        adjust_social_security_base = #{adjustSocialSecurityBase,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustAccumulationFundBase != null">
+        adjust_accumulation_fund_base = #{adjustAccumulationFundBase,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjustApproveRecord" >
+     update t_department_salary_adjust_approve_record
+        set salary_adjust_record_id = #{salaryAdjustRecordId,jdbcType=INTEGER},
+          adjust_status = #{adjustStatus,jdbcType=INTEGER},
+          approverId = #{approverid,jdbcType=INTEGER},
+          approver_time = #{approverTime,jdbcType=TIMESTAMP},
+          former_base_wage = #{formerBaseWage,jdbcType=VARCHAR},
+          former_post_wage = #{formerPostWage,jdbcType=VARCHAR},
+          former_performance = #{formerPerformance,jdbcType=VARCHAR},
+          former_allowance = #{formerAllowance,jdbcType=VARCHAR},
+          former_tel_fare_perquisite = #{formerTelFarePerquisite,jdbcType=VARCHAR},
+          former_social_security_base = #{formerSocialSecurityBase,jdbcType=VARCHAR},
+          former_accumulation_fund_base = #{formerAccumulationFundBase,jdbcType=VARCHAR},
+          adjust_base_wage = #{adjustBaseWage,jdbcType=VARCHAR},
+          adjust_post_wage = #{adjustPostWage,jdbcType=VARCHAR},
+          adjust_performance = #{adjustPerformance,jdbcType=VARCHAR},
+          adjust_allowance = #{adjustAllowance,jdbcType=VARCHAR},
+          adjust_tel_fare_perquisite = #{adjustTelFarePerquisite,jdbcType=VARCHAR},
+          adjust_social_security_base = #{adjustSocialSecurityBase,jdbcType=VARCHAR},
+          adjust_accumulation_fund_base = #{adjustAccumulationFundBase,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpResumePostOrderRecordMapper"> 
+
+<insert id="insertResumePostOrderRecord" parameterType="com.nantian.erp.hr.data.model.ErpResumePostOrderRecord">
+	insert into resume_post_order_record(
+		interviewId,remark,processor,time
+		)
+	values(
+		#{interviewId},#{remark},#{processor},#{time}
+		)
+</insert>
+
+<select id="selectResumePostOrderRecord" parameterType="Integer" resultType="com.nantian.erp.hr.data.model.ErpResumePostOrderRecord">
+	select interviewId,remark,processor,time
+	from resume_post_order_record
+	where interviewId=#{interviewId}
+</select>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="nantian-erp-hr" />
+        <module name="nantian-erp-project" />
+        <module name="nantian-erp-salary" />
+        <module name="nantian-erp-common-base" />
+        <module name="nantian-erp-eureka-server" />
+        <module name="nantian-erp-authentication" />
+        <module name="nantian-erp-email" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="nantian-erp-authentication" target="1.8" />
+      <module name="nantian-erp-common-base" target="1.8" />
+      <module name="nantian-erp-email" target="1.8" />
+      <module name="nantian-erp-eureka-server" target="1.8" />
+      <module name="nantian-erp-hr" target="1.8" />
+      <module name="nantian-erp-project" target="1.8" />
+      <module name="nantian-erp-salary" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="nantian-erp-authentication" options="-parameters" />
+      <module name="nantian-erp-common-base" options="-parameters" />
+      <module name="nantian-erp-email" options="-parameters" />
+      <module name="nantian-erp-eureka-server" options="-parameters" />
+      <module name="nantian-erp-hr" options="-parameters" />
+      <module name="nantian-erp-salary" options="-parameters" />
+    </option>
+  </component>
+</project>

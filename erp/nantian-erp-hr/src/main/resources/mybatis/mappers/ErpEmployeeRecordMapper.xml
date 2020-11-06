@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmployeeRecordMapper">
+
+<insert id="insertEmployeeRecord" parameterType="com.nantian.erp.hr.data.model.ErpEmployeeRecord">
+	INSERT INTO employee_record(
+		employeeId,time,content,processoer
+		)
+	VALUES(
+		#{employeeId},#{time},#{content},#{processoer}
+		)
+</insert>
+
+<select id="findEmployeeRecord" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.ErpEmployeeRecord">
+	select employeeId,time,content,processoer
+	from employee_record
+	where employeeId = #{employeeId}
+	order by time desc
+</select>
+
+</mapper>

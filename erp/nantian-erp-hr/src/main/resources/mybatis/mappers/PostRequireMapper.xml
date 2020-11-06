@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.PostRequireMapper">
+
+
+	
+	
+	<insert id="addPostRequire" parameterType="com.nantian.erp.hr.data.model.PostRequire">
+		insert into postRequire(
+			postRequireDescribe,postId,type)
+		values(
+			#{postRequireDescribe},#{postId},#{type})
+	</insert>
+	
+	<insert id="addPostRequireBatch" parameterType="java.util.List">
+		insert into postRequire(
+			postRequireDescribe,postId,type)
+		values
+		  <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.postRequireDescribe,jdbcType=VARCHAR},
+             #{item.postId},
+            #{item.type}
+            )
+        </foreach>
+	</insert>
+	
+	<update id="updatePostRequire" parameterType="com.nantian.erp.hr.data.model.PostRequire" >
+	    update postRequire
+	    <set>
+	      <if test="postRequireDescribe != null" >
+	        postRequireDescribe = #{postRequireDescribe},
+	      </if>
+	      <if test="postId != null" >
+	        postId = #{postId},
+	      </if>
+	      <if test="type != null" >
+	        type = #{type}
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+	
+	<delete id="deleatePostRequire" parameterType="java.lang.Integer">
+		delete from postRequire
+		where id = #{id}
+	</delete>
+	
+	<select id="findPostRequireByPostId" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.PostRequire">
+		SELECT 
+			t.id,
+			t.postRequireDescribe,
+			t.postId,
+			t.type
+		from postRequire t
+		where 
+			t.postId = #{postId}
+		and t.type = #{type}
+	</select>
+	
+	<delete id="deletePostRequireByPostId" >
+		delete from postRequire
+		where postId = #{postId}
+		and  type = #{type}
+	</delete>
+	
+	<select id="selectPostRequireById" resultType="com.nantian.erp.hr.data.model.PostRequire">
+		SELECT 
+			t.id,
+			t.postRequireDescribe,
+			t.postId,
+			t.type
+		from postRequire t
+		where 
+			t.id = #{id}
+	</select>
+</mapper>

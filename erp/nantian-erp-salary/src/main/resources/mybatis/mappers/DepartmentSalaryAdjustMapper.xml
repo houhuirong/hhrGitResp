@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.DepartmentSalaryAdjustMapper">
+    <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.DepartmentSalaryAdjust" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+        <result column="year" property="year" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="plan" property="plan" jdbcType="VARCHAR" />
+        <result column="adjust_date" property="adjustDate" jdbcType="DATE" />
+        <result column="modify_person_id" property="modifyPersonId" jdbcType="INTEGER" />
+        <result column="submit_person_id" property="submitPersonId" jdbcType="INTEGER" />
+        <result column="confirm_person_id" property="confirmPersonId" jdbcType="INTEGER" />
+        <result column="export_person_id" property="exportPersonId" jdbcType="INTEGER" />
+        <result column="gmt_modified" property="modifiedTime" jdbcType="TIMESTAMP" />
+        <result column="gmt_create" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="gmt_submit" property="submitTime" jdbcType="TIMESTAMP" />
+        <result column="gmt_confirm" property="confirmTime" jdbcType="TIMESTAMP" />
+        <result column="gmt_export" property="exportTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, department_id, year, status, type, plan, adjust_date, modify_person_id, submit_person_id,
+    confirm_person_id, export_person_id, gmt_modified, gmt_create, gmt_submit, gmt_confirm,
+    gmt_export
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from t_department_salary_adjust
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_department_salary_adjust
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <select id="findDepartmentSalaryAdjustList" resultType="com.nantian.erp.salary.data.vo.DepartmentSalaryAdjustVO">
+        SELECT
+            tdsa.id id,
+            tdsa.department_id departmentId,
+            tdsa.year year,
+            tdsa.status status,
+            tdsa.type type,
+            tdsa.plan plan,
+            tdsa.adjust_date adjustDate,
+            tdsa.modify_person_id modifyPersonId,
+            tdsa.submit_person_id submitPersonId,
+            tdsa.confirm_person_id confirmPersonId,
+            tdsa.export_person_id exportPersonId,
+            tdsa.gmt_modified modifiedTime,
+            tdsa.gmt_create createTime,
+            tdsa.gmt_submit submitTime,
+            tdsa.gmt_confirm confirmTime,
+            tdsa.gmt_export exportTime
+        FROM
+            t_department_salary_adjust tdsa
+        <where>
+            (tdsa.status != 0 OR (tdsa.status = 0 and tdsa.modify_person_id = #{loginEmployeeId}))
+            <if test="departmentIdList != null and departmentIdList.size() > 0">
+                AND tdsa.department_id IN
+                <foreach collection="departmentIdList" index="index" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                AND tdsa.year = #{year}
+            </if>
+            <if test="departmentId != null">
+                AND tdsa.department_id = #{departmentId}
+            </if>
+            <if test="departmentSalaryAdjustId != null">
+                AND tdsa.id = #{departmentSalaryAdjustId}
+            </if>
+            <if test="type != null">
+                AND tdsa.type = #{type}
+            </if>
+            <if test="departmentSalaryAdjustPlan != null and departmentSalaryAdjustPlan != ''">
+                AND tdsa.plan LIKE CONCAT('%',#{departmentSalaryAdjustPlan},'%')
+            </if>
+            <if test="departmentStatus != null">
+                AND tdsa.status in (1, 2)
+            </if>
+        </where>
+        ORDER BY tdsa.year DESC, tdsa.department_id, tdsa.gmt_create DESC
+    </select>
+
+    <insert id="insertDepartmentSalaryAdjust" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjust" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into t_department_salary_adjust
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="departmentId != null" >
+                department_id,
+            </if>
+            <if test="year != null" >
+                year,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="plan != null" >
+                plan,
+            </if>
+            <if test="adjustDate != null" >
+                adjust_date,
+            </if>
+            <if test="modifyPersonId != null" >
+                modify_person_id,
+            </if>
+            <if test="submitPersonId != null" >
+                submit_person_id,
+            </if>
+            <if test="confirmPersonId != null" >
+                confirm_person_id,
+            </if>
+            <if test="exportPersonId != null" >
+                export_person_id,
+            </if>
+            <if test="modifiedTime != null" >
+                gmt_modified,
+            </if>
+            <if test="createTime != null" >
+                gmt_create,
+            </if>
+            <if test="submitTime != null" >
+                gmt_submit,
+            </if>
+            <if test="confirmTime != null" >
+                gmt_confirm,
+            </if>
+            <if test="exportTime != null" >
+                gmt_export,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null" >
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="year != null" >
+                #{year,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="plan != null" >
+                #{plan,jdbcType=VARCHAR},
+            </if>
+            <if test="adjustDate != null" >
+                #{adjustDate,jdbcType=DATE},
+            </if>
+            <if test="modifyPersonId != null" >
+                #{modifyPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="submitPersonId != null" >
+                #{submitPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="confirmPersonId != null" >
+                #{confirmPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="exportPersonId != null" >
+                #{exportPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="modifiedTime != null" >
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="submitTime != null" >
+                #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="confirmTime != null" >
+                #{confirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exportTime != null" >
+                #{exportTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDepartmentSalaryAdjust" parameterType="com.nantian.erp.salary.data.model.DepartmentSalaryAdjust" >
+        update t_department_salary_adjust
+        <set >
+            <if test="departmentId != null" >
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="year != null" >
+                year = #{year,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="plan != null" >
+                plan = #{plan,jdbcType=VARCHAR},
+            </if>
+            <if test="adjustDate != null" >
+                adjust_date = #{adjustDate,jdbcType=DATE},
+            </if>
+            <if test="modifyPersonId != null" >
+                modify_person_id = #{modifyPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="submitPersonId != null" >
+                submit_person_id = #{submitPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="confirmPersonId != null" >
+                confirm_person_id = #{confirmPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="exportPersonId != null" >
+                export_person_id = #{exportPersonId,jdbcType=INTEGER},
+            </if>
+            <if test="modifiedTime != null" >
+                gmt_modified = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                gmt_create = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="submitTime != null" >
+                gmt_submit = #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="confirmTime != null" >
+                gmt_confirm = #{confirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exportTime != null" >
+                gmt_export = #{exportTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

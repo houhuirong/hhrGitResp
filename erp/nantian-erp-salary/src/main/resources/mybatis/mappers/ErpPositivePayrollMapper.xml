@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPositivePayrollMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.ErpPositivePayroll" >
+    <constructor >
+      <idArg column="erp_positive_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_positive_base_wage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_positive_post_wage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_positive_performance" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_positive_allowance" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_positive_income" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_social_security_index" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_accumulation_fund_index" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erp_tel_fare_perquisite" jdbcType="VARCHAR" javaType="java.lang.String" />      
+    </constructor>
+  </resultMap>
+  
+  <!-- 查询所有转正-工资单 -->
+  <select id="selectAllPositive" resultType="com.nantian.erp.salary.data.model.ErpPositivePayroll">
+  	SELECT * FROM nantiansalary.erp_positive_payroll
+  </select>
+  
+  <!-- 查询试用期时填写的转正工资 -->
+  <select id="selectOnePositivePayroll" resultType="com.nantian.erp.salary.data.model.ErpPositivePayroll">
+  	SELECT * FROM nantiansalary.erp_positive_payroll
+  	WHERE 1 = 1
+  	<if test="employeeId != null and employeeId != ''">
+		AND erp_employee_id = #{employeeId}
+	</if>
+	  LIMIT 1
+  </select>
+  
+  <!-- 新增转正上岗工资单 -->
+	<insert id="insert" parameterType="com.nantian.erp.salary.data.model.ErpPositivePayroll">
+		INSERT INTO nantiansalary.erp_positive_payroll(
+			erp_positive_base_wage,
+			erp_positive_post_wage,
+			erp_positive_performance,
+			erp_positive_allowance,
+			erp_employee_id,
+			erp_social_security_index,
+			erp_accumulation_fund_index,
+			erp_positive_income,
+			erp_tel_fare_perquisite
+		)
+		VALUES(
+			#{erpPositiveBaseWage},
+			#{erpPositivePostWage},
+			#{erpPositivePerformance},
+			#{erpPositiveAllowance},
+			#{erpEmployeeId},
+			#{erpSocialSecurityIndex},
+			#{erpAccumulationFundIndex},
+			#{erpPositiveIncome},
+			#{erpTelFarePerquisite}
+		)
+	</insert>
+	
+	<!-- 修改转正工资单 -->
+	<update id="updateById" parameterType="com.nantian.erp.salary.data.model.ErpPositivePayroll">
+		update nantiansalary.erp_positive_payroll 
+		<set>
+		<if test="erpPositiveBaseWage != null" >
+	    erp_positive_base_wage = #{erpPositiveBaseWage},
+	 	 </if>
+	 	<if test="erpPositivePostWage != null" >
+	    erp_positive_post_wage = #{erpPositivePostWage},
+	  </if>
+		<if test="erpPositivePerformance != null" >
+	    erp_positive_performance = #{erpPositivePerformance},
+	  </if>
+		<if test="erpPositiveAllowance != null" >
+	    erp_positive_allowance = #{erpPositiveAllowance},
+	  </if>
+	  <if test="erpSocialSecurityIndex != null" >
+	    erp_social_security_index = #{erpSocialSecurityIndex},
+	  </if>
+	  <if test="erpAccumulationFundIndex != null" >
+	    erp_accumulation_fund_index = #{erpAccumulationFundIndex},
+	  </if>
+	    <if test="erpPositiveIncome != null" >
+	    erp_positive_income = #{erpPositiveIncome},
+	  </if>
+	  <if test="erpTelFarePerquisite != null" >
+	    erp_tel_fare_perquisite = #{erpTelFarePerquisite}
+	  </if>			
+		where 1 = 1
+		<if test="erpEmployeeId != null and erpEmployeeId != ''">
+			AND erp_employee_id = #{erpEmployeeId}
+		</if>
+		</set>
+	</update>
+  
+  
+</mapper>

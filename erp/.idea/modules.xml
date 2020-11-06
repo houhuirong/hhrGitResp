@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-authentication/nantian-erp-authentication.iml" filepath="$PROJECT_DIR$/nantian-erp-authentication/nantian-erp-authentication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-common-base/nantian-erp-common-base.iml" filepath="$PROJECT_DIR$/nantian-erp-common-base/nantian-erp-common-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-email/nantian-erp-email.iml" filepath="$PROJECT_DIR$/nantian-erp-email/nantian-erp-email.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-eureka-server/nantian-erp-eureka-server.iml" filepath="$PROJECT_DIR$/nantian-erp-eureka-server/nantian-erp-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-hr/nantian-erp-hr.iml" filepath="$PROJECT_DIR$/nantian-erp-hr/nantian-erp-hr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-project/nantian-erp-project.iml" filepath="$PROJECT_DIR$/nantian-erp-project/nantian-erp-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nantian-erp-salary/nantian-erp-salary.iml" filepath="$PROJECT_DIR$/nantian-erp-salary/nantian-erp-salary.iml" />
+    </modules>
+  </component>
+</project>

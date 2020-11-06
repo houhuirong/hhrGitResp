@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmployeeEntryMapper"> 
+
+<select id="selectCountAllEntry" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*)
+	from employee_entry ee
+	left join offer o on o.offerId=ee.offerId
+	left join resume_post rp on rp.id=o.interviewId
+	left join post p on p.postId=rp.postId
+	where ee.status=2 and p.postId=#{postId}
+</select>
+
+<insert id="insertEmployeeEntry" parameterType="com.nantian.erp.hr.data.model.ErpEmployeeEntry">
+	INSERT INTO employee_entry(
+		currentPersonID,roleID,status,offerId
+		)
+	VALUES(
+		#{currentPersonID},#{roleID},#{status},#{offerId}
+		)
+</insert>
+
+<update id="updateEmployeeEntryByOfferId" parameterType="com.nantian.erp.hr.data.model.ErpEmployeeEntry">
+    update employee_entry
+    <set>
+      <if test="currentPersonID != null" >
+        currentPersonID = #{currentPersonID},
+      </if>
+      <if test="roleID != null" >
+        roleID = #{roleID},
+      </if>
+      <if test="status != null" >
+        status = #{status}
+      </if>
+    </set>
+    where offerId = #{offerId}
+</update>
+  
+<delete id="deleteByOfferId" parameterType="java.lang.Integer">
+    delete from employee_entry
+    where offerId = #{offerId}
+</delete>
+<!-- 所有待入职 -->
+<select id="findAllWaitingEntry" parameterType="map" resultType="map">
+select
+  info.resumeId,
+  info.name,
+  info.phone,
+  info.personalEmail,
+  info.sex,
+  info.position,
+  info.positionName,
+  info.rank,
+  info.entryTime,
+  info.firstDepartment,
+  info.firstDepartmentId,
+  info.secondDepartment,
+  info.secondDepartmentId,
+  info.status,
+  info.postId,
+  info.offerId,
+  info.postName,
+  info.isTrainee,
+  info.currentPersonID,
+  info.currentProcessor
+from
+  (select 
+    r.resumeId,
+    r.`name`,
+    r.`phone`,
+    r.`sex`,
+    r.email personalEmail,
+    r.`isTrainee`,
+    o.`position`,
+    prr.positionName,
+    o.`rank`,
+    o.`entryTime`,
+    o.offerId,
+    p.postName,
+    p.postId,
+    d1.`departmentName` AS firstDepartment,
+    d1.departmentId  AS firstDepartmentId,
+    d2.`departmentName` AS secondDepartment,
+    d2.departmentId  AS secondDepartmentId,
+    ee.`status`,
+    ee.`currentPersonID`,
+    e.`name` AS currentProcessor
+  from
+    offer o INNER JOIN resume_post rp ON rp.id=o.interviewId
+    INNER JOIN resume r ON rp.resumeId=r.resumeId
+    INNER JOIN post p ON rp.`postId` = p.`postId`
+    INNER JOIN department d1 ON p.`firstDepartment` = d1.`departmentId`
+    INNER JOIN department d2 ON p.`secondDepartment` = d2.`departmentId`
+    INNER JOIN employee_entry ee ON o.`offerId` = ee.`offerId`
+    INNER JOIN admin_dic a ON a.dic_code=o.`status` and a.dic_type='OFFER_STATUS_TYPE'
+    INNER JOIN employee e ON ee.currentPersonID=e.employeeId and ee.`status` in('1','3')
+    LEFT JOIN positionRankRelation prr ON prr.positionNo = o.position
+  where  1=1
+    <if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="secondLeaderId != null">
+		AND d2.userId=#{secondLeaderId}
+	</if>
+	<if test="startTime != null and endTime !=null">
+		AND o.entryTime BETWEEN #{startTime} AND #{endTime}
+	</if>
+	) as info ORDER BY entryTime
+</select>
+<select id="findEmpNameByEmpId" parameterType="Integer" resultType="java.lang.String">
+	SELECT
+	e.`name`
+FROM
+	nantianerp.employee e
+WHERE
+	e.employeeId = #{employeeId}
+</select>
+<!-- 查询角色ID -->
+<select id="findRoleId" resultType="java.lang.Integer">
+SELECT DISTINCT roleID FROM `employee_entry` WHERE `status`=1 and currentPersonID is NULL;
+</select>
+
+<select id="findAllWaitingForMe" parameterType="map" resultType="map">
+	select 
+  info.resumeId,
+  info.name,
+  info.phone,
+  info.personalEmail,
+  info.sex,
+  info.position,
+  info.positionName,
+  info.rank,
+  info.entryTime,
+  info.probationPeriod,
+  info.contractPeriod,
+  info.socialSecurityPlace,
+  info.firstDepartment,
+  info.firstDepartmentId,
+  info.secondDepartment,
+  info.secondDepartmentId,
+  info.status,
+  info.postId,
+  info.offerId,
+  info.postName,
+  info.isTrainee,
+  info.currentPersonID,
+  info.currentProcessor
+from
+  (select 
+    r.resumeId,
+    r.`name`,
+    r.`phone`,
+    r.`sex`,
+    r.email personalEmail,
+    r.`isTrainee`,
+    o.`position`,
+    prr.positionName,
+    o.`rank`,
+    o.`entryTime`,
+    o.probationPeriod,
+    o.contractPeriod,
+    o.socialSecurityPlace,
+    o.offerId,
+    p.postName,
+    p.postId,
+    d1.`departmentName` AS firstDepartment,
+    d1.departmentId  AS firstDepartmentId,
+    d2.`departmentName` AS secondDepartment,
+    d2.departmentId  AS secondDepartmentId,
+    ee.`status`,
+    ee.`currentPersonID`,
+    e.`name` AS currentProcessor
+  from
+    offer o INNER JOIN	resume_post rp ON rp.id=o.interviewId
+    INNER JOIN resume r ON rp.resumeId=r.resumeId
+    INNER JOIN post p ON rp.`postId` = p.`postId`
+    INNER JOIN department d1 ON p.`firstDepartment` = d1.`departmentId`
+    INNER JOIN department d2 ON p.`secondDepartment` = d2.`departmentId`
+    INNER JOIN employee_entry ee ON o.`offerId` = ee.`offerId` and ee.`status` in('1','2')
+    INNER JOIN admin_dic a ON a.dic_code=o.`status` and a.dic_type='OFFER_STATUS_TYPE'
+    INNER JOIN employee e ON ee.currentPersonID=e.employeeId
+	LEFT JOIN positionRankRelation prr ON prr.positionNo = o.`position`
+  where  1=1
+ 	 <if test="currentPersonID != null">
+ 	 	AND ee.`status`=2
+		AND ee.`currentPersonID`=#{currentPersonID}
+	 </if>
+	 <if test="hrFlag != null">
+		AND ee.`status`=1
+	 </if>
+    ORDER BY o.offerId DESC
+    ) as info
+    GROUP BY resumeId
+    ORDER BY entryTime
+	</select>
+
+    <select id="findIdsByOfferIds" resultType="java.lang.Integer">
+        select id from employee_entry where offerId in
+        <foreach collection="offerIds" item="offerId" open="(" separator="," close=")">
+            #{offerId}
+        </foreach>
+    </select>
+
+    <update id="updateValidFalseByEntryIds">
+        update employee_entry set status = 4 where id in
+        <foreach collection="entryIds" item="entryId" open="(" separator="," close=")">
+            #{entryId}
+        </foreach>
+    </update>
+    <select id="findAllEntried" parameterType="map" resultType="map">
+        select
+            e.resumeId,
+            e.`name`,
+            r.`phone`,
+            e.`sex`,
+            r.email personalEmail,
+            r.`isTrainee`,
+            e.`position`,
+            prr.positionName,
+            e.`rank`,
+            o.`entryTime`,
+            e.offerId,
+            p.postName,
+            p.postId,
+            d1.`departmentName` AS firstDepartment,
+            d1.departmentId  AS firstDepartmentId,
+            d2.`departmentName` AS secondDepartment,
+            d2.departmentId  AS secondDepartmentId,
+            ee.`status`,
+            ee.`currentPersonID`,
+            e1.`name` AS currentProcessor
+        from
+        employee e
+        LEFT JOIN offer o ON e.offerId=o.offerId
+        LEFT JOIN resume_post rp ON rp.id=o.interviewId
+        LEFT JOIN resume r ON rp.resumeId=r.resumeId
+        LEFT JOIN post p ON rp.`postId` = p.`postId`
+        LEFT JOIN department d1 ON e.`firstDepartment` = d1.`departmentId`
+        LEFT JOIN department d2 ON e.`secondDepartment` = d2.`departmentId`
+        LEFT JOIN employee_entry ee ON o.`offerId` = ee.`offerId`
+        LEFT JOIN admin_dic a ON a.dic_code=o.`status` and a.dic_type='OFFER_STATUS_TYPE'
+        LEFT JOIN employee e1 ON ee.currentPersonID=e1.employeeId and ee.`status` ='2'
+        LEFT JOIN positionRankRelation prr ON prr.positionNo = o.position
+        where  1=1
+        <if test="superLeaderId != null">
+            AND d1.superLeader=#{superLeaderId}
+        </if>
+        <if test="leaderId != null">
+            AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+        </if>
+        <if test="secondLeaderId != null">
+            AND d2.userId=#{secondLeaderId}
+        </if>
+        <if test="startTime != null and endTime !=null">
+            AND o.entryTime BETWEEN #{startTime} AND #{endTime}
+        </if>
+        ORDER BY o.entryTime
+    </select>
+</mapper>

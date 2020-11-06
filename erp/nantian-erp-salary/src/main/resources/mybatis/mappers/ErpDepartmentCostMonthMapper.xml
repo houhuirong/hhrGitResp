@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpDepartmentCostMonthMapper"> 
+
+<insert id="insertDepartmentCostMonth" parameterType="com.nantian.erp.salary.data.model.ErpDepartmentCostMonth">
+	insert into department_cost_month(
+		month,firstdepartment_id,wage_cost,subsidy_cost,performance_cost,social_security_cost,
+		accumulation_fund_cost,employee_num
+		)
+	values(
+		#{month},#{firstDepartmentId},#{wageCost},#{subsidyCost},#{performanceCost},#{socialSecurityCost},
+		#{accumulationFundCost},#{employeeNum}
+		)
+</insert>
+
+<update id="updateDepartmentCostMonth" parameterType="com.nantian.erp.salary.data.model.ErpDepartmentCostMonth" >
+	update department_cost_month
+	<set>
+	  <if test="month != null" >
+	    month = #{month},
+	  </if>
+	  <if test="firstDepartmentId != null" >
+	    firstdepartment_id = #{firstDepartmentId},
+	  </if>
+	  <if test="wageCost != null" >
+	    wage_cost = #{wageCost},
+	  </if>
+	  <if test="subsidyCost != null" >
+	    subsidy_cost = #{subsidyCost},
+	  </if>
+	  <if test="performanceCost != null" >
+	    performance_cost = #{performanceCost},
+	  </if>
+	  <if test="socialSecurityCost != null" >
+	    social_security_cost = #{socialSecurityCost},
+	  </if>
+	  <if test="accumulationFundCost != null" >
+	    accumulation_fund_cost = #{accumulationFundCost},
+	  </if>
+	  <if test="employeeNum != null" >
+	    employee_num = #{employeeNum}
+	  </if>
+	</set>
+	where id = #{id}
+</update>
+
+<select id="findDepartmentCostMonthDetail" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpDepartmentCostMonth">
+	select id,month,firstdepartment_id,wage_cost,subsidy_cost,performance_cost,social_security_cost,
+		accumulation_fund_cost,employee_num
+	from department_cost_month
+	where month = #{month} and firstdepartment_id = #{firstDepartmentId}
+</select>
+
+<select id="findDepartmentCostMonthMore" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpDepartmentCostMonth">
+	select id,month,firstdepartment_id,wage_cost,subsidy_cost,performance_cost,social_security_cost,
+		accumulation_fund_cost,employee_num
+	from department_cost_month
+	where 1=1
+	<if test="startTime != null and endTime != null">
+	    and month between #{startTime} and #{endTime}
+	</if>
+	<if test="firstDepartmentId != null">
+	    and firstdepartment_id = #{firstDepartmentId}
+	</if>
+	order by month
+</select>
+  
+</mapper>

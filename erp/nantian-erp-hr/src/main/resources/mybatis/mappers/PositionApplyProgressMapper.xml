@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.PositionApplyProgressMapper"> 
+
+<insert id="addApplyProgress" parameterType="com.nantian.erp.hr.data.model.PositionApplyProgress">
+	 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+       		 SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+		insert into positionApplyProgress(
+			postId,currentPersonID)
+		values(
+			#{postId},#{currentPersonID}
+			)
+
+</insert>
+	
+<!-- 	判断当前登录人是否是当前处理人 -->
+<select id="isCurLoginPersonID" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+	select count(id) from positionApplyProgress
+	where currentPersonID = #{erpUserId}
+</select>	
+
+<select id="findApplyProgressInfoByCurPersonID" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.PositionApplyProgress" >
+	select id,postId,currentPersonID from positionApplyProgress
+	where currentPersonID = #{erpUserId}
+</select>
+<!-- 	岗位申请表关联Id 和当前处理人用户编号 定位一条岗位流程记录 -->
+<select id="findApplyProgressByPidCurPerId" parameterType="map" resultType="com.nantian.erp.hr.data.model.PositionApplyProgress" >
+	select id,postId,currentPersonID from positionApplyProgress
+	where postId = #{postId}
+	and currentPersonID = #{currentPersonID}
+</select>	
+
+<update id="updateApplyProgressById" parameterType="com.nantian.erp.hr.data.model.PositionApplyProgress">
+	update positionApplyProgress
+	<set>
+		  <if test="postId != null">postId = #{postId},</if>
+            <if test="currentPersonID != null">currentPersonID = #{currentPersonID}</if>
+	</set>
+	where id = #{id}
+</update>
+
+	<update id="updateCurrentPersonIdByPostId">
+		update positionApplyProgress set
+		currentPersonID = #{processor}
+		where postId = #{postId}
+	</update>
+
+	<select id="findApplyProgressByPostId" resultType="com.nantian.erp.hr.data.model.PositionApplyProgress">
+	select * from positionApplyProgress
+	where postId = #{postId}
+</select>
+
+</mapper>

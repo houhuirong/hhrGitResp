@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPositiveRecordMapper" >
+  
+  	<select id="selectPositiveRecord" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpPositiveRecord">
+		SELECT id,erp_employee_id,erp_positive_handler,positive_time,content
+		FROM erp_positive_record 
+		WHERE erp_employee_id = #{employeeId}
+	</select>
+	
+	<insert id="insertPositiveRecord" parameterType="com.nantian.erp.salary.data.model.ErpPositiveRecord">
+		INSERT INTO erp_positive_record(
+			erp_employee_id,erp_positive_handler,positive_time,content
+		)VALUES(
+			#{erpEmployeeId},#{erpPositiveHandler},#{positiveTime},#{content}
+		)
+	</insert>
+  
+</mapper>

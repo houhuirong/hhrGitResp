@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpResumePostOrderMapper"> 
+
+<insert id="insertResumePostOrder" parameterType="com.nantian.erp.hr.data.model.ErpResumePostOrder">
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+       		 SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	INSERT INTO resume_post_order(
+		interviewId,attention,contactId,placeId,method,time
+		)
+	VALUES(
+		#{interviewId},#{attention},#{contactId},#{placeId},#{method},#{time}
+		)
+</insert>
+
+<delete id="deleteResumePostOrder" parameterType="java.lang.Integer">
+    delete from resume_post_order
+    where interviewId = #{interviewId}
+</delete>
+
+<update id="updateResumePostOrder" parameterType="com.nantian.erp.hr.data.model.ErpResumePostOrder">
+    update resume_post_order
+    <set>
+      <if test="attention != null" >
+        attention = #{attention},
+      </if>
+      <if test="contactId != null" >
+        contactId = #{contactId},
+      </if>
+      <if test="placeId != null" >
+        placeId = #{placeId},
+      </if>
+      <if test="method != null" >
+        method = #{method},
+      </if>
+      <if test="time != null" >
+        time = #{time}
+      </if>
+    </set>
+    where interviewId = #{interviewId}
+</update>
+
+<select id="selectResumePostOrderDetail" parameterType="Integer" resultType="java.util.Map">
+	select rpo.id,rpo.interviewId,rpo.attention,rpo.method,rpo.time,
+	a1.dic_code as "contactId",a2.dic_code as "placeId"
+	from resume_post_order rpo
+	left join admin_dic a1 on a1.dic_code=rpo.contactId
+	left join admin_dic a2 on a2.dic_code=rpo.placeId
+	where interviewId = #{interviewId}
+	and a1.dic_type='INTERVIEW_ORDER_CONTACT'
+	and a2.dic_type='INTERVIEW_ORDER_PLACE'
+</select>
+
+</mapper>

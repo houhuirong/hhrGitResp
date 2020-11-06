@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.PostTemplateMapper">
+	<insert id="addPostTemplate" parameterType="com.nantian.erp.hr.data.model.PostTemplate">
+		 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="postTemplateId">
+       		 SELECT LAST_INSERT_ID() AS postTemplateId
+        </selectKey>
+		insert into postTemplate(
+			category,postName,jobCategory,
+			positionChildType,
+			salaryRange,
+			familyId,
+			duty,
+			required
+			)
+		values(
+			#{category},#{postName},#{jobCategory},
+			#{positionChildType},
+			#{salaryRange},
+			#{familyId},
+			#{duty},
+			#{required}
+			)
+	</insert>
+	
+	<update id="updatePostTemplate" parameterType="com.nantian.erp.hr.data.model.PostTemplate" >
+	    update postTemplate
+	    <set>
+	      <if test="category != null" >
+	        category = #{category},
+	      </if>
+	      <if test="postName != null" >
+	        postName = #{postName},
+	      </if>
+			<if test="familyId != null" >
+				familyId = #{familyId},
+			</if>
+	      <if test="jobCategory != null" >
+	        jobCategory = #{jobCategory},
+	      </if>
+	      <if test="salaryRange != null" >
+	        salaryRange = #{salaryRange},
+	      </if>
+	      <if test="positionChildType != null" >
+	        positionChildType = #{positionChildType},
+	      </if>
+	      <if test="required != null" >
+	        required = #{required},
+	      </if>
+	      <if test="duty != null" >
+	        duty = #{duty}
+	      </if>
+	    </set>
+	    where postTemplateId = #{postTemplateId}
+  </update>
+	
+	<delete id="deleatePostTemplate" parameterType="java.lang.Integer">
+		delete from postTemplate
+		where postTemplateId = #{postTemplateId}
+	</delete>
+	
+	<select id="findAllPostTemplate" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			t.postTemplateId,
+			t.category categoryId,
+			t.postName,
+			t.jobCategory jobId,
+			a1.dic_name jobName,
+			t.salaryRange,
+			t.positionChildType childId,
+			a2.dic_name childName,
+			t.familyId jobType,
+			t.familyId,
+			a.dic_name familyName,
+			t.duty postduty,
+			t.required postRequire,
+			a3.dic_name categoryName
+		FROM
+			postTemplate t
+			LEFT JOIN admin_dic a ON a.dic_code = t.familyId
+			LEFT JOIN admin_dic a1 ON a1.dic_code = t.jobCategory and a1.dic_type=t.familyId
+			LEFT JOIN admin_dic a2 ON a2.dic_type = CONCAT(t.familyId,t.jobCategory) AND a2.dic_code = t.positionChildType
+			LEFT JOIN admin_dic a3 ON a3.dic_code=t.category and a3.dic_type='POST_CATEGORY'
+		where 1=1
+		<if test="familyId != null and familyId != ''" >
+			and t.familyId = #{familyId}
+		</if>
+		<if test="jobId != null and jobId != ''" >
+			and t.jobCategory = #{jobId}
+		</if>
+		<if test="childId != null and childId != ''" >
+			and t.positionChildType = #{childId}
+		</if>
+		<if test="categoryId != null and categoryId != ''" >
+	        and t.category = #{categoryId}
+		</if>
+		<if test="postName != null and postName != ''" >
+			and t.postName like  CONCAT('%',#{postName},'%')
+		</if>
+		order by t.postTemplateId desc
+	</select>
+	
+	<select id="findtPostTemplateById" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.PostTemplate">
+		SELECT
+			t.postTemplateId,
+			t.category,
+			t.postName,
+			t.jobCategory,
+			t.salaryRange,
+			t.positionChildType,
+			t.duty,
+			t.required
+		FROM
+			postTemplate t
+		where t.postTemplateId = #{postTemplateId}
+	</select>
+	
+	<select id="selectPostTemplateByPostId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		select pt.jobCategory,pt.positionChildType,pt.familyId
+		from post p
+		left join postTemplate pt on pt.postTemplateId=p.postTemplateId
+		where p.postId = #{postId}
+	</select>
+	<select id="findPositionName" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			t.postName
+		FROM
+			postTemplate t
+		where t.category = #{categoryId}
+	</select>
+	<select id="findPostTemplateIdByCatPostName" resultType="com.nantian.erp.hr.data.model.PostTemplate">
+		SELECT
+			t.postTemplateId,
+			t.jobCategory,
+			t.positionChildType,
+			t.salaryRange,
+			t.familyId,
+			t.category,
+			t.postName,
+			t.duty,
+			t.required
+		FROM
+			postTemplate t 
+		where t.category = #{categoryId} 
+		and t.postName = #{postName} 
+	</select>
+	
+	<select id="findPostTemplateByPostName" parameterType="java.lang.String" resultType="com.nantian.erp.hr.data.model.PostTemplate">
+		SELECT
+			t.postTemplateId,
+			t.jobCategory,
+			t.positionChildType,
+			t.salaryRange,
+			t.familyId,
+			t.category,
+			t.postName,
+			t.duty,
+			t.required
+		FROM
+			postTemplate t 
+		where t.postName = #{postName} 
+	</select>
+	
+	<!-- 根据岗位类别，岗位名称获取职位职级列表 -->
+	<select id="findPositionRankListByCatPostName" resultType="java.util.Map">
+		SELECT
+			prr.positionNo positionRankId, CONCAT(prr.positionName,'(',prr.rank,')') positionRankName
+		FROM
+			postTemplate pt 
+		left join positionRankRelation prr on prr.positionType=pt.jobCategory
+		and prr.positionChildType=pt.positionChildType
+		and prr.positionFamilyType=pt.familyId
+		where pt.category = #{categoryId} 
+		and pt.postName = #{postName} 
+		order by prr.rank
+	</select>
+	
+</mapper>

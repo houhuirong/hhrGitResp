@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmployeeDimissionMapper">
+
+<insert id="insertDimission" parameterType="com.nantian.erp.hr.data.model.ErpDimission">
+	INSERT INTO dimission(
+		employeeId,dimissionTime,dimissionReason,dimissionDirection,dealWithTime
+		)
+	VALUES(
+		#{employeeId},#{dimissionTime},#{dimissionReason},#{dimissionDirection},#{dealWithTime}
+		)
+</insert>
+
+<delete id="deleteDimission" parameterType="java.lang.Integer">
+	delete from dimission
+	where id = #{dimissionId}
+</delete>
+
+<update id="updateDimission" parameterType="com.nantian.erp.hr.data.model.ErpDimission">
+    update dimission
+    <set>
+      <if test="employeeId != null" >
+        employeeId = #{employeeId},
+      </if>
+      <if test="dimissionTime != null" >
+        dimissionTime = #{dimissionTime},
+      </if>
+      <if test="dimissionReason != null" >
+        dimissionReason = #{dimissionReason},
+      </if>
+      <if test="dimissionDirection != null" >
+        dimissionDirection = #{dimissionDirection},
+      </if>
+      <if test="dealWithTime != null" >
+        dealWithTime = #{dealWithTime}
+      </if>
+    </set>
+    where id = #{id}
+</update>
+  
+<select id="selectEmployeeDetail" parameterType="java.lang.Integer" resultType="java.util.Map">
+	SELECT e.employeeId,e.name,e.sex,e.position,e.positionId,e.rank,e.resumeId,
+	e.projectInfoId,e.entryTime,e.takeJobTime,
+	e.salaryCardNumber,e.idCardNumber,e.school,e.major,e.education,e.status,e.personalEmail,
+	d1.departmentName AS "firstDepartmentName",d2.departmentName AS "secondDepartmentName",a.dic_name AS "statusName",
+	p.manager,p.managerEmail,p.projectName,p.projectInfoId
+	FROM employee e
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN admin_dic a ON a.dic_code = e.status
+	LEFT JOIN projectinfo p ON p.projectInfoId=e.projectInfoId
+	WHERE a.dic_type = 'EMPLOYEE_STATUS_TYPE' AND e.employeeId = #{employeeId}
+</select>
+
+<select id="selectEmployeeAllDimissionByParams" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT d.id,d.dimissionTime,d.dimissionReason,d.dimissionDirection,d.dealWithTime,
+	e.employeeId,e.name,e.sex,e.position,e.positionId,e.rank,e.resumeId,
+	e.projectInfoId,e.entryTime,e.takeJobTime,
+	e.salaryCardNumber,e.idCardNumber,e.school,e.major,e.education,e.status,e.personalEmail,
+	if (e.status=4, e.firstDepartmentName, d1.departmentName) AS firstDepartmentName,
+	if (e.status=4, e.secondDepartmentName, d2.departmentName) AS secondDepartmentName,
+	a.dic_name AS "statusName",
+	p.manager,p.managerEmail,p.projectName,p.projectInfoId,r.phone personalPhone
+	FROM dimission d
+	LEFT JOIN employee e ON e.employeeId = d.employeeId
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN admin_dic a ON a.dic_code = e.status
+	LEFT JOIN projectinfo p ON p.projectInfoId=e.projectInfoId
+	LEFT JOIN resume r ON e.resumeId = r.resumeId
+	WHERE a.dic_type = 'EMPLOYEE_STATUS_TYPE'
+    <if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="status != null">
+		AND e.status=#{status}
+	</if>
+	<if test="dealTimeIsNull != null">
+		AND d.dealWithTime is null
+	</if>
+	<if test="dealTimeNotNull != null">
+		AND d.dealWithTime is not null
+	</if>
+	<if test="key != null" >
+        AND CONCAT_WS(',',e.name, d.dimissionTime,firstDepartmentName,secondDepartmentName) LIKE #{key}
+    </if>
+	order by dimissionTime desc
+	<if test="limit != null and offset != null" >
+        limit #{limit} offset #{offset}
+    </if>
+</select>
+
+<select id="findTotalCountOfDimissionApply" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*)
+	FROM dimission di
+	LEFT JOIN employee e ON e.employeeId = di.employeeId
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN department d ON d.departmentId = e.firstDepartment
+	WHERE 1=1
+	<if test="superLeaderId != null">
+		AND d.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d.userId=#{leaderId} OR d.superLeader=#{leaderId})
+	</if>
+	<if test="status != null">
+		AND e.status=#{status}
+	</if>
+	<if test="dealTimeIsNull != null">
+		AND di.dealWithTime is null
+	</if>
+	<if test="dealTimeNotNull != null">
+		AND di.dealWithTime is not null
+	</if>
+	<if test="key != null" >
+        AND CONCAT_WS(',',e.name, di.dimissionTime,d1.departmentName,d2.departmentName) LIKE #{key}
+    </if>
+</select>
+
+<select id="findCountByDimissionTime" resultType="java.lang.Integer" parameterType="java.lang.String">
+	select count(*)
+	from dimission d
+	LEFT JOIN employee e ON d.employeeId = e.employeeId
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	where dimissionTime like #{yearAndMonth}
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} or d1.superLeader=#{leaderId})
+	</if>
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+</select>
+
+<!-- add by 曹秀斌 查询员工的离职信息 -->
+<select id="findOneById" resultType="com.nantian.erp.hr.data.model.ErpDimission">
+	select *
+	from dimission 
+	where employeeId = #{employeeId}
+</select>
+
+</mapper>

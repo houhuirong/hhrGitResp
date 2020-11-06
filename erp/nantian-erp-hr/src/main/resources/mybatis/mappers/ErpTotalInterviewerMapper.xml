@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpTotalInterviewerMapper"> 
+
+<insert id="insertTotalInterviewer" parameterType="com.nantian.erp.hr.data.model.ErpTotalInterviewer">
+	INSERT INTO total_interviewer(
+		resumeId,postId
+		)
+	VALUES(
+		#{resumeId},#{postId}
+		)
+</insert>
+
+<select id="countInterviewer" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*) from total_interviewer where postId =#{postId}
+</select>
+
+</mapper>

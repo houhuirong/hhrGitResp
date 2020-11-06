@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPeriodRecordMapper" >
+  
+	<select id="selectPeriodRecord" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpPeriodRecord">
+		SELECT id,erp_employee_id,erp_payroll_handler,payroll_time,content
+		FROM erp_period_record 
+		WHERE erp_employee_id = #{employeeId}
+	</select>
+	
+	<insert id="insertPeriodRecord" parameterType="com.nantian.erp.salary.data.model.ErpPeriodRecord">
+		INSERT INTO erp_period_record(
+			erp_employee_id,erp_payroll_handler,payroll_time,content
+		)VALUES(
+			#{erpEmployeeId},#{erpPayrollHandler},#{payrollTime},#{content}
+		)
+	</insert>
+  
+</mapper>

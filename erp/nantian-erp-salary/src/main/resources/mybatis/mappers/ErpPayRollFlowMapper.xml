@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPayRollFlowMapper"> 
+
+<!-- 上岗工资单流程审批表增加数据 -->
+<insert id="insertPayRollFlow" parameterType="map">
+	INSERT INTO erp_payRoll_flow (
+		status, userId, periodIsLock,currentPersonID,positiveIsLock,commitMonth,positiveMonth,socialSecMonth)
+	VALUES (
+		#{status},#{userId},#{periodIsLock},#{currentPersonID},#{positiveIsLock},
+		#{commitMonth},#{positiveMonth},#{socialSecMonth}
+	)
+</insert>
+
+<!-- 查询当前处理人未审批的用户IDs -->
+<select id="findUserIdsByCurrentPerID" parameterType="map" resultType="map">
+	SELECT userId, status AS payRollFlowStatus FROM `erp_payRoll_flow` WHERE 1=1
+	<if test="currentPersonID !=null">
+	and currentPersonID=#{currentPersonID}
+	</if>
+	<if test="status !=null and status == 1">
+		and status=#{status} and commitMonth != ""
+	</if>
+	<if test="status !=null and status == 2">
+		and status=#{status} and positiveMonth != ""
+	</if>
+</select>
+
+<update id="updatePayRollFlow" parameterType="com.nantian.erp.salary.data.model.ErpPayRollFlow">
+	update erp_payRoll_flow
+	<set>
+	  <if test="status != null" >
+	    status = #{status},
+	  </if>
+	  <if test="periodIsLock != null" >
+	    periodIsLock = #{periodIsLock},
+	  </if>
+	  <if test="currentPersonID != null" >
+	    currentPersonID = #{currentPersonID},
+	  </if>
+	  <if test="positiveIsLock != null" >
+	    positiveIsLock = #{positiveIsLock},
+	  </if>
+	  <if test="commitMonth != null" >
+	    commitMonth = #{commitMonth},
+	  </if>
+	  <if test="positiveMonth != null" >
+	    positiveMonth = #{positiveMonth},
+	  </if>
+	  <if test="socialSecMonth != null" >
+	    socialSecMonth = #{socialSecMonth},
+	  </if>
+	  <if test="isConfirmed != null" >
+	    isConfirmed = #{isConfirmed}
+	  </if>
+	</set>
+	where userId = #{userId}
+</update>
+
+<select id="findAllPeriodPayRoll" parameterType="map" resultType="map">
+	SELECT *, status AS payRollFlowStatus
+    FROM `erp_payRoll_flow` WHERE commitMonth BETWEEN #{startMonth} AND #{endMonth}
+	<if test="currentPersonID !=null">
+	and currentPersonID=#{currentPersonID}
+	</if>	
+</select>
+
+<select id="findAllPositivePayRoll" parameterType="map" resultType="map">
+	SELECT * FROM `erp_payRoll_flow` WHERE `status` in('2','3','4')
+	<if test="startMonth !=null and endMonth !=null">
+	and  positiveMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+	<if test="currentPersonID !=null">
+	and currentPersonID=#{currentPersonID}
+	</if>
+	<if test="positiveMonth != null">
+	and positiveMonth = #{positiveMonth}
+	</if>
+</select>
+<!-- 查询状态为2的所有数据 -->
+<select id="findAllPositiveWaitapprove" parameterType="map" resultType="java.util.Map">
+SELECT * FROM `erp_payRoll_flow` WHERE `status` = 2
+	<if test="startMonth !=null and endMonth !=null">
+	and  positiveMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+</select>
+
+<select id="findAllPeriodPayRollForSuper" resultType="java.util.Map">
+	SELECT * FROM `erp_payRoll_flow` WHERE `status` in('1','2','3')
+	and currentPersonID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+    </foreach>
+</select>
+
+<select id="findAllPositivePayRollForSuper" resultType="java.util.Map">
+	SELECT * FROM `erp_payRoll_flow` WHERE `status` in('2','3')
+	and currentPersonID in
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+    </foreach>
+</select>
+
+<select id="findPeriodPayRollByEmpId" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpPayRollFlow">
+	SELECT *, status AS payRollFlowStatus
+	FROM erp_payRoll_flow
+	WHERE userId=#{employeeId}
+	ORDER BY id DESC LIMIT 1
+</select>
+
+<select id="findAllPayRollSecMonth" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpPayRollFlow">
+	SELECT *, status AS payRollFlowStatus
+	<if test="type == 2">
+		,case when status = 1 then '未处理' else '已处理' end statusName
+	</if>
+	<if test="type == 3">
+		,case when status = 2 then '转正未处理' else '已处理' end statusName
+	</if>
+    FROM erp_payRoll_flow
+    WHERE 1=1
+    <if test="type == 1">
+		and socialSecMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+	<if test="type == 2">
+		and commitMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+	<if test="type == 3">
+		and positiveMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+	<if test="status != null">
+		and status in('2','3','4')
+	</if>
+</select>
+
+	<select id="findWaitPayRollFlowByUserId"  resultType="com.nantian.erp.salary.data.model.ErpPayRollFlow">
+		SELECT
+		  id,
+		  status,
+		  userId,
+		  currentPersonID
+		FROM erp_payRoll_flow WHERE status in (1, 2) AND userId = #{employeeId}
+	</select>
+
+	<select id="findWaitPayRollFlowList" resultType="com.nantian.erp.salary.data.model.ErpPayRollFlow">
+		SELECT
+		  id,
+		  status,
+		  userId,
+		  currentPersonID
+		FROM erp_payRoll_flow WHERE status in (1, 2)
+	</select>
+
+	<update id="updateCurrentPersonIdById">
+		UPDATE erp_payRoll_flow SET currentPersonID = #{newFirstManager}
+		WHERE id = #{id}
+	</update>
+<select id="findAllConfirmPositivePayRoll" parameterType="map" resultType="map">
+	SELECT * FROM `erp_payRoll_flow` WHERE `status` in('2','3','4') and isConfirmed=1
+	<if test="startMonth !=null and endMonth !=null">
+	and  positiveMonth BETWEEN #{startMonth} AND #{endMonth}
+	</if>
+	<if test="currentPersonID !=null">
+	and currentPersonID=#{currentPersonID}
+	</if>
+	<if test="positiveMonth != null">
+	and positiveMonth = #{positiveMonth}
+	</if>
+</select>
+<select id="findIsConfirmedByUserId" parameterType="java.lang.Integer" resultType="java.lang.Boolean">
+	SELECT isConfirmed FROM `erp_payRoll_flow` WHERE userId=#{userId} ORDER BY id desc LIMIT 1
+</select>
+</mapper>

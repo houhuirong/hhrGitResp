@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nantian.erp.hr.data.dao.TEmailServiceConfigMapper">
+  <resultMap id="BaseResultMap" type="com.nantian.erp.hr.data.model.TEmailServiceConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="recipient" jdbcType="VARCHAR" property="recipient" />
+    <result column="bcc" jdbcType="VARCHAR" property="bcc" />
+    <result column="send" jdbcType="INTEGER" property="send" />
+    <result column="created_person_id" jdbcType="INTEGER" property="createdPersonId" />
+    <result column="modified_person_id" jdbcType="INTEGER" property="modifiedPersonId" />
+    <result column="gmt_time" jdbcType="TIMESTAMP" property="gmtTime" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `type`, recipient, bcc, send, created_person_id, modified_person_id, gmt_time, 
+    modified_time
+  </sql>
+  <select id="selectByParam" parameterType="java.util.Map" resultType="java.util.Map">
+  SELECT
+		es.*, e. NAME AS createdPersonName,
+		e1.`name` AS modifiedPersonName,a.dic_name as typeName
+	FROM
+		t_email_service_config es
+	LEFT JOIN employee e ON es.created_person_id = e.employeeId
+	LEFT JOIN employee e1 ON es.modified_person_id = e1.employeeId
+	LEFT JOIN admin_dic a ON es.type=a.dic_code and a.dic_type='EMAIL_TYPE'
+	where 1=1
+    <if test="type != null">
+      and es.`type` = #{type}
+    </if>
+    <if test="recipient != null">
+      and es.recipient = #{recipient}
+    </if>
+    <if test="bcc != null">
+      and es.bcc = #{bcc}
+    </if>
+    <if test="send != null">
+      and es.send = #{send}
+    </if>
+    <if test="createdPersonId != null">
+      and es.created_person_id = #{createdPersonId}
+    </if>
+    <if test="modifiedPersonId != null">
+      and es.modified_person_id = #{modifiedPersonId}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_email_service_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nantian.erp.hr.data.model.TEmailServiceConfig">
+    insert into t_email_service_config (id, `type`, recipient, 
+      bcc, send, created_person_id, 
+      modified_person_id, gmt_time, modified_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{recipient,jdbcType=VARCHAR}, 
+      #{bcc,jdbcType=VARCHAR}, #{send,jdbcType=INTEGER}, #{createdPersonId,jdbcType=INTEGER}, 
+      #{modifiedPersonId,jdbcType=INTEGER}, #{gmtTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nantian.erp.hr.data.model.TEmailServiceConfig">
+    update t_email_service_config
+    <set>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="recipient != null">
+        recipient = #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="bcc != null">
+        bcc = #{bcc,jdbcType=VARCHAR},
+      </if>
+      <if test="send != null">
+        send = #{send,jdbcType=INTEGER},
+      </if>
+      <if test="createdPersonId != null">
+        created_person_id = #{createdPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedPersonId != null">
+        modified_person_id = #{modifiedPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="gmtTime != null">
+        gmt_time = #{gmtTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

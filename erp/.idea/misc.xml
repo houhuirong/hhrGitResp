@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/nantian-erp-authentication/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-common-base/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-email/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-hr/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-project/pom.xml" />
+        <option value="$PROJECT_DIR$/nantian-erp-salary/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_13" default="false" />
+</project>

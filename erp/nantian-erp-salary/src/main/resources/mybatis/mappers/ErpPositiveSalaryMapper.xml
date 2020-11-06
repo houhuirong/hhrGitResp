@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPositiveSalaryMapper"> 
+
+<!-- 上岗工资单流程审批表增加数据 -->
+<insert id="insertPositiveSalary" parameterType="map">
+	INSERT INTO erp_positive_salary (
+	erp_positive_income,
+	erp_positive_base_wage,
+	erp_positive_post_wage,
+	erp_positive_performance,
+	erp_positive_allowance,
+	erp_employee_id,
+	erp_period_beliel,
+	is_period,
+	erp_tel_fare_perquisite
+)
+VALUES
+	(
+		#{erpPositiveIncome},#{erpPositiveBaseWage},#{erpPositivePostWage},
+#{erpPositivePerformance},#{erpPositiveAllowance},#{erpEmployeeId},#{erpPeriodBeliel},#{isPeriod},#{erpTelFarePerquisite}
+	)
+</insert>
+
+<select id="findPositiveSalaryByEmpId" parameterType="Integer" resultType="com.nantian.erp.salary.data.model.ErpPositiveSalary">
+SELECT * from erp_positive_salary where erp_employee_id=#{erpEmployeeId}
+</select>
+<update id="updatePositiveSalaryByEmpId" parameterType="com.nantian.erp.salary.data.model.ErpPositiveSalary">
+
+update erp_positive_salary
+	<set>
+	  <if test="erpPositiveIncome != null" >
+	    erp_positive_income = #{erpPositiveIncome},
+	  </if>
+	  <if test="erpPositiveBaseWage != null" >
+	    erp_positive_base_wage = #{erpPositiveBaseWage},
+	  </if>
+	  <if test="erpPositivePostWage != null" >
+	    erp_positive_post_wage = #{erpPositivePostWage},
+	  </if>
+	  <if test="erpPositivePerformance != null" >
+	    erp_positive_performance = #{erpPositivePerformance},
+	  </if>
+	  <if test="erpPositiveAllowance != null" >
+	    erp_positive_allowance = #{erpPositiveAllowance},
+	  </if>
+	  <if test="erpPeriodBeliel != null" >
+	    erp_period_beliel = #{erpPeriodBeliel},
+	  </if>
+	  <if test="isPeriod != null" >
+	    is_period = #{isPeriod},
+	  </if>
+	   <if test="erpTelFarePerquisite != null" >
+	    erp_tel_fare_perquisite = #{erpTelFarePerquisite}
+	  </if>
+	</set>
+	where erp_employee_id = #{erpEmployeeId}
+</update>
+</mapper>

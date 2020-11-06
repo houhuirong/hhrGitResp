@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.PositionOperReordMapper"> 
+
+<insert id="addPositionOperReord" parameterType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+       		 SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+		insert into positionOperRecond(
+			createTime,operContext,currentPersonId,currentPersonName,postId)
+		values(
+			#{createTime},#{operContext},#{currentPersonId},#{currentPersonName},#{postId}
+			)
+
+</insert>
+<!-- 根据当前处理人Id和岗位申请表主键查找 一条 岗位申请操作记录 -->
+<select id="findOperRecordByPostIdAndCurPerId" parameterType="map" resultType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	select * from  positionOperRecond 
+	where currentPersonId = #{currentPersonId}
+	and postId = #{postId}
+</select>
+<!-- 通过岗位申请主键查找，岗位操作记录表 -->
+<select id="findOperRecordByPostId" resultType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	select * from  positionOperRecond 
+	where postId = #{postId}
+	ORDER BY createTime DESC
+</select>
+<!-- 查询关闭原因 -->
+<select id="findCloseRease" resultType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	SELECT
+			a.id,
+			a.createTime,
+			a.operContext,
+			a.currentPersonId,
+			a.currentPersonName,
+			a.postId
+		FROM
+			(
+				SELECT
+					postId,
+					max(createTime) login_time
+				FROM
+					positionOperRecond
+				GROUP BY
+					postId
+				HAVING
+					postId = #{postId}
+			)b
+		JOIN positionOperRecond a ON a.postId = b.postId
+		AND a.createTime = b.login_time
+</select>
+
+<select id="findCurrentIdApprovedOperRecor" resultType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	SELECT postrecord.* from 
+	positionOperRecond postrecord ,
+	(
+	SELECT postId from post where 
+	`status` in(1,4,5)
+	)postionIds
+	where postrecord.postId in(postionIds.postId)
+	and postrecord.currentPersonId  = #{currentPersonId}
+	and (postrecord.operContext like '同意%' OR postrecord.operContext
+ 	LIKE  '驳回原因:%')
+
+</select>
+<select id="findCurrentIdPublishOperRecor" resultType="com.nantian.erp.hr.data.model.PositionOperRecond">
+	SELECT postrecord.* from 
+	positionOperRecond postrecord ,
+	(
+	SELECT postId from post where 
+	`status` = #{status}
+	)postionIds
+	where postrecord.postId in(postionIds.postId)
+	and postrecord.currentPersonId  = #{currentPersonId}
+	and (postrecord.operContext like '同意%' OR postrecord.operContext
+ 	LIKE  '驳回原因:%')
+
+</select>
+
+
+</mapper>

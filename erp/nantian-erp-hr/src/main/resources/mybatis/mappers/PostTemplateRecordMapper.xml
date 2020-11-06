@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nantian.erp.hr.data.dao.PostTemplateRecordMapper">
+	<insert id="addPostTemplateRecord" parameterType="com.nantian.erp.hr.data.model.PostTemplateRecord">
+		insert into t_post_template_record(
+			post_template_id,modified_user,modified_time,
+			gmt_modified,gmt_create)
+		values(
+			#{postTemplateId},#{modifiedUser},#{modifiedTime},
+			#{gmtModified},#{gmtCreate})
+	</insert>
+	
+	<select id="findPostTemplateRecordById" parameterType="java.lang.Integer" resultType="java.util.Map">
+
+		SELECT DATE_FORMAT(modified_time, '%Y-%m-%d %H:%i:%s')  modifiedTime, modified_user modifiedUserId, e.`name` modifiedUserName from t_post_template_record ptr
+		LEFT JOIN employee e ON ptr.modified_user=e.employeeId
+		WHERE ptr.post_template_id = #{postTemplateId}
+		ORDER BY modified_time DESC LIMIT 1
+
+	</select>
+</mapper>

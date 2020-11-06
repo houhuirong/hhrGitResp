@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpTalkSalaryRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.ErpTalkSalaryRecord" >
+    <constructor >
+      <idArg column="erp_record_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_resume_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_handler" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+ 
+  <!-- 修改面试谈薪记录 -->
+  <insert id="insertTalkSalaryRecord" parameterType="com.nantian.erp.salary.data.model.ErpTalkSalaryRecord" >
+    insert into erp_talk_salary_record(
+    	erp_handler,update_time,erp_resume_id
+    )
+    values(
+    	#{erpHandler,jdbcType=VARCHAR},
+    	#{updateTime,jdbcType=TIMESTAMP},
+    	#{erpResumeId,jdbcType=INTEGER}
+    )
+  </insert>
+</mapper>

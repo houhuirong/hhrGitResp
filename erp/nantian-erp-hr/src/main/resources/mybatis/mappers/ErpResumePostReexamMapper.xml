@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpResumePostReexamMapper"> 
+
+<insert id="insertResumePostReexam" parameterType="com.nantian.erp.hr.data.model.ErpResumePostReexam">
+	INSERT INTO resume_post_reexam(
+		interviewId,entryTime,position,rank,monthIncome,socialSecurityBase,accumulationFundBase,
+		socialSecurityPlace,probationPeriod,contractPeriod,remark,score,contents,pass,isNext,personId,appointment
+		)
+	VALUES(
+		#{interviewId},#{entryTime},#{position},#{rank},#{monthIncome},#{socialSecurityBase},#{accumulationFundBase},
+		#{socialSecurityPlace},#{probationPeriod},#{contractPeriod},#{remark},#{score},#{contents},#{pass},#{isNext},#{personId},#{appointment}
+		)
+</insert>
+
+<delete id="deleteResumePostReexam" parameterType="java.lang.Integer">
+    delete from resume_post_reexam
+    where interviewId = #{interviewId}
+</delete>
+
+<update id="updateResumePostReexam" parameterType="com.nantian.erp.hr.data.model.ErpResumePostReexam">
+    update resume_post_reexam
+    <set>
+      <if test="entryTime != null" >
+        entryTime = #{entryTime},
+      </if>
+      <if test="position != null" >
+        position = #{position},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank},
+      </if>
+      <if test="monthIncome != null" >
+        monthIncome = #{monthIncome},
+      </if>
+      <if test="socialSecurityBase != null" >
+        socialSecurityBase = #{socialSecurityBase},
+      </if>
+      <if test="accumulationFundBase != null" >
+        accumulationFundBase = #{accumulationFundBase},
+      </if>
+      <if test="socialSecurityPlace != null" >
+        socialSecurityPlace = #{socialSecurityPlace},
+      </if>
+      <if test="probationPeriod != null" >
+        probationPeriod = #{probationPeriod},
+      </if>
+      <if test="contractPeriod != null" >
+        contractPeriod = #{contractPeriod},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+       <if test="score != null" >
+        score = #{score},
+      </if>
+      <if test="contents != null" >
+        contents = #{contents},
+      </if>
+      <if test="pass != null" >
+        pass = #{pass},
+      </if>
+      <if test="1==1" >
+        isNext = #{isNext},
+      </if>
+      <if test="1==1" >
+        personId = #{personId},
+      </if>
+      <if test="1==1" >
+        appointment = #{appointment}
+      </if>
+    </set>
+    where interviewId = #{interviewId}
+</update>
+
+<select id="selectResumePostReexamDatail" parameterType="Integer" resultType="com.nantian.erp.hr.data.model.ErpResumePostReexam">
+	select id,interviewId,entryTime,position,rank,monthIncome,socialSecurityBase,accumulationFundBase,
+		socialSecurityPlace,probationPeriod,contractPeriod,remark,score,contents,pass,isNext,personId,appointment
+	from resume_post_reexam
+	where interviewId = #{interviewId}
+</select>
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpBasePayrollMapper"> 
+
+<insert id="insertBasePayroll" parameterType="com.nantian.erp.salary.data.model.ErpBasePayroll">
+	INSERT INTO ErpBasePayroll(
+		erp_employee_id,erp_base_wage,erp_post_wage,erp_performance,erp_allowance,
+		erp_social_security_base,erp_accumulation_fund_base,erp_tel_fare_perquisite
+		)
+	VALUES(
+		#{erpEmployeeId},#{erpBaseWage},#{erpPostWage},#{erpPerformance},#{erpAllowance},
+		#{erpSocialSecurityBase},#{erpAccumulationFundBase},#{erpTelFarePerquisite}
+		)
+</insert>
+
+<update id="updateBasePayroll" parameterType="com.nantian.erp.salary.data.model.ErpBasePayroll" >
+	update ErpBasePayroll
+	<set>
+	  <if test="erpBaseWage != null" >
+	    erp_base_wage = #{erpBaseWage},
+	  </if>
+	  <if test="erpPostWage != null" >
+	    erp_post_wage = #{erpPostWage},
+	  </if>
+	  <if test="erpPerformance != null" >
+	    erp_performance = #{erpPerformance},
+	  </if>
+	  <if test="erpAllowance != null" >
+	    erp_allowance = #{erpAllowance},
+	  </if>
+	  <if test="erpSocialSecurityBase != null" >
+	    erp_social_security_base = #{erpSocialSecurityBase},
+	  </if>
+	  <if test="erpAccumulationFundBase != null" >
+	    erp_accumulation_fund_base = #{erpAccumulationFundBase},
+	  </if>
+	  <if test="erpTelFarePerquisite != null" >
+	    erp_tel_fare_perquisite = #{erpTelFarePerquisite},
+	  </if>
+	</set>
+	where erp_employee_id = #{erpEmployeeId}
+</update>
+
+<select id="findBasePayrollDetail" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpBasePayroll">
+	select erp_payroll_id,erp_employee_id,erp_base_wage,erp_post_wage,erp_performance,erp_allowance,
+		erp_social_security_base,erp_accumulation_fund_base,erp_tel_fare_perquisite
+	from ErpBasePayroll
+	where erp_payroll_id = #{erpPayrollId}
+</select>
+
+<select id="findBasePayrollDetailByEmpId" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpBasePayroll">
+	select erp_payroll_id,erp_employee_id,erp_base_wage,erp_post_wage,erp_performance,erp_allowance,
+		erp_social_security_base,erp_accumulation_fund_base,erp_tel_fare_perquisite
+	from ErpBasePayroll
+	where erp_employee_id = #{erpEmployeeId}
+	ORDER BY erp_payroll_id DESC LIMIT 1
+</select>
+
+<select id="findBasePayrollAll" resultType="com.nantian.erp.salary.data.model.ErpBasePayroll">
+	select erp_payroll_id,erp_employee_id,erp_base_wage,erp_post_wage,erp_performance,erp_allowance,
+		erp_social_security_base,erp_accumulation_fund_base,erp_tel_fare_perquisite
+	from ErpBasePayroll
+</select>
+  
+</mapper>

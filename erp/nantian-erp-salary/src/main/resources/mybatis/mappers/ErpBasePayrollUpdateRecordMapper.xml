@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpBasePayrollUpdateRecordMapper"> 
+
+<insert id="insertBasePayrollUpdateRecord" parameterType="com.nantian.erp.salary.data.model.ErpBasePayrollUpdateRecord">
+	INSERT INTO ErpBasePayrollUpdateRecord(
+		employee,processor,time,content,employee_id
+		)
+	VALUES(
+		#{employee},#{processor},#{time},#{content},#{employeeId}
+		)
+</insert>
+
+<select id="findBasePayrollUpdateRecord" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpBasePayrollUpdateRecord">
+	select employee,processor,time,content
+	from ErpBasePayrollUpdateRecord
+	where 1=1
+	<if test="startTime != null and endTime != null">
+		and time between #{startTime} and #{endTime}
+	</if>
+	order by time desc
+	limit #{offset},#{limit}
+</select>
+
+<select id="findTotalBasePayrollUpdateRecord" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*) 
+	from ErpBasePayrollUpdateRecord
+	where 1=1
+	<if test="startTime != null and endTime != null">
+		and time between #{startTime} and #{endTime}
+	</if>
+</select>
+
+</mapper>

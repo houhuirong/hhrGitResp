@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpPeriodPayrollMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.ErpPeriodPayroll" >
+    <constructor >
+      <idArg column="erp_payroll_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_period_base_wage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="erp_period_post_wage" jdbcType="INTEGER" javaType="java.lang.Double" />
+      <arg column="erp_period_performance" jdbcType="INTEGER" javaType="java.lang.Double" />
+      <arg column="erp_period_allowance" jdbcType="INTEGER" javaType="java.lang.Double" />
+      <arg column="erp_employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erp_period_income" jdbcType="INTEGER" javaType="java.lang.Double" />
+      <arg column="erp_period_beliel" jdbcType="INTEGER" javaType="java.lang.Double" />
+    </constructor>
+  </resultMap>
+  
+  	<!-- 查询所有试用期-工资单 -->
+  	<select id="selectAllPeriod" resultType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+  		SELECT * FROM nantiansalary.erp_period_payroll 
+  	</select>
+  	
+  	<!-- 查询试用期时填写的工资 -->
+  <select id="selectOnePeriodPayroll" resultType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+  	SELECT * FROM nantiansalary.erp_period_payroll
+  	WHERE 1 = 1
+  	<if test="employeeId != null and employeeId != ''">
+		AND erp_employee_id = #{employeeId}
+	</if>
+  </select>
+  
+    <!-- 根据员工ID查询员工工资单基本信息 -->
+	<select id="findPeriodSalary" resultType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+		SELECT p.* FROM nantiansalary.erp_period_payroll p
+		WHERE 1 = 1
+		<if test="employeeId != null and employeeId != ''">
+			AND p.erp_employee_id = #{employeeId}
+		</if>
+	</select>
+	
+	<!-- 新增试用期上岗工资单 -->
+	<insert id="insert" parameterType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+		INSERT INTO nantiansalary.erp_period_payroll(
+			erp_period_base_wage,
+			erp_period_post_wage,
+			erp_period_performance,
+			erp_period_allowance,
+			erp_employee_id,
+			erp_period_income,
+			erp_tel_fare_perquisite
+		)
+		VALUES(
+			#{erpPeriodBaseWage},
+			#{erpPeriodPostWage},
+			#{erpPeriodPerformance},
+			#{erpPeriodAllowance},
+			#{erpEmployeeId},
+			#{erpPeriodIncome},
+			#{erpTelFarePerquisite}
+		)
+	</insert>
+	
+	<!-- 修改试用期工资单 -->
+	<update id="updateById" parameterType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+		update nantiansalary.erp_period_payroll
+		<set>
+		 <if test="erpPeriodBaseWage != null" >
+	    erp_period_base_wage = #{erpPeriodBaseWage},
+	  </if>
+	  <if test="erpPeriodPostWage != null" >
+	    erp_period_post_wage = #{erpPeriodPostWage},
+	  </if>
+	  <if test="erpPeriodPerformance != null" >
+	    erp_period_performance = #{erpPeriodPerformance},
+	  </if>
+	  <if test="erpPeriodAllowance != null" >
+	    erp_period_allowance = #{erpPeriodAllowance},
+	  </if>
+	  <if test="erpPeriodIncome != null" >
+	    erp_period_income = #{erpPeriodIncome},
+	  </if>
+	  <if test="erpTelFarePerquisite != null" >
+	    erp_tel_fare_perquisite = #{erpTelFarePerquisite}
+	  </if>
+		</set>
+		where 1 = 1
+		<if test="erpEmployeeId != null and erpEmployeeId != ''">
+			AND erp_employee_id = #{erpEmployeeId}
+		</if>
+	</update>
+</mapper>

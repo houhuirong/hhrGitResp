@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpAdminFunctionMapper"> 
+	<select id="selectPayRollFlowUnionBaseSalary" resultType="java.util.Map">
+		SELECT * FROM ((SELECT epf_a.id as epfid,epf_a.userId,epf_a.`status` FROM erp_payRoll_flow epf_a WHERE epf_a.id IN(SELECT Max(id) FROM erp_payRoll_flow epf GROUP BY epf.userId)) as temp)
+			LEFT JOIN ErpBasePayroll as ebp on ebp.erp_employee_id=temp.userId;
+	</select>
+	
+	<select id="selectPayRollFlowUnionperiodParoll" resultType="java.util.Map">
+		SELECT * FROM ((SELECT epf_a.id as epfid,epf_a.userId,epf_a.`status` FROM erp_payRoll_flow epf_a WHERE epf_a.id IN(SELECT Max(id) FROM erp_payRoll_flow epf GROUP BY epf.userId)) as temp)
+			LEFT JOIN erp_period_payroll as epp on epp.erp_employee_id = temp.userId;
+	</select>
+	
+	<select id="selectPayRollFlowUnionPositivesalary" resultType="java.util.Map">
+		SELECT * FROM ((SELECT epf_a.id as epfid,epf_a.userId,epf_a.`status` FROM erp_payRoll_flow epf_a WHERE epf_a.id IN(SELECT Max(id) FROM erp_payRoll_flow epf GROUP BY epf.userId)) as temp)
+			LEFT JOIN erp_positive_salary as eps on eps.erp_employee_id = temp.userId;
+	</select>
+	
+	<select id="selectPayRollFlowUnionPositivepeyroll" resultType="java.util.Map">
+		SELECT * FROM ((SELECT epf_a.id as epfid,epf_a.userId,epf_a.`status` FROM erp_payRoll_flow epf_a WHERE epf_a.id IN(SELECT Max(id) FROM erp_payRoll_flow epf GROUP BY epf.userId)) as temp)
+			LEFT JOIN erp_positive_payroll as epp on epp.erp_employee_id = temp.userId;
+	</select>
+</mapper>

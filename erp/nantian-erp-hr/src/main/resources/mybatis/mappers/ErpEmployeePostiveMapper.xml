@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmployeePostiveMapper"> 
+
+
+<!-- <select id="findAll" resultType="map" parameterType="map">
+select 
+  info.employeeId,
+  info.name,
+  info.sex,
+  info.phone,
+  info.position,
+  info.rank,
+  info.currentPerson,
+  info.firstDepartment,
+  info.secondDepartment ,
+  info.probationEndTime
+from
+  (SELECT 
+    e.`employeeId`,
+    e.`name`,
+    e.`sex`,
+    e.`phone`,
+    e.`position`,
+    e.`rank`,
+    ep.`currentPerson`,
+    c.probationEndTime,
+    UNIX_TIMESTAMP(c.probationEndTime) - 1296000 AS endTestTime,
+    UNIX_TIMESTAMP() AS nowTime,
+    d1.`departmentName` AS firstDepartment,
+    d2.`departmentName` AS secondDepartment 
+  from
+    employee e,
+    employee_postive ep,
+    contract c,
+    department d1,
+    department d2 
+  where e.`employeeId` = ep.`employeeId` 
+    and e.`employeeId` = c.`employeeId` 
+    and d1.`departmentId` = e.`firstDepartment` 
+    and d2.`departmentId` = e.`secondDepartment`
+     <if test="username != null and username != ''">
+		and currentPerson =#{username}
+	</if>
+    ) as info 
+where info.endTestTime &lt; nowTime 
+order by   info.employeeId desc
+</select> -->
+<select id="findDmProcess" parameterType="Integer" resultType="map">
+SELECT ep.employeeId from nantianerp.employee_postive ep where `status`=1 and ep.currentPersonID=#{currentPersonID}
+</select>
+
+<select id="findAll" resultType="map" parameterType="map">
+select 
+  info.employeeId,
+  info.name,
+  info.sex,
+  info.entryTime,
+  info.positionName,
+  info.positionNo,
+  info.rank,
+  info.currentPersonID,
+  info.firstDepartment,
+  info.secondDepartment ,
+  info.probationEndTime
+from
+      (SELECT
+        e.`employeeId`,
+        e.`name`,
+        e.`sex`,
+        e.entryTime,
+        prr.positionNo,
+        prr.positionName,
+        e.`rank`,
+        ep.`currentPersonID`,
+        c.probationEndTime,
+        d1.`departmentName` AS firstDepartment,
+        d2.`departmentName` AS secondDepartment
+      from
+        employee e INNER JOIN employee_postive ep on e.`employeeId` = ep.`employeeId`
+        INNER JOIN contract c on e.`employeeId` = c.`employeeId`
+        LEFT JOIN department d1 on d1.`departmentId` = e.`firstDepartment`
+        LEFT JOIN department d2 on d2.`departmentId` = e.`secondDepartment`
+        LEFT JOIN positionRankRelation prr on prr.positionNo=e.positionId
+         <if test="currentPersonID != null and currentPersonID != ''">
+            where ep.currentPersonID =#{currentPersonID}
+        </if>
+        and ep.`status`=1 and e.status!=4
+        AND c.contractId = (SELECT MAX(cs.contractId) FROM contract cs WHERE cs.employeeId=c.employeeId)
+        AND ep.id = (SELECT MAX(eps.id) FROM employee_postive eps WHERE eps.employeeId = ep.employeeId)
+    ) as info ORDER BY info.probationEndTime
+</select>
+
+<select id="findAllNonPositive" resultType="map" parameterType="map">
+select 
+  info.employeeId,
+  info.name,
+  info.sex,
+  info.positionNo,
+  info.positionName,
+  info.rank,
+  info.currentPersonID,
+  info.firstDepartment,
+  info.secondDepartment ,
+  info.probationEndTime
+from
+  (SELECT 
+    e.`employeeId`,
+    e.`name`,
+    e.`sex`,
+    prr.positionNo,
+    prr.positionName,
+    e.`rank`,
+    ep.`currentPersonID`,
+    c.probationEndTime,
+    d1.`departmentName` AS firstDepartment,
+    d2.`departmentName` AS secondDepartment 
+  from
+    employee e INNER JOIN employee_postive ep on e.`employeeId` = ep.`employeeId`
+    INNER JOIN contract c on e.`employeeId` = c.`employeeId` 
+    LEFT JOIN department d1 on d1.`departmentId` = e.`firstDepartment` 
+    LEFT JOIN department d2 on d2.`departmentId` = e.`secondDepartment`
+    LEFT JOIN positionRankRelation prr on prr.positionNo=e.positionId
+    where e.`status`=1
+    and ep.`status`=1
+    AND c.contractId = (SELECT MAX(cs.contractId) FROM contract cs WHERE cs.employeeId=c.employeeId)
+    AND ep.id = (SELECT MAX(eps.id) FROM employee_postive eps WHERE eps.employeeId = ep.employeeId)
+     <if test="currentPersonID != null and currentPersonID != ''">
+		and ep.currentPersonID =#{currentPersonID}		
+	</if>
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="secondLeaderId != null">
+		AND d2.userId=#{secondLeaderId}
+	</if>
+    ) as info ORDER BY info.probationEndTime
+</select>
+
+<select id="findAllPositive" resultType="map" parameterType="map">
+	SELECT 
+	    e.`employeeId`,
+	    e.`name`,
+	    e.`sex`,
+	    e.`position`,
+	    e.`rank`,
+	    ep.`currentPersonID`,
+	    c.probationEndTime,
+	    UNIX_TIMESTAMP() AS nowTime,
+	    d1.`departmentName` AS firstDepartment,
+	    d2.`departmentName` AS secondDepartment 
+	  from
+	    employee e,
+	    employee_postive ep,
+	    contract c,
+	    department d1,
+	    department d2 
+	  where e.`employeeId` = ep.`employeeId` 
+	    and e.`employeeId` = c.`employeeId` 
+	    and d1.`departmentId` = e.`firstDepartment` 
+	    and d2.`departmentId` = e.`secondDepartment`
+	    <if test="startDate != null and endDate != null">
+			 AND c.probationEndTime BETWEEN #{startDate} AND #{endDate}
+		</if>
+	    <if test="username != null and username != ''">
+			AND currentPerson =#{userName}
+		</if>
+</select>
+
+<insert id="insertEmployeePostive" parameterType="com.nantian.erp.hr.data.model.ErpEmployeePostive">
+	INSERT INTO employee_postive(
+		currentPersonID,employeeId,status
+		)
+	VALUES(
+		#{currentPersonID},#{employeeId},#{status}
+		)
+</insert>
+
+<update id="updateEmployeePostive" parameterType="com.nantian.erp.hr.data.model.ErpEmployeePostive" >
+    update employee_postive
+    <set>
+      <if test="status != null" >
+        status = #{status}
+      </if>
+    </set>
+    where employeeId = #{employeeId}
+</update>
+  
+<delete id="deleteByEmployeeId" parameterType="java.lang.Integer">
+	delete from employee_postive
+	where employeeId = #{employeeId}
+</delete>
+
+<select id="findTimeoutNotPositionEmpId" resultType="java.lang.Integer">
+	SELECT
+		*
+	FROM
+		nantianerp.employee e,
+		contract c,
+		employee_postive ep
+	WHERE
+		e.employeeId = c.employeeId AND e.employeeId=ep.employeeId
+	AND e. STATUS = '1'
+	AND ep.`status` in ('1','2')
+	AND TO_DAYS(c.probationEndTime) &lt; TO_DAYS(NOW()) 
+</select>
+
+<select id="findAllVpNonPositive" resultType="map">
+	select 
+  info.employeeId,
+  info.name,
+  info.sex,
+  info.positionNo,
+  info.positionName,
+  info.rank,
+  info.currentPersonID,
+  info.firstDepartment,
+  info.secondDepartment ,
+  info.probationEndTime
+from
+  (SELECT 
+    e.`employeeId`,
+    e.`name`,
+    e.`sex`,
+    prr.positionNo,
+    prr.positionName,
+    e.`rank`,
+    ep.`currentPersonID`,
+    c.probationEndTime,
+    UNIX_TIMESTAMP(c.probationEndTime) - 1296000 AS endTestTime,
+    UNIX_TIMESTAMP() AS nowTime,
+    d1.`departmentName` AS firstDepartment,
+    d2.`departmentName` AS secondDepartment 
+  from
+    employee e INNER JOIN employee_postive ep on e.`employeeId` = ep.`employeeId`
+    INNER JOIN contract c on e.`employeeId` = c.`employeeId` 
+    LEFT JOIN department d1 on d1.`departmentId` = e.`firstDepartment` 
+    LEFT JOIN department d2 on d2.`departmentId` = e.`secondDepartment`
+    LEFT JOIN positionRankRelation prr on prr.positionNo=e.positionId
+    where e.`status`=1
+    and ep.`status`=1
+     AND ep.currentPersonID in 
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+         #{item}
+    </foreach>
+    ) as info ORDER BY info.endTestTime
+</select>
+
+<select id="findPostiveByEmployeeId"  resultType="com.nantian.erp.hr.data.model.ErpEmployeePostive">
+    SELECT
+      id,
+      currentPersonID,
+      employeeId,
+      status
+    FROM employee_postive
+    WHERE employeeId = #{employeeId}
+    AND status = 1
+</select>
+
+    <select id="findErrorCurrentPersonPostive" resultType="java.util.Map">
+        SELECT
+          ep.id,
+          ep.currentPersonID,
+          ep.employeeId,
+          ep.status,
+                ee.name,
+                dd.departmentName,
+                dd.userId seconduserId,
+                seconduser.`name` seconduserName,
+                ep.currentPersonID,
+                currentPerson.`name` currentPersonName
+        FROM employee_postive ep
+            LEFT JOIN employee ee ON ep.employeeId = ee.employeeId
+            LEFT JOIN department dd ON ee.secondDepartment = dd.departmentId
+            LEFT JOIN employee seconduser ON seconduser.employeeId = dd.userId
+            LEFT JOIN employee currentPerson ON currentPerson.employeeId = ep.currentPersonID
+        where ep.status = 1
+            AND ep.currentPersonID != dd.userId ORDER BY dd.userId
+    </select>
+
+    <update id="updateCurrentPersonIdById">
+        UPDATE employee_postive SET currentPersonID = #{newsecdeptManager}
+        WHERE id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpPostMapper">
+	
+	<resultMap id="positionDetailResultMap" type="Map">
+	    <result column="postId" property="postId"/>
+        <result column="applyPerson" property="applyPerson"/>
+        <result column="firstDepName" property="firstDepName"/>
+        <result column="seconfDepName" property="seconfDepName"/>
+        <result column="categoryName" property="categoryName"/>
+        <result column="postName" property="postName"/>
+        <result column="rank" property="rank"/>
+        <result column="salary" property="salary"/>
+        <result column="workAddress" property="workAddress"/>
+        <result column="applyDate" property="applyDate"/>
+        <result column="recruitCycle" property="recruitCycle"/>
+        <result column="numberPeople" property="numberPeople"/>
+        <result column="otherDuty" property="otherDuty"/>
+        <result column="otherRequire" property="otherRequire"/>
+
+      	<result column="proposerId" property="proposerId"/>
+      	<result column="firstDepartmentId" property="firstDepartmentId"/>
+      	<result column="secondDepartmentId" property="secondDepartmentId"/>
+      	<result column="approver" property="approver"/>
+      	<result column="approverName" property="approverName"/>
+      	<result column="categoryId" property="categoryId"/>
+      	<result column="principal" property="principal"/>
+      	<result column="principalName" property="principalName"/>
+      	<result column="positionRankId" property="positionRankId"/>
+      	<result column="city" property="city"/>
+      	<result column="district" property="district"/>
+      	<result column="county" property="county"/>
+      	<result column="detailAddress" property="detailAddress"/>
+      	<result column="reasonRecruit" property="reasonRecruit"/>
+      	<result column="reasonRecruitName" property="reasonRecruitName"/>
+      	<result column="levelPriority" property="levelPriority"/>
+      	<result column="levelPriorityName" property="levelPriorityName"/>
+        
+        <association property="look" javaType="java.util.Map">
+	        <result column="numberPeople" property="numberPeople"/>
+	        <result column="totalInterView" property="totalInterView"/>
+	        <result column="offerNum" property="offerNum"/>
+	        <result column="entryNum" property="entryNum"/>
+	    </association>
+        <collection property="record" column="{postId=postId}"
+        	ofType="com.nantian.erp.hr.data.model.PositionOperRecond" 
+         	javaType="java.util.List" select="com.nantian.erp.hr.data.dao.PositionOperReordMapper.findOperRecordByPostId">
+        </collection>
+	</resultMap>
+
+	<!-- 查询 所有的岗位  根据参数isClosed 判断结果是 发布中的或是已关闭的 -->
+	<select id="findPostByIsClosed" parameterType="map"  resultType="map">
+		SELECT a.postId,a.firstDepartment,a.secondDepartment,a.category,
+       		   a.required,a.duty,a.salary,a.numberPeople,a.isClosed,a.closedReason,
+               a.proposerEmail,a.postName
+ 		FROM post a WHERE 1 = 1
+ 		<if test="isClosed != null and isClosed != ''">
+			AND a.isClosed = #{isClosed}
+	    </if>
+	</select>
+	
+	<!-- 统计该岗位已入职人数 -->
+	<select id="getPostCountForEntry" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+		SELECT count(a.postId) 
+		FROM total_entried a
+		WHERE 1 = 1
+		<if test="postId != null and postId != ''">
+			AND a.postId = #{postId}
+	    </if>
+	</select>
+	
+	
+	<insert id="insertPost" parameterType="com.nantian.erp.hr.data.model.ErpPost">
+		 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="postId">
+       		 SELECT LAST_INSERT_ID() AS postId
+        </selectKey>
+		insert into post(
+			firstDepartment,secondDepartment,category,required,duty,numberPeople,
+			isClosed,closedReason,proposerId,status,postName,postTemplateId,salaryRange,
+			workAddress,recruitCycle,principal,principalLeader,work_address_city,work_address_district,work_address_county,
+			detail_address,date_submit, reason_recruit,level_priority,position_rank_id
+			)
+		values(
+			#{firstDepartment},#{secondDepartment},#{category},#{required},#{duty},#{numberPeople},
+			#{isClosed},#{closedReason},#{proposerId},#{status},#{postName},#{postTemplateId},#{salaryRange},
+			#{workAddress},#{recruitCycle},#{principal},#{principalLeader},#{city},#{district},#{county},
+			#{detailAddress},#{dateSubmit}, #{reasonRecruit},#{levelPriority},#{positionRankId}
+			)
+	</insert>
+	
+	<update id="updatePost" parameterType="com.nantian.erp.hr.data.model.ErpPost" >
+	    update post
+	    <set>
+	      <if test="firstDepartment != null" >
+	        firstDepartment = #{firstDepartment},
+	      </if>
+	      <if test="secondDepartment != null" >
+	        secondDepartment = #{secondDepartment},
+	      </if>
+	      <if test="category != null" >
+	        category = #{category},
+	      </if>
+	      <if test="required != null" >
+	        required = #{required},
+	      </if>
+	      <if test="duty != null" >
+	        duty = #{duty},
+	      </if>
+	      <if test="numberPeople != null" >
+	        numberPeople = #{numberPeople},
+	      </if>
+	      <if test="isClosed != null" >
+	        isClosed = #{isClosed},
+	      </if>
+	      <if test="closedReason != null" >
+	        closedReason = #{closedReason},
+	      </if>
+	      <if test="proposerId != null" >
+	        proposerId = #{proposerId},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="postName != null" >
+	        postName = #{postName},
+	      </if>
+	      <if test="postTemplateId != null" >
+	        postTemplateId = #{postTemplateId},
+	      </if>
+	      <if test="salaryRange != null" >
+	        salaryRange = #{salaryRange},
+	      </if>
+	      <if test="workAddress != null">
+	      workAddress = #{workAddress},
+	      </if>
+	      <if test="recruitCycle != null">
+	      recruitCycle = #{recruitCycle},
+	      </if>
+	      <if test="principal != null">
+	      	principal = #{principal},
+	      </if>
+	      <if test="principalLeader != null">
+	      	principalLeader = #{principalLeader},
+	      </if>
+	      <if test="city != null">
+	      	work_address_city = #{city},
+	      </if>
+	      <if test="district != null">
+	      	work_address_district = #{district},
+	      </if>
+	      <if test="county != null">
+	      	work_address_county = #{county},
+	      </if>
+	      <if test="detailAddress != null">
+	      	detail_address = #{detailAddress},
+	      </if>
+		  <if test="dateSubmit != null">
+	      	date_submit = #{dateSubmit},
+	      </if>
+	      <if test="reasonRecruit != null">
+	      	reason_recruit = #{reasonRecruit},
+	      </if>
+	      <if test="levelPriority != null">
+	      	level_priority = #{levelPriority},
+	      </if>
+	      <if test="positionRankId != null">
+	      	position_rank_id = #{positionRankId},
+	      </if>
+	    </set>
+	    where postId = #{postId}
+  </update>
+	
+	<select id="findAllPostList" resultType="com.nantian.erp.hr.data.model.ErpPost">
+		select p.* from post p,employee e 
+		WHERE p.proposerId=e.employeeId	
+		<if test="applyPerson != null and applyPerson != ''">
+			and e.name like CONCAT('%',#{applyPerson},'%')
+		</if>
+		<if test="postName != null and postName != ''">
+			AND p.postName like CONCAT('%',#{postName},'%')
+		</if>
+		<if test="applyDateStart!=null and applyDateStart!=''">
+			and p.date_submit &gt;= #{applyDateStart}
+		</if>
+		<if test="applyDateEnd!=null and applyDateEnd!=''">
+			and p.date_submit &lt;= #{applyDateEnd}
+		</if>
+		<if test="status != null">
+			<choose>
+                <when test="status == 1">
+                   AND p.status in (1,4)
+                </when>
+                <otherwise>
+                    AND p.status=#{status}
+                </otherwise>
+            </choose>
+		</if>
+		ORDER BY p.date_submit desc, p.postId desc
+	</select>
+	
+	<select id="findByPostId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		select p.postId,p.category,p.required,p.duty,p.numberPeople,p.isClosed,p.closedReason,p.proposerId,p.postName,
+		p.status,p.postTemplateId,p.firstDepartment as  firstDepartmentId,p.secondDepartment as secondDepartmentId,
+		d1.departmentName as "firstDepartment",d2.departmentName as "secondDepartment", d1.userId, d1.superLeader, p.salaryRange,
+		p.workAddress,p.recruitCycle
+		from post p
+		inner join department d1 on d1.departmentId=p.firstDepartment
+		inner join department d2 on d2.departmentId=p.secondDepartment
+		where p.postId = #{postId}
+	</select>
+	
+	<select id="findByPostIdNew" parameterType="java.lang.Integer" resultType="java.util.Map">
+		select p.postId,p.category,p.required,p.duty,p.numberPeople,p.isClosed,p.closedReason,p.proposerId,p.postName,
+		p.status,p.postTemplateId,p.firstDepartment as  firstDepartmentId,p.secondDepartment as secondDepartmentId,
+		d1.departmentName as "firstDepartment",d2.departmentName as "secondDepartment", d1.userId, d1.superLeader, p.salaryRange,
+		p.workAddress,p.recruitCycle,a.dic_name,p.work_address_city,p.work_address_district,p.work_address_county,p.detail_address,p.reason_recruit
+		from post p
+		inner join department d1 on d1.departmentId=p.firstDepartment
+		inner join department d2 on d2.departmentId=p.secondDepartment
+		LEFT JOIN admin_dic a on a.dic_code=p.reason_recruit
+		where p.postId = #{postId} and a.dic_type="POST_REASON_RECRUIT"
+	</select>
+	
+	
+	<select id="findByIsClosed" parameterType="java.lang.Boolean" resultType="java.util.Map">
+		select p.postId,p.category,p.required,p.duty,p.salary,p.numberPeople,p.isClosed,p.closedReason,p.proposerEmail,p.postName,
+		d1.departmentName as "firstDepartment",d2.departmentName as "secondDepartment",
+		a.dic_name as "categoryName",p.salaryRange
+		from post p
+		inner join department d1 on d1.departmentId=p.firstDepartment
+		inner join department d2 on d2.departmentId=p.secondDepartment
+		inner join admin_dic a on a.dic_code=p.category
+		where p.isClosed = #{isClosed} and a.dic_type='POST_CATEGORY'
+	</select>
+	
+	<select id="findAllCategoryFromAdminDic" resultType="java.util.Map">
+		select dic_code as "categoryId",dic_name as "categoryName"
+		from admin_dic
+		where dic_type='POST_CATEGORY'
+	</select>
+	
+	<select id="findInterviewerResumeByPostId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT
+			r.resumeId,
+			r.name,
+			r.birthday,
+			r.phone,
+			r.sex,
+			r.experience,
+			r.degree,
+			r.jobDirection,
+			r.isValid,
+			r.fileName,
+			r.email,
+			r.remark,
+			r.status,
+		 	r.isTrainee
+		FROM
+		 resume_post rp
+			left join resume r on r.resumeId=rp.resumeId
+			left join post p on p.postId=rp.postId
+		WHERE  1=1
+		AND p.postId  = #{postId}
+	</select>
+	
+	<select id="findOfferedResumeByPostId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		select
+			r.resumeId,
+			r.name,
+			r.birthday,
+			r.phone,
+			r.sex,
+			r.experience,
+			r.degree,
+			r.jobDirection,
+			r.isValid,
+			r.fileName,
+			r.email,
+			r.remark,
+			r.status,
+		 	r.isTrainee
+	from offer o
+	left join resume_post rp on rp.id=o.interviewId
+	left join post p on p.postId=rp.postId
+  LEFT JOIN resume r on r.resumeId=rp.resumeId
+	where o.status in (1,2) and p.postId = #{postId}
+	</select>
+	
+	<select id="findEntriedResumeByPostId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT
+		  r.resumeId,
+			r.name,
+			r.birthday,
+			r.phone,
+			r.sex,
+			r.experience,
+			r.degree,
+			r.jobDirection,
+			r.isValid,
+			r.fileName,
+			r.email,
+			r.remark,
+			r.status,
+		  r.isTrainee
+		from employee_entry ee
+		left join offer o on o.offerId=ee.offerId
+		left join resume_post rp on rp.id=o.interviewId
+	  	LEFT JOIN   resume r on r.resumeId=rp.resumeId
+		left join post p on p.postId=rp.postId
+		where ee.status=2 
+  		and p.postId = #{postId}
+	</select>
+	
+	<select id="findPostByPostIds" parameterType="java.util.List" resultType="com.nantian.erp.hr.data.model.ErpPost">
+		select * from post
+		where postId  in
+		<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findPostByProposerId"  resultType="com.nantian.erp.hr.data.model.ErpPost">
+		select * from post p
+		where p.proposerId = #{proposerId}
+		<if test="proposerId != null">
+			AND p.proposerId=#{proposerId}
+		</if>
+		<if test="postName != null and postName != ''">
+			AND p.postName like CONCAT('%',#{postName},'%') 
+		</if>
+		<if test="applyDateStart!=null and applyDateStart!=''">
+			and p.date_submit &gt;= #{applyDateStart}
+		</if>
+		<if test="applyDateEnd!=null and applyDateEnd!=''">
+			and p.date_submit &lt;= #{applyDateEnd}
+		</if>
+		<if test="status != null">
+			<choose>
+                <when test="status == 1">
+                   AND p.status in (1,4,5)
+                </when>
+                <otherwise>
+                    AND p.status=#{status}
+                </otherwise>
+            </choose>
+		</if>
+		order by p.date_submit desc,  p.postId desc
+	</select>
+	
+	<delete id="deleteById" >
+		delete from post 
+		where postId = #{postId}
+	</delete>
+<!-- 	查找发布中的岗位 -->
+	<select id="findPostByStatus" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.ErpPost">
+		SELECT a.*
+ 		FROM post a 
+ 		LEFT JOIN department d1 ON d1.departmentId = a.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = a.secondDepartment
+		<where>
+		<if test="status != null and status != ''">
+				AND a.status = #{status}
+		</if>
+		<if test="superLeaderId != null">
+				AND d1.superLeader=#{superLeaderId}
+		</if>
+		<if test="leaderId != null">
+			AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+		</if>
+		order by a.date_submit desc, a.postId desc
+		</where>
+	</select>
+	
+	<select id="countPostStatus" resultType="java.lang.Integer" >
+		SELECT count(*) from post
+		where status in(1,2,3)
+		and postTemplateId = #{postTemplateId}
+	</select>
+	<select id="findRepeatPost" resultType="java.lang.Integer">
+			SELECT count(*) from post
+		where status in (1,2)
+		and proposerId = #{proposerId}
+		and postName = #{postName}
+	</select>
+	
+	<select id="findPostByPostId" resultType="com.nantian.erp.hr.data.model.ErpPost">
+		select * from post
+		where postId = #{postId}
+		
+	</select>	
+	
+	<!-- 查询所有岗位列表 -->
+	<select id="findAllPositionList" resultType="com.nantian.erp.hr.data.vo.ErpPositionQueryResultVO" parameterType="com.nantian.erp.hr.data.vo.ErpPositionQueryParamVO">
+	
+		SELECT
+			p.postId postId,
+			applyperson.employeeId applyId,
+			applyperson.name applyPersonName,
+			DATE_FORMAT(p.date_submit,'%Y-%m-%d') applyDate,
+			d1.departmentName firstDepartmentName,
+			d2.departmentName secondDepartmentName,
+			postcategory.dic_name postCategoryName,
+			p.postName postName,
+			prr.rank rank,
+			CASE WHEN p.status = 1 THEN '审批中'
+					 WHEN p.status = 2 THEN '发布中' 
+					 WHEN p.status = 3 THEN '已关闭' 
+		       WHEN p.status = 4 THEN '待审批'
+		       WHEN p.status = 5 THEN '待提交' 
+		       WHEN p.status = 6 THEN '暂停' 
+					 ELSE '' END statusName,
+			p.status status,
+			p.numberPeople numberPeople,
+			currentperson.name currentPersonName,
+			principalperson.name principalName,
+			priority.dic_name levelPriority,
+			hrperson.name hrCharge,
+			IFNULL(rp.totalInterView, 0)  totalInterView,
+			IFNULL(o.offerNum, 0)  offerNum,
+			IFNULL(ee.entryNum , 0) entryNum
+		FROM
+			post p
+		LEFT JOIN employee applyperson ON p.proposerId = applyperson.employeeId
+		LEFT JOIN department d1 ON d1.departmentId = p.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = p.secondDepartment
+		LEFT JOIN admin_dic postcategory ON postcategory.dic_type = 'POST_CATEGORY' AND p.category = postcategory.dic_code
+		LEFT JOIN positionRankRelation prr ON p.position_rank_id = prr.positionNo
+		LEFT JOIN positionApplyProgress pap ON p.postId = pap.postId
+		LEFT JOIN employee currentperson ON pap.currentPersonID = currentperson.employeeId
+		LEFT JOIN employee principalperson ON p.principal = principalperson.employeeId
+		LEFT JOIN admin_dic priority ON priority.dic_type = 'POST_LEVEL_PRIORITY' AND p.level_priority = priority.dic_code
+		LEFT JOIN employee hrperson ON p.person_charge = hrperson.employeeId
+		LEFT JOIN (
+				SELECT count(rp.resumeId)  totalInterView, p.postId FROM post p  	
+				left join resume_post rp on p.postId=rp.postId
+				GROUP BY p.postId
+		) rp on p.postId=rp.postId
+		LEFT JOIN (
+			select count(o.offerId) offerNum,p.postId postId
+			from post p
+			left join resume_post rp on  p.postId=rp.postId 
+			left join  offer o on rp.id=o.interviewId
+			where o.status in (1,2)
+			GROUP BY p.postId
+		)o ON p.postId = o.postId 
+		LEFT JOIN (
+			select count(ee.id) entryNum,p.postId postId
+				from post p 
+			left join resume_post rp on p.postId=rp.postId
+			left join offer o on rp.id=o.interviewId
+			left join employee_entry ee on o.offerId=ee.offerId
+			where ee.status=2
+			GROUP BY p.postId
+		)ee ON p.postId = ee.postId 
+		<include refid="queryParam"/>
+		order by date_submit desc, p.postId desc
+	</select>
+	
+	<!-- 查询所有岗位列表总数 -->
+	<select id="countPositionList" resultType="java.lang.Integer" parameterType="com.nantian.erp.hr.data.vo.ErpPositionQueryParamVO">
+		SELECT count(p.postId)
+		FROM post p
+		LEFT JOIN employee applyperson ON p.proposerId = applyperson.employeeId
+		LEFT JOIN department d1 ON d1.departmentId = p.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = p.secondDepartment
+		LEFT JOIN admin_dic postcategory ON postcategory.dic_type = 'POST_CATEGORY' AND p.category = postcategory.dic_code
+		LEFT JOIN positionRankRelation prr ON p.position_rank_id = prr.positionNo
+		LEFT JOIN positionApplyProgress pap ON p.postId = pap.postId
+		LEFT JOIN employee currentperson ON pap.currentPersonID = currentperson.employeeId
+		LEFT JOIN employee principalperson ON p.principal = principalperson.employeeId
+		LEFT JOIN admin_dic priority ON priority.dic_type = 'POST_LEVEL_PRIORITY' AND p.level_priority = priority.dic_code
+		LEFT JOIN employee hrperson ON p.person_charge = hrperson.employeeId
+		LEFT JOIN (
+				SELECT count(rp.resumeId)  totalInterView, p.postId FROM post p  	
+				left join resume_post rp on p.postId=rp.postId
+				GROUP BY p.postId
+		) rp on p.postId=rp.postId
+		LEFT JOIN (
+			select count(o.offerId) offerNum,p.postId postId
+			from post p
+			left join resume_post rp on  p.postId=rp.postId 
+			left join  offer o on rp.id=o.interviewId
+			where o.status in (1,2)
+			GROUP BY p.postId
+		)o ON p.postId = o.postId 
+		LEFT JOIN (
+			select count(ee.id) entryNum,p.postId postId
+				from post p 
+			left join resume_post rp on p.postId=rp.postId
+			left join offer o on rp.id=o.interviewId
+			left join employee_entry ee on o.offerId=ee.offerId
+			where ee.status=2
+			GROUP BY p.postId
+		)ee ON p.postId = ee.postId 
+		<include refid="queryParam"/>
+	</select>
+
+
+	<!-- 查询导出所有岗位列表 -->
+	<select id="findAllExportPositionList" resultType="com.nantian.erp.hr.data.vo.ErpPositionQueryResultVO" parameterType="com.nantian.erp.hr.data.vo.ErpPositionQueryParamVO">
+
+		SELECT
+			p.postId postId,
+			applyperson.name applyPersonName,
+			DATE_FORMAT(p.date_submit,'%Y-%m-%d') applyDate,
+			d1.departmentName firstDepartmentName,
+			d2.departmentName secondDepartmentName,
+			postcategory.dic_name postCategoryName,
+			p.postName postName,
+			prr.rank rank,
+			p.status status,
+			p.numberPeople numberPeople,
+			currentperson.name currentPersonName,
+			principalperson.name principalName,
+			priority.dic_name levelPriority,
+			p.level_priority levelPriorityId,
+			hrperson.name hrCharge,
+			reasonRecruit.dic_name reasonRecruit,
+			p.salaryRange salaryRange
+		FROM
+			post p
+			LEFT JOIN employee applyperson ON p.proposerId = applyperson.employeeId
+			LEFT JOIN department d1 ON d1.departmentId = p.firstDepartment
+			LEFT JOIN department d2 ON d2.departmentId = p.secondDepartment
+			LEFT JOIN admin_dic postcategory ON postcategory.dic_type = 'POST_CATEGORY' AND p.category = postcategory.dic_code
+			LEFT JOIN positionRankRelation prr ON p.position_rank_id = prr.positionNo
+			LEFT JOIN positionApplyProgress pap ON p.postId = pap.postId
+			LEFT JOIN employee currentperson ON pap.currentPersonID = currentperson.employeeId
+			LEFT JOIN employee principalperson ON p.principal = principalperson.employeeId
+			LEFT JOIN admin_dic priority ON priority.dic_type = 'POST_LEVEL_PRIORITY' AND p.level_priority = priority.dic_code
+			LEFT JOIN employee hrperson ON p.person_charge = hrperson.employeeId
+			LEFT JOIN admin_dic reasonRecruit ON reasonRecruit.dic_type = 'POST_REASON_RECRUIT' AND p.reason_recruit = reasonRecruit.dic_code
+		<include refid="queryParam"/>
+			order by date_submit desc, p.postId desc
+	</select>
+
+	<!-- 查询所有岗位列表查询条件 -->
+	<sql id="queryParam">
+		<where>
+			<if test="status!=null">
+				<choose>
+					<when test="status == 1">
+						AND p.status in (1,4)
+					</when>
+					<otherwise>
+						AND p.status=#{status}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="applyDateStart!=null and applyDateStart!=''">
+				and p.date_submit &gt;= #{applyDateStart}
+			</if>
+			<if test="applyDateEnd!=null and applyDateEnd!=''">
+				and p.date_submit &lt;= #{applyDateEnd}
+			</if>
+			<if test="applyPerson!=null and applyPerson!=''">
+				and applyperson.name like CONCAT('%',#{applyPerson},'%')
+			</if>
+			<if test="interfacePerson!=null and interfacePerson!=''">
+				and principalperson.name like CONCAT('%',#{interfacePerson},'%')
+			</if>
+			<if test="hrCharge!=null and hrCharge!=''">
+				and hrperson.name like CONCAT('%',#{hrCharge},'%')
+			</if>
+			<if test="firstDepartment!=null">
+				and p.firstDepartment = #{firstDepartment}
+			</if>
+			<if test="secondDepartment!=null">
+				and p.secondDepartment = #{secondDepartment}
+			</if>
+			<if test="postName!=null and postName!=''">
+				and p.postName like CONCAT('%',#{postName},'%')
+			</if>
+			<if test="rank!=null">
+				and p.level_priority = #{rank}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据岗位id修改HR负责人  -->
+	<update id="updateHrChargeById" >
+		update post set person_charge = #{hrChargeId}  where postId = #{postId} 
+	</update>
+	
+	
+	<select id="findPositionDetailByPostId" resultMap="positionDetailResultMap" parameterType="java.lang.Integer">
+		SELECT
+			p.postId postId,
+			applyperson.employeeId proposerId,
+			applyperson.name applyPerson,
+			d1.departmentId firstDepartmentId,
+			d1.departmentName firstDepName,
+			d2.departmentId secondDepartmentId,
+			d2.departmentName seconfDepName,
+			approver.employeeId approver,
+			approver.name approverName,
+			CAST(p.category AS SIGNED) categoryId,
+			postcategory.dic_name categoryName,
+			p.principal principal,
+			principal.name principalName,
+			p.postName postName,
+			p.position_rank_id positionRankId,
+			p.work_address_city city,
+			p.work_address_district district,
+			p.work_address_county county,
+			case when p.detail_address is null then p.workAddress else p.detail_address end detailAddress,
+			p.reason_recruit reasonRecruit,
+			reasonRecruit.dic_name reasonRecruitName,
+			p.level_priority levelPriority,
+			levelPriority.dic_name levelPriorityName,
+			CONCAT(prr.positionName, '(', prr.rank ,')') rank,
+			p.salaryRange salary,
+			CONCAT(p.work_address_city,p.work_address_district,p.work_address_county,p.workAddress) workAddress,
+			DATE_FORMAT(p.date_submit,'%Y-%m-%d') applyDate,
+		    p.recruitCycle recruitCycle,
+			p.numberPeople numberPeople,
+		    p.required otherRequire,
+		    p.duty otherDuty,
+		    IFNULL(rp.totalInterView, 0)  totalInterView,
+			IFNULL(o.offerNum, 0)  offerNum,
+			IFNULL(ee.entryNum , 0)entryNum
+		FROM
+			post p
+		LEFT JOIN employee applyperson ON p.proposerId = applyperson.employeeId
+		LEFT JOIN employee approver ON p.principalLeader = approver.employeeId
+		LEFT JOIN employee principal ON p.principal = principal.employeeId
+		LEFT JOIN department d1 ON d1.departmentId = p.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = p.secondDepartment
+		LEFT JOIN admin_dic postcategory ON postcategory.dic_type = 'POST_CATEGORY' AND p.category = postcategory.dic_code		
+		LEFT JOIN admin_dic reasonRecruit ON reasonRecruit.dic_type = 'POST_REASON_RECRUIT' AND p.reason_recruit = reasonRecruit.dic_code
+		LEFT JOIN admin_dic levelPriority ON levelPriority.dic_type = 'POST_LEVEL_PRIORITY' AND p.level_priority = levelPriority.dic_code
+		LEFT JOIN positionRankRelation prr ON p.position_rank_id = prr.positionNo
+		LEFT JOIN (
+				SELECT count(rp.resumeId)  totalInterView, p.postId FROM post p  	
+				left join resume_post rp on p.postId=rp.postId
+				GROUP BY p.postId
+		) rp on p.postId=rp.postId
+		LEFT JOIN (
+			select count(o.offerId) offerNum,p.postId postId
+			from post p
+			left join resume_post rp on  p.postId=rp.postId 
+			left join  offer o on rp.id=o.interviewId
+			where o.status in (1,2)
+			GROUP BY p.postId
+		)o ON p.postId = o.postId 
+		LEFT JOIN (
+			select count(ee.id) entryNum,p.postId postId
+				from post p 
+			left join resume_post rp on p.postId=rp.postId
+			left join offer o on rp.id=o.interviewId
+			left join employee_entry ee on o.offerId=ee.offerId
+			where ee.status=2
+			GROUP BY p.postId
+		)ee ON p.postId = ee.postId 
+		WHERE p.postId = #{postId} 
+	</select>
+	<select id="findWaitPostByProposerId" resultType="com.nantian.erp.hr.data.model.ErpPost">
+		SELECT postId, status FROM post WHERE principal = #{employeeId}  AND status IN (1,4)
+	</select>
+
+
+</mapper>

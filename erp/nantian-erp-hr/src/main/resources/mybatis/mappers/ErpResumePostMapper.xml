@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpResumePostMapper"> 
+
+<insert id="insertResumePost" parameterType="com.nantian.erp.hr.data.model.ErpResumePost">
+	 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+       		 SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	INSERT INTO resume_post(
+		resumeId,postId,personId,status,isValid,segment
+		)
+	VALUES(
+		#{resumeId},#{postId},#{personId},#{status},#{isValid},#{segment}
+		)		
+</insert>
+
+<delete id="deleteByInterviewId" parameterType="java.lang.Integer">
+	delete from resume_post
+	where id = #{interviewId}
+</delete>
+
+<delete id="deleteByPostId" parameterType="java.lang.Integer">
+	delete from resume_post
+	where postId = #{postId}
+</delete>
+
+<update id="updateResumePost" parameterType="com.nantian.erp.hr.data.model.ErpResumePost">
+    update resume_post
+    <set>
+      <if test="resumeId != null" >
+        resumeId = #{resumeId},
+      </if>
+      <if test="postId != null" >
+        postId = #{postId},
+      </if>
+      <if test="personId != null" >
+        personId = #{personId},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="isValid != null" >
+        isValid = #{isValid},
+      </if>
+      <if test="segment != null" >
+        segment = #{segment}
+      </if>
+    </set>
+    where id = #{id}
+</update>
+
+<select id="findResumePostInfoByParams" parameterType="java.util.Map" resultType="java.util.Map">
+	select rp.id as "interviewId",rp.resumeId,rp.postId,rp.personId,
+		r.isTrainee,r.name,r.sex,r.birthday,r.phone,r.email,r.experience,r.degree,r.jobDirection,r.remark,r.fileName,
+		a1.dic_name as "statusName",a2.dic_name as "segmentName",
+		rpo.attention,rpo.time,
+		p.postName,e1.name as "postApply",e2.name as "handlerName",GROUP_CONCAT(record.processor)  recordProcessor
+	from resume_post rp
+	left join resume r on rp.resumeId=r.resumeId
+	left join resume_post_order rpo on rpo.interviewId=rp.id
+	left join admin_dic a1 on rp.status=a1.dic_code
+	left join admin_dic a2 on rp.segment=a2.dic_code
+	left join post p on p.postId=rp.postId
+	left join employee e1 on e1.employeeId=p.proposerId
+	left join employee e2 on e2.employeeId=rp.personId
+	LEFT JOIN department d1 ON d1.departmentId = p.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = p.secondDepartment
+	LEFT JOIN record record ON record.resumeId = r.resumeId
+	
+	where a1.dic_type='INTERVIEW_STATUS_TYPE' and a2.dic_type='INTERVIEW_SEGMENT_TYPE'
+	<if test="isValid != null" >
+    	and rp.isValid = #{isValid}
+    </if>
+	<if test="personId != null" >
+    	and rp.personId = #{personId}
+    </if>
+	<if test="processorId != null" >
+		AND ((record.processorId IS NOT NULL and record.processorId = #{processorId}) OR (record.processorId IS NULL and record.processor = #{processorName}))
+	</if>
+    <if test="status != null" >
+        and rp.status = #{status}
+    </if>
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="segment != null">
+		AND rp.segment=#{segment}
+		AND rp.personId != #{decpersonId}
+	</if>
+	GROUP BY  rp.id
+	ORDER BY rpo.time DESC
+</select>
+
+<select id="findResumePostInfoForPlace" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select r.name,p.proposerId,pt.postName,rpo.method,rpo.time,a1.dic_name as "contactName",a2.dic_name as "placeName"
+	from resume_post rp
+	left join resume r on r.resumeId=rp.resumeId
+	left join post p on p.postId=rp.postId
+	left join postTemplate pt on pt.postTemplateId=p.postTemplateId
+	left join resume_post_order rpo on rpo.interviewId=rp.id
+	left join admin_dic a1 on a1.dic_code=rpo.contactId and a1.dic_type='INTERVIEW_ORDER_CONTACT'
+	left join admin_dic a2 on a2.dic_code=rpo.placeId and a2.dic_type='INTERVIEW_ORDER_PLACE'
+	where rp.id = #{interviewId}
+</select>
+
+<select id="findResumePostInfoForPhone" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select r.name,p.proposerId,pt.postName,rpo.method,rpo.time
+	from resume_post rp
+	left join resume r on r.resumeId=rp.resumeId
+	left join post p on p.postId=rp.postId
+	left join postTemplate pt on pt.postTemplateId=p.postTemplateId
+	left join resume_post_order rpo on rpo.interviewId=rp.id
+	where rp.id = #{interviewId}
+</select>
+
+<select id="findPositionRankList" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select prr.positionNo,prr.positionName,prr.rank
+	from post p
+	left join postTemplate pt on pt.postTemplateId=p.postTemplateId
+	left join positionRankRelation prr on prr.positionType=pt.jobCategory
+	and prr.positionChildType=pt.positionChildType
+	and prr.positionFamilyType=pt.familyId
+	where p.postId=#{postId}
+</select>
+
+<select id="selectCountAllInterview" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*)
+	from resume_post rp
+	left join post p on p.postId=rp.postId
+	where p.postId=#{postId}
+</select>
+
+<select id="findByPostId" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.ErpResumePost">
+	select resumeId,postId,personId,status
+	from resume_post
+	where postId = #{postId}
+</select>
+
+<select id="findTraineePositionRankList" resultType="com.nantian.erp.hr.data.model.ErpPositionRankRelation">
+	SELECT
+	prr.positionNo,
+	prr.rank
+	FROM
+	admin_dic a,
+	positionRankRelation prr,
+	admin_dic a1,
+	admin_dic a2
+	WHERE
+	a.dic_code = prr.positionFamilyType AND a.dic_code = 'TRAINEE_POSITION_RANK'
+	and a1.dic_code=prr.positionType and prr.positionType=1 and a1.dic_type='TRAINEE_POSITION_RANK'
+	and a2.dic_code=prr.positionChildType and prr.positionChildType=1 and a2.dic_type='TRAINEE_POSITION_RANK1'
+</select>
+
+<select id="findResumePostInfoById" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select *
+	from resume_post rp
+	where rp.id = #{interviewId}
+</select>
+
+<!-- 根据简历id查询面试id列表 -->
+<select id="findIdsByResumeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select id from resume_post where resumeId = #{resumeId}
+</select>
+
+<!-- 根据面试id列表修改面试为失效 -->
+<update id="updateValidFalseByIds">
+	update resume_post set isValid = 0 where id in 
+		<foreach collection="resumePostIds" item="resumePostId" open="(" separator="," close=")">
+			#{resumePostId} 
+		</foreach>
+</update>
+
+</mapper>

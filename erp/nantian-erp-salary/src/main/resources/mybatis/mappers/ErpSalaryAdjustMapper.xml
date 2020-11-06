@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpSalaryAdjustMapper">
+
+  <!-- <resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.ErpSalaryAdjustFlow" >
+    <constructor >
+      <idArg column="salary_adjust_temp_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="employee_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="base_wage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="post_wage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="month_performance_wage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="month_project_performance_wage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="application_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="effective_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+	
+	查询薪资流程表中是否含该员工未审批记录
+	<select id="findUnapproveByEmpId" parameterType="map" resultType="map">
+	select a.* from erp_salary_adjust_flow a where a.type in('0','1') 
+	<if test="employeeId != null and employeeId != ''">
+	and a.employee_id=#{employeeId}
+	</if>
+	</select>
+	
+	创建调薪申请
+	<insert id="createErpSalaryAdjustFlow" parameterType="map">
+		insert into erp_salary_adjust_flow(salary_adjust_flow_id,employee_id,basic_wage,post_wage,month_performance_wage,month_project_performance_wage,
+		application_time,effective_time,type)
+		values(#{salaryAdjustFlowId},#{employeeId},#{baseWage},#{postWage},#{monthPerformanceWage},
+		#{monthProjectPerformanceWage},#{applicationTime},#{effectiveTime},#{type})
+	</insert>
+	
+	创建调薪记录
+	<insert id="createErpSalaryAdjustApproveRecord" parameterType="map">
+		insert into erp_salary_adjust_approve_record(salary_adjust_approve_record_id,salary_adjust_flow_id,employee_id,time,content,processor)
+		values(#{salaryAdjustApproveRecordId},#{salaryAdjustFlowId},#{employeeId},#{time},#{content},#{processor})
+	</insert>
+	
+	在流程表中查询未审批员工IDs
+	<select id="findUnapproveEmpIdsInFlow" parameterType="map" resultType="Integer">
+		select a.employee_id employeeId from erp_salary_adjust_flow a where a.type in('0','1')
+	</select>
+	
+	查询转正员工薪资调整所有待我处理
+	<select id="findAllPositiveSalAdjusIndividualtApproval" parameterType="map" resultType="map">
+		SELECT
+			pay.erp_positive_base_wage baseWage,
+			pay.erp_positive_post_wage postWage,
+			pay.erp_positive_performance performance,
+			pay.erp_positive_allowance allowance,
+			adjflow.type,
+			adjflow.salary_adjust_flow_id salaryAdjustFlowId,
+			adjflow.basic_wage afterBaseWage,
+			adjflow.post_wage afterPostWage,
+			adjflow.month_performance_wage afterPerformance,
+			adjflow.month_project_performance_wage afterAllowance,
+			adjflow.effective_time effectiveTime
+		FROM
+			nantiansalary.erp_salary_adjust_flow adjflow
+			LEFT JOIN nantiansalary.erp_positive_payroll pay ON adjflow.`employee_id` = pay.`erp_employee_id`
+		WHERE
+			adjflow.type IN ('0','1')
+			<if test="employeeId != null and employeeId != ''">
+			AND adjflow.employee_id=#{employeeId}
+			</if>
+	</select>
+	查询试用期员工薪资调整所有待我处理
+	<select id="findAllPeriodSalAdjusIndividualtApproval" parameterType="map" resultType="map">
+		SELECT
+			per.erp_period_base_wage baseWage,
+			per.erp_period_post_wage postWage,
+			per.erp_period_performance performance,
+			per.erp_period_allowance allowance,
+			adjflow.type,
+			adjflow.salary_adjust_flow_id salaryAdjustFlowId,
+			adjflow.basic_wage afterBaseWage,
+			adjflow.post_wage afterPostWage,
+			adjflow.month_performance_wage afterPerformance,
+			adjflow.month_project_performance_wage afterAllowance,
+			adjflow.effective_time effectiveTime
+		FROM
+			nantiansalary.erp_salary_adjust_flow adjflow
+			LEFT JOIN nantiansalary.erp_period_payroll  per on adjflow.employee_id=per.erp_employee_id
+		WHERE
+			adjflow.type IN ('0','1')
+			<if test="employeeId != null and employeeId != ''">
+			AND adjflow.employee_id=#{employeeId}
+			</if>
+	</select>
+
+	查询薪资调整流程表ID
+	<select id="findFlowIdByEmployeeId" parameterType="map" resultType="Integer">
+		SELECT
+			a.salary_adjust_flow_id salaryAdjustFlowId
+		FROM
+			erp_salary_adjust_flow a
+		WHERE
+			a.type IN ('0', '1')
+		<if test="employeeId != null and employeeId != ''">
+		AND a.employee_id = #{employeeId}
+		</if>
+	</select>
+	
+		查询薪资调整审批记录
+	<select id="findApproveRecordByFlowId" parameterType="map" resultType="map">
+		SELECT
+			a.salary_adjust_flow_id salaryAdjustFlowId,
+			a.employee_id employeeId,
+			a.content,
+			a.processor,
+			a.time
+		FROM
+			erp_salary_adjust_approve_record a
+		WHERE 1=1
+		<if test="salaryAdjustFlowId != null and salaryAdjustFlowId != ''">
+		AND a.salary_adjust_flow_id=#{salaryAdjustFlowId}
+		</if>	
+	</select>
+	
+	更新调资申请流程表
+	<update id="updateSalAdjustFlowOfType">
+		update erp_salary_adjust_flow set type="2" where salary_adjust_flow_id=#{salaryAdjustFlowId}			
+	</update>
+
+	更新薪资调整审批状态为待生效
+	<update id="updateSalAdjustFlowType">
+		update erp_salary_adjust_flow set type="1" where salary_adjust_flow_id=#{salaryAdjustFlowId}		
+	</update>
+
+	在流程表中查询已审批员工IDs
+	<select id="findApprovedEmpIdsInFlow" parameterType="map" resultType="Integer">
+		select a.employee_id employeeId from erp_salary_adjust_flow a where a.type='2'
+	</select>
+	
+	修改上岗工资单
+	<update id="updatePositivePayrollByEmpId" parameterType="com.nantian.erp.salary.data.model.ErpPositivePayroll">
+		update nantiansalary.erp_positive_payroll set
+			erp_positive_base_wage = #{erpPositiveBaseWage},
+			erp_positive_post_wage = #{erpPositivePostWage},
+			erp_positive_performance = #{erpPositivePerformance},
+			erp_positive_allowance = #{erpPositiveAllowance}
+		where 1 = 1
+		<if test="erpEmployeeId != null and erpEmployeeId != ''">
+			AND erp_employee_id = #{erpEmployeeId}
+		</if>
+		
+		</update>
+		
+		修改试用期工资单
+	<update id="updatePeriodPayrollByEmpId" parameterType="com.nantian.erp.salary.data.model.ErpPeriodPayroll">
+		update nantiansalary.erp_period_payroll set
+			erp_period_base_wage = #{erpPeriodBaseWage},
+			erp_period_post_wage = #{erpPeriodPostWage},
+			erp_period_performance = #{erpPeriodPerformance},
+			erp_period_allowance = #{erpPeriodAllowance}			
+		where 1 = 1
+		<if test="erpEmployeeId != null and erpEmployeeId != ''">
+			AND erp_employee_id = #{erpEmployeeId}
+		</if>
+	</update>
+	
+	查询所有转正员工调资申请	
+	<select id="findAllPositionSalAdjustApproval" parameterType="map" resultType="map">
+		SELECT
+				pay.erp_positive_base_wage baseWage,
+				pay.erp_positive_post_wage postWage,
+				pay.erp_positive_performance performance,
+				pay.erp_positive_allowance allowance,
+				adjflow.salary_adjust_flow_id salaryAdjustFlowId,
+				adjflow.basic_wage afterBaseWage,
+				adjflow.post_wage afterPostWage,
+				adjflow.month_performance_wage afterPerformance,
+				adjflow.month_project_performance_wage afterAllowance,
+				adjrec.processor
+			FROM
+				nantiansalary.erp_salary_adjust_flow adjflow
+			LEFT JOIN nantiansalary.erp_positive_payroll pay ON adjflow.`employee_id` = pay.`erp_employee_id`
+			LEFT JOIN nantiansalary.erp_salary_adjust_approve_record adjrec ON adjrec.`salary_adjust_flow_id` = adjflow.`salary_adjust_flow_id`
+			WHERE
+				adjrec.content = "申请" AND adjflow.type='2'
+			<if test="employeeId != null and employeeId != ''">
+			AND adjflow.employee_id=#{employeeId}
+			</if>
+	</select>
+	
+	查询所有试用期员工调资申请	
+	<select id="findAllPeriodSalAdjustApproval" parameterType="map" resultType="map">
+		SELECT
+				per.erp_period_base_wage baseWage,
+				per.erp_period_post_wage postWage,
+				per.erp_period_performance performance,
+				per.erp_period_allowance allowance,
+				adjflow.salary_adjust_flow_id salaryAdjustFlowId,
+				adjflow.basic_wage afterBaseWage,
+				adjflow.post_wage afterPostWage,
+				adjflow.month_performance_wage afterPerformance,
+				adjflow.month_project_performance_wage afterAllowance,
+				adjrec.processor
+			FROM
+				nantiansalary.erp_salary_adjust_flow adjflow
+			LEFT JOIN nantiansalary.erp_period_payroll per ON adjflow.`employee_id` = per.`erp_employee_id`
+			LEFT JOIN nantiansalary.erp_salary_adjust_approve_record adjrec ON adjrec.`salary_adjust_flow_id` = adjflow.`salary_adjust_flow_id`
+			WHERE
+				adjrec.content = "申请" AND adjflow.type='2'
+			<if test="employeeId != null and employeeId != ''">
+			and adjflow.employee_id=#{employeeId}
+			</if>
+	</select>
+	
+	通过员工ID查询审批记录
+	<select id="findApproveRecordByEmpId" parameterType="map" resultType="map">
+		SELECT
+			a.salary_adjust_flow_id salaryAdjustFlowId,
+			a.employee_id employeeId,
+			a.content,
+			a.processor,
+			a.time
+		FROM
+			erp_salary_adjust_approve_record a
+		WHERE 1=1
+		<if test="employeeId != null and employeeId != ''">
+		AND a.employee_id=#{employeeId}
+		</if>	
+	</select> -->
+
+	<resultMap id="BaseResultMap" type="com.nantian.erp.salary.data.model.SalaryAdjustRecord" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="erp_employee_id" property="employeeId" jdbcType="INTEGER" />
+		<result column="approverId" property="approverid" jdbcType="INTEGER" />
+		<result column="adjust_time" property="adjustTime" jdbcType="VARCHAR" />
+		<result column="former_base_wage" property="formerBaseWage" jdbcType="VARCHAR" />
+		<result column="former_post_wage" property="formerPostWage" jdbcType="VARCHAR" />
+		<result column="former_performance" property="formerPerformance" jdbcType="VARCHAR" />
+		<result column="former_allowance" property="formerAllowance" jdbcType="VARCHAR" />
+		<result column="former_tel_fare_perquisite" property="formerTelFarePerquisite" jdbcType="VARCHAR" />
+		<result column="adjust_base_wage" property="adjustBaseWage" jdbcType="VARCHAR" />
+		<result column="adjust_post_wage" property="adjustPostWage" jdbcType="VARCHAR" />
+		<result column="adjust_performance" property="adjustPerformance" jdbcType="VARCHAR" />
+		<result column="adjust_allowance" property="adjustAllowance" jdbcType="VARCHAR" />
+		<result column="adjust_tel_fare_perquisite" property="adjustTelFarePerquisite" jdbcType="VARCHAR" />
+		<result column="adjust_reason" property="adjustReason" jdbcType="VARCHAR" />
+		<result column="adjust_batch" property="adjustBatch" jdbcType="INTEGER" />
+		<result column="adjust_status" property="adjustStatus" jdbcType="INTEGER" />
+		<result column="approver_time" property="approverTime" jdbcType="TIMESTAMP" />
+		<result column="former_social_security_base" property="formerSocialSecurityBase" jdbcType="VARCHAR" />
+		<result column="former_accumulation_fund_base" property="formerAccumulationFundBase" jdbcType="VARCHAR" />
+		<result column="adjust_social_security_base" property="adjustSocialSecurityBase" jdbcType="VARCHAR" />
+		<result column="adjust_accumulation_fund_base" property="adjustAccumulationFundBase" jdbcType="VARCHAR" />
+		<result column="submit_person_id" property="submitPersonId" jdbcType="INTEGER" />
+		<result column="modified" jdbcType="BIT" property="modified" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+    id, erp_employee_id, approverId, adjust_time, former_base_wage, former_post_wage,
+    former_performance, former_allowance, former_tel_fare_perquisite, adjust_base_wage,
+    adjust_post_wage, adjust_performance, adjust_allowance, adjust_tel_fare_perquisite,
+    adjust_reason, adjust_batch, adjust_status, approver_time, former_social_security_base,
+    former_accumulation_fund_base, adjust_social_security_base, adjust_accumulation_fund_base,
+    modified
+  </sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		select
+		<include refid="Base_Column_List" />
+		from salary_adjust_record
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findSalaryAdjustReCordById"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+			sar.id, sar.erp_employee_id, sar.approverId, sar.adjust_time, sar.former_base_wage, sar.former_post_wage,
+			sar.former_performance, sar.former_allowance, sar.former_tel_fare_perquisite, sar.adjust_base_wage,
+			sar.adjust_post_wage, sar.adjust_performance, sar.adjust_allowance, sar.adjust_tel_fare_perquisite,
+			sar.adjust_reason, sar.adjust_batch, sar.adjust_status, sar.approver_time, sar.former_social_security_base,
+			sar.former_accumulation_fund_base, sar.adjust_social_security_base, sar.adjust_accumulation_fund_base,
+			tdsa.submit_person_id, sar.modified
+		FROM salary_adjust_record sar
+		LEFT JOIN t_department_salary_adjust tdsa ON sar.adjust_batch = tdsa.id
+		WHERE (sar.adjust_status='1' or sar.adjust_status='11')
+			AND sar.erp_employee_id = (SELECT erp_employee_id FROM salary_adjust_record WHERE id = #{id,jdbcType=INTEGER})
+			ORDER BY sar.adjust_time DESC, sar.id DESC
+	</select>
+
+	<select id="findSalaryAdjustReCordByEmployeeId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+			sar.id, sar.erp_employee_id, sar.approverId, sar.adjust_time, sar.former_base_wage, sar.former_post_wage,
+			sar.former_performance, sar.former_allowance, sar.former_tel_fare_perquisite, sar.adjust_base_wage,
+			sar.adjust_post_wage, sar.adjust_performance, sar.adjust_allowance, sar.adjust_tel_fare_perquisite,
+			sar.adjust_reason, sar.adjust_batch, sar.adjust_status, sar.approver_time, sar.former_social_security_base,
+			sar.former_accumulation_fund_base, sar.adjust_social_security_base, sar.adjust_accumulation_fund_base,
+			tdsa.submit_person_id, sar.modified
+		FROM salary_adjust_record sar
+		LEFT JOIN t_department_salary_adjust tdsa ON sar.adjust_batch = tdsa.id
+		WHERE  (sar.adjust_status='1' or sar.adjust_status='11')
+			AND sar.erp_employee_id = #{employeeId,jdbcType=INTEGER}
+			ORDER BY sar.adjust_time DESC, sar.id DESC
+	</select>
+
+
+
+	<select id = "selectSarAdjByEId" parameterType="Integer" resultType="map">
+		select *
+		from salary_adjust_record
+		where erp_employee_id=#{id} and adjust_status='0' and 1=1;
+	</select>
+	<insert id="insertSalaryMess" parameterType="Map">
+		INSERT INTO salary_adjust_record(
+			approverId,former_base_wage,former_post_wage,former_performance,former_allowance,former_tel_fare_perquisite,adjust_time,erp_employee_id,adjust_base_wage,adjust_post_wage,adjust_performance,adjust_allowance,adjust_tel_fare_perquisite,adjust_reason,adjust_batch,adjust_status
+			)
+		VALUES(
+			#{approverId},#{erpBaseWage},#{erpPostWage},#{erpPerformance},#{erpAllowance},#{erpTelFarePerquisite},#{adjust_time},#{employeeId},#{erpNewBaseWage},#{erpNewPostWage},#{erpNewPerformance},#{erpNewAllowance},#{erpNewTelFarePerquisite},#{erpAdjBecause},#{erpAdjIndex},#{adjust_status}
+			)
+	</insert>
+	
+	<select id="selectSalAdjRecByEId" parameterType="Integer" resultType="map">
+		select * 
+		from salary_adjust_record
+		where erp_employee_id=#{id} and (adjust_status='1' or adjust_status='11')
+	</select>
+	
+	<update id="updateSalaryMess" parameterType="Map" >
+		update salary_adjust_record 
+		set
+			adjust_time=#{adjust_time},
+			former_base_wage=#{erpBaseWage},
+			former_post_wage=#{erpPostWage},
+			former_performance=#{erpPerformance},
+			former_allowance=#{erpAllowance},
+			former_tel_fare_perquisite=#{erpTelFarePerquisite},	
+			adjust_base_wage=#{erpNewBaseWage},
+			adjust_post_wage=#{erpNewPostWage},
+			adjust_performance=#{erpNewPerformance},
+			adjust_allowance=#{erpNewAllowance},
+			adjust_tel_fare_perquisite=#{erpNewTelFarePerquisite},
+			adjust_reason=#{erpAdjBecause},
+			adjust_batch=#{erpAdjIndex},
+			adjust_status=#{adjust_status}
+		where 
+			erp_employee_id=#{employeeId} and adjust_status='0'
+	</update>
+	
+	<update id="updateStatueMess" parameterType="Integer" >
+		update salary_adjust_record 
+		set
+			adjust_status='1'
+		where 
+			erp_employee_id=#{employeeId} and adjust_status='0'
+	</update>
+	
+	<select id = "selectSarAdj2ByEId" resultType="java.util.Map">
+		select *
+		from salary_adjust_record
+		where erp_employee_id=#{employeeId} and adjust_status='0';
+	</select>
+	
+	<select id = "selectSarAdj3ByEId" resultType="java.util.Map">
+		select *
+		from salary_adjust_record
+		where erp_employee_id=#{employeeId} and (adjust_status='1' or adjust_status='11') and adjust_time like #{year}
+		group by id desc limit 1
+	</select>
+	
+	<select id="selectSalAdjRecByAdjustTime" parameterType="java.lang.String" resultType="java.util.Map">
+		select * 
+		from salary_adjust_record
+		where adjust_time=#{adjustTime} and (adjust_status='1' or adjust_status='11');
+	</select>
+
+	<select id="findEmployeeSalaryAdjustListByparams"  resultType="java.util.Map">
+		select
+			sar.id salaryAdjustId,
+			sar.erp_employee_id employeeId,
+			sar.approverId approverId,
+			sar.adjust_time adjustTime,
+			sar.former_base_wage formerBaseWage,
+			sar.former_post_wage formerPostWage,
+			sar.former_performance formerPerformance,
+			sar.former_allowance formerAllowance,
+			sar.former_tel_fare_perquisite formerTelFarePerquisite,
+			sar.former_social_security_base formerSocialSecurityBase,
+			sar.former_accumulation_fund_base formerAccumulationFundBase,
+			sar.adjust_base_wage adjustBaseWage,
+			sar.adjust_post_wage adjustPostWage,
+			sar.adjust_performance adjustPerformance,
+			sar.adjust_allowance adjustAllowance,
+			sar.adjust_tel_fare_perquisite adjustTelFarePerquisite,
+			sar.adjust_social_security_base adjustSocialSecurityBase,
+			sar.adjust_accumulation_fund_base adjustAccumulationFundBase,
+			sar.adjust_reason adjustReason,
+			sar.adjust_batch adjustBatch,
+			sar.adjust_status adjustStatus,
+			sar.approver_time approverTime,
+			(select sart.adjust_time from salary_adjust_record sart where sart.erp_employee_id = sar.erp_employee_id  and sart.id != sar.id order by sart.adjust_time desc,  sart.id DESC limit 1) lastAdjustTime
+		from salary_adjust_record sar
+		<where>
+			<if test="status!=null">
+				and sar.adjust_status = #{status}
+			</if>
+			<if test="departmentSalaryAdjustId!=null">
+				and sar.adjust_batch = #{departmentSalaryAdjustId}
+			</if>
+			<if test="employeeIdList!=null and employeeIdList.size() > 0">
+				and sar.erp_employee_id IN
+				<foreach collection="employeeIdList" index="index" item="employeeId" open="(" separator="," close=")">
+					#{employeeId}
+				</foreach>
+			</if>
+			<if test="!isExport and (employeeIdList == null or employeeIdList.size() == 0)">
+				and false
+			</if>
+			<if test="statusList!=null and statusList.size() > 0">
+				and sar.adjust_status IN
+				<foreach collection="statusList" index="index" item="status" open="(" separator="," close=")">
+					#{status}
+				</foreach>
+			</if>
+			<if test="departmentStatus != null">
+				AND (sar.approverId = #{loginEmployeeId} OR (
+					#{loginEmployeeId} IN (
+						SELECT tdsaar.approverId FROM t_department_salary_adjust_approve_record tdsaar WHERE tdsaar.salary_adjust_record_id = sar.id
+					)
+				))
+			</if>
+		</where>
+		ORDER BY adjust_time, sar.erp_employee_id
+	</select>
+	<update id="updateRejectByIds">
+		UPDATE salary_adjust_record SET
+
+		approverid = #{approverId,jdbcType=INTEGER},
+
+		adjust_status = 4 WHERE id IN
+		<foreach collection="salaryAdjustWaitIdList" index="index" item="id" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+	</update>
+
+
+	<select id="findEmployeeLastSalaryAdjustList"  resultType="java.util.Map">
+		SELECT sar.erp_employee_id employeeId,
+			(select sart.adjust_time from salary_adjust_record sart where sart.erp_employee_id = sar.erp_employee_id  and sart.id != sar.id order by sart.adjust_time DESC , sart.id  DESC  limit 1) lastAdjustTime
+		from salary_adjust_record sar
+	</select>
+
+
+	<insert id="insertSelective" parameterType="com.nantian.erp.salary.data.model.SalaryAdjustRecord" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into salary_adjust_record
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="employeeId != null" >
+				erp_employee_id,
+			</if>
+			<if test="approverid != null" >
+				approverId,
+			</if>
+			<if test="adjustTime != null" >
+				adjust_time,
+			</if>
+			<if test="formerBaseWage != null" >
+				former_base_wage,
+			</if>
+			<if test="formerPostWage != null" >
+				former_post_wage,
+			</if>
+			<if test="formerPerformance != null" >
+				former_performance,
+			</if>
+			<if test="formerAllowance != null" >
+				former_allowance,
+			</if>
+			<if test="formerTelFarePerquisite != null" >
+				former_tel_fare_perquisite,
+			</if>
+			<if test="adjustBaseWage != null" >
+				adjust_base_wage,
+			</if>
+			<if test="adjustPostWage != null" >
+				adjust_post_wage,
+			</if>
+			<if test="adjustPerformance != null" >
+				adjust_performance,
+			</if>
+			<if test="adjustAllowance != null" >
+				adjust_allowance,
+			</if>
+			<if test="adjustTelFarePerquisite != null" >
+				adjust_tel_fare_perquisite,
+			</if>
+			<if test="adjustReason != null" >
+				adjust_reason,
+			</if>
+			<if test="adjustBatch != null" >
+				adjust_batch,
+			</if>
+			<if test="adjustStatus != null" >
+				adjust_status,
+			</if>
+			<if test="approverTime != null" >
+				approver_time,
+			</if>
+			<if test="formerSocialSecurityBase != null" >
+				former_social_security_base,
+			</if>
+			<if test="formerAccumulationFundBase != null" >
+				former_accumulation_fund_base,
+			</if>
+			<if test="adjustSocialSecurityBase != null" >
+				adjust_social_security_base,
+			</if>
+			<if test="adjustAccumulationFundBase != null" >
+				adjust_accumulation_fund_base,
+			</if>
+			<if test="modified != null">
+				modified,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="employeeId != null" >
+				#{employeeId,jdbcType=INTEGER},
+			</if>
+			<if test="approverid != null" >
+				#{approverid,jdbcType=INTEGER},
+			</if>
+			<if test="adjustTime != null" >
+				#{adjustTime,jdbcType=VARCHAR},
+			</if>
+			<if test="formerBaseWage != null" >
+				#{formerBaseWage,jdbcType=VARCHAR},
+			</if>
+			<if test="formerPostWage != null" >
+				#{formerPostWage,jdbcType=VARCHAR},
+			</if>
+			<if test="formerPerformance != null" >
+				#{formerPerformance,jdbcType=VARCHAR},
+			</if>
+			<if test="formerAllowance != null" >
+				#{formerAllowance,jdbcType=VARCHAR},
+			</if>
+			<if test="formerTelFarePerquisite != null" >
+				#{formerTelFarePerquisite,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustBaseWage != null" >
+				#{adjustBaseWage,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustPostWage != null" >
+				#{adjustPostWage,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustPerformance != null" >
+				#{adjustPerformance,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustAllowance != null" >
+				#{adjustAllowance,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustTelFarePerquisite != null" >
+				#{adjustTelFarePerquisite,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustReason != null" >
+				#{adjustReason,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustBatch != null" >
+				#{adjustBatch,jdbcType=INTEGER},
+			</if>
+			<if test="adjustStatus != null" >
+				#{adjustStatus,jdbcType=INTEGER},
+			</if>
+			<if test="approverTime != null" >
+				#{approverTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="formerSocialSecurityBase != null" >
+				#{formerSocialSecurityBase,jdbcType=VARCHAR},
+			</if>
+			<if test="formerAccumulationFundBase != null" >
+				#{formerAccumulationFundBase,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustSocialSecurityBase != null" >
+				#{adjustSocialSecurityBase,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustAccumulationFundBase != null" >
+				#{adjustAccumulationFundBase,jdbcType=VARCHAR},
+			</if>
+			<if test="modified != null">
+				#{modified,jdbcType=BIT},
+			</if>
+		</trim>
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.nantian.erp.salary.data.model.SalaryAdjustRecord" >
+		update salary_adjust_record
+		<set >
+			<if test="employeeId != null" >
+				erp_employee_id = #{employeeId,jdbcType=INTEGER},
+			</if>
+			<if test="approverid != null" >
+				approverId = #{approverid,jdbcType=INTEGER},
+			</if>
+			<if test="adjustTime != null" >
+				adjust_time = #{adjustTime,jdbcType=VARCHAR},
+			</if>
+			<if test="formerBaseWage != null" >
+				former_base_wage = #{formerBaseWage,jdbcType=VARCHAR},
+			</if>
+			<if test="formerPostWage != null" >
+				former_post_wage = #{formerPostWage,jdbcType=VARCHAR},
+			</if>
+			<if test="formerPerformance != null" >
+				former_performance = #{formerPerformance,jdbcType=VARCHAR},
+			</if>
+			<if test="formerAllowance != null" >
+				former_allowance = #{formerAllowance,jdbcType=VARCHAR},
+			</if>
+			<if test="formerTelFarePerquisite != null" >
+				former_tel_fare_perquisite = #{formerTelFarePerquisite,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustBaseWage != null" >
+				adjust_base_wage = #{adjustBaseWage,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustPostWage != null" >
+				adjust_post_wage = #{adjustPostWage,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustPerformance != null" >
+				adjust_performance = #{adjustPerformance,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustAllowance != null" >
+				adjust_allowance = #{adjustAllowance,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustTelFarePerquisite != null" >
+				adjust_tel_fare_perquisite = #{adjustTelFarePerquisite,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustReason != null" >
+				adjust_reason = #{adjustReason,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustBatch != null" >
+				adjust_batch = #{adjustBatch,jdbcType=INTEGER},
+			</if>
+			<if test="adjustStatus != null" >
+				adjust_status = #{adjustStatus,jdbcType=INTEGER},
+			</if>
+			<if test="approverTime != null" >
+				approver_time = #{approverTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="formerSocialSecurityBase != null" >
+				former_social_security_base = #{formerSocialSecurityBase,jdbcType=VARCHAR},
+			</if>
+			<if test="formerAccumulationFundBase != null" >
+				former_accumulation_fund_base = #{formerAccumulationFundBase,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustSocialSecurityBase != null" >
+				adjust_social_security_base = #{adjustSocialSecurityBase,jdbcType=VARCHAR},
+			</if>
+			<if test="adjustAccumulationFundBase != null" >
+				adjust_accumulation_fund_base = #{adjustAccumulationFundBase,jdbcType=VARCHAR},
+			</if>
+			<if test="modified != null">
+				modified = #{modified,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		delete from salary_adjust_record
+		where id = #{id,jdbcType=INTEGER}
+  </delete>
+	<select id="findSalaryAdjustReCordByEmployeeIdAndNotApprover" resultType="java.lang.Integer">
+		SELECT id FROM salary_adjust_record WHERE adjust_status != 1 AND adjust_status != 11 AND adjust_status != 4 AND adjust_status != 2 AND erp_employee_id = #{employeeId,jdbcType=INTEGER}
+	</select>
+	<select id="findWaitSalaryAdjustByEmployeeId" resultType="com.nantian.erp.salary.data.model.SalaryAdjustRecord" >
+		SELECT id FROM salary_adjust_record WHERE adjust_status = 0 AND erp_employee_id = #{employeeId}
+	</select>
+
+	<select id="findWaitSalaryAdjustList" resultType="com.nantian.erp.salary.data.model.SalaryAdjustRecord">
+				SELECT id,approverId,erp_employee_id employeeId FROM salary_adjust_record WHERE adjust_status = 0 AND erp_employee_id = #{employeeId}
+
+	</select>
+	<update id="updateApproverIdById">
+		UPDATE salary_adjust_record SET approverId = #{newFirstDepartmentSuperLeader}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpSalaryMonthPerformanceMapper" >
+  
+	<!-- 新增月度绩效 -->
+	<insert id="createErpMonthPerformance" parameterType="com.nantian.erp.salary.data.model.ErpSalaryMonthPerformance">
+		INSERT INTO nantiansalary.erp_month_performance(
+				erp_month_num,
+				erp_month_firstdepartment_id,
+				erp_month_beliel,
+				erp_month_merit_pay,
+				erp_month_project_pay,
+				erp_month_project_pay_content,
+				erp_month_D_pay,
+				erp_month_emp_id,
+				erp_month_remark,
+				erp_month_seconddepartment_id,
+				erp_month_allowance,
+				erp_month_base_wage,
+				erp_month_post_wage,
+				erp_month_tel_subsidy,
+				erp_month_actual_work_days
+			)
+		VALUES(
+			#{erpMonthNum},
+			#{erpMonthFirstDepartmentId},
+			#{erpMonthBeliel},
+			#{erpMonthMeritPay},
+			#{erpMonthProjectPay},
+			#{erpMonthProjectPayContent},
+			#{erpMonthDPay},
+			#{erpMonthEmpId},
+			#{erpMonthRemark},
+			#{erpMonthSecondDepartmentId},
+			#{erpMonthAllowance},
+			#{erpMonthBaseWage},
+			#{erpMonthPostWage},
+			#{erpMonthTelSubsidy},
+			#{erpMonthActualWorkDays}
+			)
+	</insert>
+	
+	<!-- 修改月度绩效 -->
+	<update id="updateErpMonthPerformance" parameterType="com.nantian.erp.salary.data.model.ErpSalaryMonthPerformance">
+		UPDATE nantiansalary.erp_month_performance
+		<set>
+			<if test="erpMonthNum != null">
+				erp_month_num = #{erpMonthNum},
+			</if>
+			<if test="erpMonthFirstDepartmentId != null">
+				erp_month_firstdepartment_id = #{erpMonthFirstDepartmentId},
+			</if>
+			<if test="erpMonthBeliel != null">
+				erp_month_beliel = #{erpMonthBeliel},
+			</if>
+			<if test="erpMonthMeritPay != null">
+				erp_month_merit_pay = #{erpMonthMeritPay},
+			</if>
+			<if test="erpMonthProjectPay != null">
+				erp_month_project_pay = #{erpMonthProjectPay},
+			</if>
+			<if test="erpMonthProjectPayContent != null">
+				erp_month_project_pay_content = #{erpMonthProjectPayContent},
+			</if>
+			<if test="erpMonthDPay != null">
+				erp_month_D_pay = #{erpMonthDPay},
+			</if>
+			<if test="erpMonthEmpId != null">
+				erp_month_emp_id = #{erpMonthEmpId},
+			</if>
+			<if test="erpMonthRemark != null">
+				erp_month_remark = #{erpMonthRemark},
+			</if>
+			<if test="erpMonthSecondDepartmentId != null">
+				erp_month_seconddepartment_id = #{erpMonthSecondDepartmentId},
+			</if>
+			<if test="erpMonthAllowance != null">
+				erp_month_allowance=#{erpMonthAllowance},
+			</if>
+			<if test="erpMonthBaseWage != null">
+				erp_month_base_wage=#{erpMonthBaseWage},
+			</if>
+			<if test="erpMonthPostWage != null">
+				erp_month_post_wage=#{erpMonthPostWage},
+			</if>
+			
+			<if test="erpMonthMealSubsidy != null">
+				erp_month_meal_subsidy=#{erpMonthMealSubsidy},
+			</if>
+			<if test="erpMonthTelSubsidy != null">
+				erp_month_tel_subsidy=#{erpMonthTelSubsidy},
+			</if>
+			<if test="erpMonthShouldWorkDays != null">
+				erp_month_should_work_days=#{erpMonthShouldWorkDays},
+			</if>
+			<if test="erpMonthActualWorkDays != null">
+				erp_month_actual_work_days=#{erpMonthActualWorkDays},
+			</if>
+			<if test="erpMonthActualMeritPay != null">
+				erp_month_actual_merit_pay=#{erpMonthActualMeritPay},
+			</if>
+			<if test="erpMonthMeritSum != null">
+				erp_month_merit_sum=#{erpMonthMeritSum}
+			</if>
+		</set>
+	   	WHERE erp_month_id = #{erpMonthId}
+	</update>
+	
+	<!-- 查询员工的月度绩效 -->
+	<select id="findEmpMonthPerformanceDetail" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpSalaryMonthPerformance">
+		SELECT e.erp_month_id,
+       		   e.erp_month_num,
+               e.erp_month_beliel,
+			   e.erp_month_merit_pay,
+			   e.erp_month_project_pay,
+			   e.erp_month_project_pay_content,
+			   e.erp_month_D_pay,
+			   e.erp_month_emp_id,
+			   e.erp_month_remark,
+			   e.erp_month_allowance,
+			   e.erp_month_meal_subsidy,
+			   e.erp_month_tel_subsidy,
+			   e.erp_month_base_wage,
+			   e.erp_month_post_wage
+		FROM nantiansalary.erp_month_performance e
+		WHERE e.erp_month_emp_id = #{erpMonthEmpId} AND e.erp_month_num = #{erpMonthNum}
+	</select>
+	
+	<!-- 查询员工的月度绩效 -->
+	<select id="findEmpMonthPerformanceMore" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpSalaryMonthPerformance">
+		SELECT *
+		FROM nantiansalary.erp_month_performance
+		WHERE 1 = 1
+		<if test="erpMonthFirstDepartmentId != null and erpMonthFirstDepartmentId != ''">
+			AND erp_month_firstdepartment_id = #{erpMonthFirstDepartmentId}
+		</if>
+		<if test="erpMonthEmpId != null and erpMonthEmpId != ''">
+			AND erp_month_emp_id = #{erpMonthEmpId}
+		</if>
+		<if test="erpMonthNum != null and erpMonthNum != ''">
+			AND erp_month_num = #{erpMonthNum}
+		</if>
+		<if test="list != null">
+			AND erp_month_emp_id in
+	  		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+	               #{item}       
+	    	</foreach>   
+		</if>
+ 
+	</select>
+  <!-- 锁定时更新月度数据 -->
+   <update id="updateErpMonthPerformanceById" parameterType="com.nantian.erp.salary.data.model.ErpSalaryMonthPerformance">
+  UPDATE erp_month_performance e
+	SET e.erp_month_beliel = #{erpMonthBeliel},
+	e.erp_month_D_pay = #{erpMonthDPay},
+	e.erp_month_merit_pay = #{erpMonthMeritPay},
+	e.erp_month_project_pay = #{erpMonthProjectPay},
+	e.erp_month_allowance = #{erpMonthAllowance}
+	WHERE e.erp_month_id = #{erpMonthId}
+  </update>
+  	
+	<insert id="insertFirstDepartmentMonthPerStatus" parameterType="java.util.Map">
+	insert into erp_month_performance_apply(
+		firstdepartmentId,month,status
+		<if test="statusInit != null">
+			,status_init
+		</if>
+		<if test="submitPersonId != null">
+			,submit_person_id
+		</if>
+		<if test="modifiedTime != null">
+			,gmt_modified
+		</if>
+		<if test="createTime != null">
+			,gmt_create
+		</if>
+		)
+	values(
+		#{firstdepartmentId},#{month},#{status}
+		<if test="statusInit != null">
+			,status_init
+		</if>
+		<if test="submitPersonId != null">
+			,#{submitPersonId}
+		</if>
+		<if test="modifiedTime != null">
+			,#{modifiedTime}
+		</if>
+		<if test="createTime != null">
+			,#{createTime}
+		</if>
+		)
+	</insert>
+  
+  <update id="updateFirstDepartmentMonthPerStatus" parameterType="java.util.Map">
+  UPDATE erp_month_performance_apply
+   <set>
+	  <if test="status != null">
+		  status = #{status},
+	  </if>
+	  <if test="statusInit != null">
+		  status_init = #{statusInit},
+	  </if>
+	  
+	  <if test="submitPersonId != null">
+		  submit_person_id = #{submitPersonId},
+      </if>
+	  <if test="modifiedTime != null">
+		  gmt_modified = #{modifiedTime}
+	  </if>
+	</set>
+	WHERE 1=1 
+	<if test="firstdepartmentId!=null">
+		AND firstdepartmentId = #{firstdepartmentId}
+	</if>
+	<if test="month!=null">
+		AND month = #{month}
+	</if>
+	<if test="perApplayId!=null">
+		AND id = #{perApplayId}
+	</if>
+  </update>
+  
+  <!-- 查询一级部门的月度绩效状态 -->
+	<select id="findFirstDepartmentMonthPerStatus" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT status
+		FROM erp_month_performance_apply
+		WHERE 1=1 
+		<if test="firstdepartmentId !=null">
+			and firstdepartmentId = #{firstdepartmentId}
+		</if>
+		<if test="month!=null">
+			and month = #{month}
+		</if>
+	</select>
+	
+	<delete id="deleteMonthPerformance" parameterType="java.util.Map">
+		delete from erp_month_performance
+		where erp_month_firstdepartment_id = #{departmentId} and erp_month_num = #{erpMonthNum}
+	</delete>
+	
+	<delete id="deleteMonthPerformanceApply" parameterType="java.util.Map">
+		delete from erp_month_performance_apply
+		where firstdepartmentId = #{departmentId} and month = #{erpMonthNum}
+	</delete>
+	
+	<!-- 按照参数查询月度状态数据 -->
+	<select id="findMonthPerformanceApplyByParams" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+		FROM erp_month_performance_apply
+		WHERE 1=1 
+		<if test="firstdepartmentId != null">
+			AND erp_month_performance_apply.firstdepartmentId = #{firstdepartmentId}
+		</if>
+		<if test="month!=null">
+			AND erp_month_performance_apply.month = #{month}
+		</if>
+		<if test="statusList != null">
+			AND erp_month_performance_apply.status in
+			<foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    		</foreach>    
+		</if>
+	</select>
+	
+	<select id="searcMonthPerformanceAndStatusByParams" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT emp.erp_month_emp_id as employeeId,empa.`status`,emp.erp_month_firstdepartment_id AS firstDeptId,emp.erp_month_num AS month,emp.erp_month_id AS perfId, empa.id AS perApplayId 
+			FROM erp_month_performance emp
+			LEFT JOIN erp_month_performance_apply empa ON emp.erp_month_firstdepartment_id = empa.firstdepartmentId
+		WHERE 1=1
+		<if test="month!=null">
+			and empa.`month`= #{month} 
+		</if>	
+		<if test="statusList!=null">
+			and empa.status in
+			<foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    		</foreach>    
+		</if>
+	</select>
+	
+	  <!-- 查询一级部门的月度绩效状态 -->
+	<select id="findFirstDepartmentMonthPerStatusList" resultType="java.lang.String">
+		SELECT DISTINCT status
+		FROM erp_month_performance_apply
+		WHERE 1=1 
+		<if test="departmentIdList!=null">
+			and firstdepartmentId in
+			<foreach collection="departmentIdList" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    		</foreach>    
+		</if>
+		<if test="startTime!=null and endTime !=null">
+			and month &gt;= #{startTime} and month &lt;= #{endTime}
+		</if>
+	</select>
+</mapper>

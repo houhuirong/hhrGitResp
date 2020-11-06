@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpTodoListForHrMapper"> 
+
+<select id="countPostApplyTodo" parameterType="java.lang.Integer" resultType="java.lang.Long" >
+	select count(*)
+	from positionApplyProgress pap
+	left join post p on p.postId=pap.postId
+	where pap.currentPersonID = #{personId}
+	and p.status in (1,4)
+</select>
+
+<select id="countInterviewerTodo" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*)
+	from resume_post rp
+	where 1=1
+	<if test="isValid != null" >
+    	and rp.isValid = #{isValid}
+    </if>
+	<if test="personId != null" >
+    	and rp.personId = #{personId}
+    </if>
+    <if test="status != null" >
+        and rp.status = #{status}
+    </if>
+</select>
+
+<select id="countOfferTodo" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(*)
+	from offer o
+	where o.status = #{status}
+</select>
+
+<select id="countEntryTodo" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*)
+	from employee_entry ee
+	where 1=1 and ee.status = 1
+	<if test="personId != null" >
+    	and ee.currentPersonID = #{personId}
+    </if>
+</select>
+
+<select id="countPositiveTodo" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*)
+	from employee_postive ep
+	inner join employee e on e.employeeId=ep.employeeId
+	inner JOIN contract c on ep.`employeeId` = c.`employeeId`
+	 where 1=1 and e.status !=4
+	<if test="personId != null" >
+    	and ep.currentPersonID = #{personId}
+    </if>
+    <if test="status != null" >
+        and ep.status = #{status}
+    </if>
+</select>
+
+<select id="countDepTransfTodo"  parameterType="java.lang.Integer" resultType="java.lang.Long">
+	SELECT count(*)
+	FROM departmentTransferApply t
+	WHERE t.processor =#{processor} AND t.status in (1,2)
+</select>
+
+<select id="countDimissionTodo"  parameterType="java.lang.Integer" resultType="java.lang.Long">
+	select count(*)
+	FROM dimission d
+	LEFT JOIN employee e ON e.employeeId = d.employeeId
+	WHERE e.status = 3
+</select>
+
+</mapper>

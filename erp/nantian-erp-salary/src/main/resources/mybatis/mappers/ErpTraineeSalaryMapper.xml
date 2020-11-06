@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpTraineeSalaryMapper" >
+  
+  <!-- 新增面试谈薪 -->
+  <insert id="insertTraineeSalary" parameterType="com.nantian.erp.salary.data.model.ErpTraineeSalary">
+  	insert into erp_trainee_salary(
+		baseWage,monthAllowance,employeeId
+  		)
+	values(
+		#{baseWage},#{monthAllowance},#{employeeId}
+		)
+  </insert>
+  
+  <update id="updateTraineeSalary" parameterType="com.nantian.erp.salary.data.model.ErpTraineeSalary" >
+	update erp_trainee_salary
+	<set>
+	  <if test="baseWage != null" >
+	    baseWage = #{baseWage},
+	  </if>
+	  <if test="monthAllowance != null" >
+	    monthAllowance = #{monthAllowance},
+	  </if>
+	</set>
+	where employeeId = #{employeeId}
+</update>
+  	<!-- 查询实习生上岗填写的工资 -->
+  <select id="selectOneTraineeSalary" resultType="com.nantian.erp.salary.data.model.ErpTraineeSalary">
+  	SELECT * FROM nantiansalary.erp_trainee_salary
+  	WHERE 1 = 1
+  	<if test="employeeId != null and employeeId != ''">
+		AND employeeId = #{employeeId}
+	</if>
+  </select>
+</mapper>

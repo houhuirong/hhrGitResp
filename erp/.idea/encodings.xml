@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/nantian-erp-authentication/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-authentication/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-common-base/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-email/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-email/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-eureka-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-hr/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-hr/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-project/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-project/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-salary/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nantian-erp-salary/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

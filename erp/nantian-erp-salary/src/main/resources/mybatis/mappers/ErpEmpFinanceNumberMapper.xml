@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpEmpFinanceNumberMapper"> 
+
+<insert id="insertEmpFinanceNumber" parameterType="com.nantian.erp.salary.data.model.ErpEmpFinanceNumber">
+	INSERT INTO emp_finance_number(
+		employeeId,empFinanceNumber
+		)
+	VALUES(
+		#{employeeId},#{empFinanceNumber}
+		)
+</insert>
+
+<update id="updateEmpFinanceNumber" parameterType="com.nantian.erp.salary.data.model.ErpEmpFinanceNumber" >
+	update emp_finance_number
+	<set>
+	  <if test="empFinanceNumber != null" >
+	    empFinanceNumber = #{empFinanceNumber}
+	  </if>
+	</set>
+	where employeeId = #{employeeId}
+</update>
+
+<select id="findEmpFinanceNumberDetailByEmpId" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpEmpFinanceNumber">
+	select employeeId,empFinanceNumber
+	from emp_finance_number
+	where employeeId = #{employeeId}
+</select>
+
+<select id="findAllFinanceNumber" resultType="java.util.Map">
+	select *
+	from emp_finance_number
+	where 1=1
+</select>
+  
+<select id="findEmpFinanceNumberDetailByParams" parameterType="java.util.Map" resultType="com.nantian.erp.salary.data.model.ErpEmpFinanceNumber">
+	select employeeId,empFinanceNumber
+	from emp_finance_number
+	where 1=1
+	<if test="list != null">
+		AND employeeId in
+  		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    	</foreach>   
+	</if>
+</select>
+
+</mapper>

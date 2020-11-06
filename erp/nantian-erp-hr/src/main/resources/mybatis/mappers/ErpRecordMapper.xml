@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpRecordMapper">
+
+<insert id="insertRecord" parameterType="com.nantian.erp.hr.data.model.ErpRecord">
+	INSERT INTO record(
+		time,content,processor,resumeId,processorId
+		)
+	VALUES(
+		#{time},
+		#{content},
+		#{processor},
+		#{resumeId},
+		#{processorId}
+		)
+</insert>
+
+<select id="selectRecordById" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.ErpRecord">
+	select id,time,content,processor,resumeId
+	from record
+	where resumeId = #{resumeId}
+	order by id desc
+</select>
+
+</mapper>

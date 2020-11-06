@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.hr.data.dao.ErrorEmailLogMapper" >
+  <resultMap id="BaseResultMap" type="com.nantian.erp.hr.data.model.ErrorEmailLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sender" property="sender" jdbcType="VARCHAR" />
+    <result column="recipient" property="recipient" jdbcType="VARCHAR" />
+    <result column="bcc" property="bcc" jdbcType="VARCHAR" />
+    <result column="email_message" property="emailMessage" jdbcType="VARCHAR" />
+    <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR" />
+    <result column="error_log" property="errorLog" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="gmt_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modified_time" property="modifiedTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sender, recipient, bcc, email_message, attachment_path, error_log, send_time, 
+    gmt_time, modified_time, type,email_service_type,subject
+  </sql>
+  <select id="selectALL" parameterType="java.util.Map" resultType="java.util.Map" >
+     select eel.*,a.dic_name as emailServiceTypeName
+    from t_error_email_log eel,admin_dic a
+    where eel.email_service_type=a.dic_code and a.dic_type='EMAIL_TYPE'
+    <if test="type != null" >
+         and eel.type = #{type}
+    </if>
+    <if test="startTime != null and endTime!=null" >
+         and eel.gmt_time between #{startTime} and #{endTime}
+    </if>
+    ORDER BY eel.gmt_time DESC
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_error_email_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nantian.erp.hr.data.model.ErrorEmailLog" >
+    insert into t_error_email_log (id, sender, recipient, 
+      bcc, email_message, attachment_path, 
+      error_log, send_time, gmt_time, 
+      modified_time, type,email_service_type,subject)
+    values (#{id,jdbcType=INTEGER}, #{sender,jdbcType=VARCHAR}, #{recipient,jdbcType=VARCHAR}, 
+      #{bcc,jdbcType=VARCHAR}, #{emailMessage,jdbcType=VARCHAR}, #{attachmentPath,jdbcType=VARCHAR}, 
+      #{errorLog,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifiedTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER},#{emailServiceType,jdbcType=INTEGER},
+      #{subject,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nantian.erp.hr.data.model.ErrorEmailLog" >
+    insert into t_error_email_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sender != null" >
+        sender,
+      </if>
+      <if test="recipient != null" >
+        recipient,
+      </if>
+      <if test="bcc != null" >
+        bcc,
+      </if>
+      <if test="emailMessage != null" >
+        email_message,
+      </if>
+      <if test="attachmentPath != null" >
+        attachment_path,
+      </if>
+      <if test="errorLog != null" >
+        error_log,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="createTime != null" >
+        gmt_time,
+      </if>
+      <if test="modifiedTime != null" >
+        modified_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+       <if test="emailServiceType != null">
+        email_service_type,
+      </if>
+       <if test="subject != null">
+        subject,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sender != null" >
+        #{sender,jdbcType=VARCHAR},
+      </if>
+      <if test="recipient != null" >
+        #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="bcc != null" >
+        #{bcc,jdbcType=VARCHAR},
+      </if>
+      <if test="emailMessage != null" >
+        #{emailMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentPath != null" >
+        #{attachmentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="errorLog != null" >
+        #{errorLog,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedTime != null" >
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+       <if test="emailServiceType != null">
+        #{emailServiceType,jdbcType=INTEGER},
+      </if>
+       <if test="subject != null">
+        #{subject,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nantian.erp.hr.data.model.ErrorEmailLog" >
+    update t_error_email_log
+    <set >
+      <if test="sender != null" >
+        sender = #{sender,jdbcType=VARCHAR},
+      </if>
+      <if test="recipient != null" >
+        recipient = #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="bcc != null" >
+        bcc = #{bcc,jdbcType=VARCHAR},
+      </if>
+      <if test="emailMessage != null" >
+        email_message = #{emailMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentPath != null" >
+        attachment_path = #{attachmentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="errorLog != null" >
+        error_log = #{errorLog,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        gmt_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedTime != null" >
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="emailServiceType != null">
+        email_service_type = #{emailServiceType,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nantian.erp.hr.data.model.ErrorEmailLog" >
+    update t_error_email_log
+    set sender = #{sender,jdbcType=VARCHAR},
+      recipient = #{recipient,jdbcType=VARCHAR},
+      bcc = #{bcc,jdbcType=VARCHAR},
+      email_message = #{emailMessage,jdbcType=VARCHAR},
+      attachment_path = #{attachmentPath,jdbcType=VARCHAR},
+      error_log = #{errorLog,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      gmt_time = #{createTime,jdbcType=TIMESTAMP},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      email_service_type = #{emailServiceType,jdbcType=INTEGER},
+      subject=#{subject,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByParam" resultType="java.util.Map" parameterType="java.util.Map" >
+    SELECT
+		eel.*
+	FROM
+		t_error_email_log eel
+	where 1=1
+     <if test="id != null" >
+         and eel.id = #{id}
+     </if>
+  </select>
+</mapper>

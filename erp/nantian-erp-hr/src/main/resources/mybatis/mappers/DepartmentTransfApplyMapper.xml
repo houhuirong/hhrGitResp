@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.DepartmentTransfApplyMapper">
+<!-- 新增部门调整申请 -->
+<insert id="addDepTransfApply" parameterType="com.nantian.erp.hr.data.model.DepartmentTransfApply">
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+	insert departmentTransferApply (id,employeeId,newFirstDepartment,newSecDepartment,oldFirstDepartment,oldSecDepartment,startTime,status,processor,
+	reason,apply_person_id,apply_time,gmt_create,gmt_modified)
+	values(id,#{employeeId},#{newFirstDepartment},#{newSecDepartment},#{oldFirstDepartment},#{oldSecDepartment},#{startTime},#{status},#{processor},
+	#{reason},#{applyPersonId},#{applyTime},#{createTime},#{modifiedTime})
+</insert>
+
+<!-- 查询待我审批 -->
+<select id="findWaitMsgById"  parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT t.*,e1.employeeId,e1.name,d1.departmentName AS "firstDepartment",d2.departmentName AS "secondDepartment", 
+	d3.departmentName AS "newFirstDepartmentName", d4.departmentName AS "newSecDepartmentName", e2.name AS "processorName",
+	t.startTime,t.apply_person_id,e3.name as applyPersonName,t.apply_time,reason,
+	e1.idCardNumber,e1.sex,prr.positionNo,prr.positionName,prr.rank
+	FROM departmentTransferApply t
+	LEFT JOIN employee e1 ON e1.employeeId = t.employeeId
+	LEFT JOIN positionRankRelation prr ON e1.positionId=prr.positionNo
+	LEFT JOIN employee e2 ON e2.employeeId = t.processor
+	LEFT JOIN employee e3 ON e3.employeeId = t.apply_person_id
+	LEFT JOIN department d1 ON d1.departmentId = t.oldFirstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = t.oldSecDepartment
+	LEFT JOIN department d3 ON d3.departmentId = t.newFirstDepartment
+	LEFT JOIN department d4 ON d4.departmentId = t.newSecDepartment
+	WHERE 1=1 AND (t.`status` = 1 OR t.`status` = 2)
+	<if test="processor != null">
+		and t.processor =#{processor}
+	</if>
+	<if test="oldFirDepartmentId !=null">
+		 and d1.departmentId=#{oldFirDepartmentId}
+	</if>
+	<if test="oldSecDepartmentId !=null and oldSecDepartmentId != ''">
+		 and d2.departmentId=#{oldSecDepartmentId}
+	</if>
+	<if test="newFirDepartmentId !=null and newFirDepartmentId != ''">
+		 and d3.departmentId=#{newFirDepartmentId}
+	</if>
+	<if test="newSecDepartmentId !=null and newSecDepartmentId != ''">
+		 and d4.departmentId=#{newSecDepartmentId}
+	</if>
+	<if test="employeeName != null and employeeName != ''">
+		and e1.name like CONCAT('%',#{employeeName},'%')
+	</if>
+	<if test="transfDateStart!=null and transfDateStart!=''">
+		and t.startTime &gt;= #{transfDateStart}
+	</if>
+	<if test="transfDateEnd!=null and transfDateEnd!=''">
+		and t.startTime &lt;= #{transfDateEnd}
+	</if>
+	ORDER BY t.startTime DESC
+</select>
+	
+<!-- 修改部门调动申请状态-->
+<update id="updataTransfStatus" parameterType="com.nantian.erp.hr.data.model.DepartmentTransfApply">
+UPDATE departmentTransferApply 
+<set>
+	<if test="status != null">
+	    status = #{status},
+	</if>
+	<if test="processor != null">
+		processor = #{processor},
+	</if>
+	<if test="startTime != null">
+		startTime = #{startTime},
+	</if>
+	<if test="newFirstDepartment != null">
+		newFirstDepartment = #{newFirstDepartment},
+	</if>
+	<if test="newSecDepartment != null">
+		newSecDepartment = #{newSecDepartment},
+	</if>
+	<if test="reason != null">
+		reason = #{reason},
+	</if>
+	<if test="applyPersonId != null">
+		apply_person_id = #{applyPersonId},
+	</if>
+	<if test="applyTime != null">
+		apply_time = #{applyTime},
+	</if>
+	<if test="modifiedTime != null">
+		gmt_modified = #{modifiedTime},
+	</if>
+	id = #{id}
+</set>
+	where  id = #{id}
+</update>
+<!-- 根据员工id查询其所有申请和审批状态 -->
+<select id="findtransfRecodeBytoken" resultType="java.util.Map">
+	SELECT t.*,e1.employeeId,e1.name,d1.departmentName AS "firstDepartmentName",d2.departmentName AS "secondDepartmentName", 
+	d3.departmentName AS "newFirstDepartmentName", d4.departmentName AS "newSecDepartmentName", e2.name AS "processorName"
+	FROM departmentTransferApply t
+	LEFT JOIN employee e1 ON e1.employeeId = t.employeeId
+	LEFT JOIN employee e2 ON e2.employeeId = t.processor
+	
+	LEFT JOIN department d1 ON d1.departmentId = t.oldFirstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = t.oldSecDepartment
+	LEFT JOIN department d3 ON d3.departmentId = t.newFirstDepartment
+	LEFT JOIN department d4 ON d4.departmentId = t.newSecDepartment
+	
+	WHERE  t.employeeId = #{employeeId}
+	ORDER BY t.startTime DESC
+</select>
+<!-- 根据员工id和申请id查询单条申请，用于修改 -->
+<select id="findtransfRecodeById" resultType="java.util.Map">
+	SELECT  t.*, d2.userId AS "oldManager",  d1.userId AS "newManager", newsecdept.userId newsecdeptManager, d1.superLeader newFirstDepartmentSuperLeader,
+		e1.idCardNumber,d1.departmentName newFirstDepartmentName, newsecdept.departmentName newSecDepartmentName, d2.departmentName oldFirstDepartmentName, 
+		oldsecdept.departmentName oldSecDepartmentName,t.reason,newsecdept.departmentId
+	FROM departmentTransferApply t
+	LEFT JOIN employee e1 ON e1.employeeId = t.employeeId
+	LEFT JOIN department d1 ON d1.departmentId = t.newFirstDepartment
+	LEFT JOIN department newsecdept ON newsecdept.departmentId = t.newSecDepartment
+	LEFT JOIN department d2 ON d2.departmentId = t.oldFirstDepartment
+	LEFT JOIN department oldsecdept ON oldsecdept.departmentId = t.oldSecDepartment
+	WHERE t.id = #{id}
+</select>
+<!-- 查询所有审批申请 -->
+<select id="findAllTransfApply" resultType="java.util.Map">
+SELECT t.id,t.startTime,e1.employeeId,e1.name,d1.departmentName AS "firstDepartment",d2.departmentName AS "secondDepartment", 
+	d3.departmentName AS "newFirstDepartment", d4.departmentName AS "newSecDepartment", t.processor, e2.name AS "processorName", t.status,
+	t.apply_person_id,e3.name as applyPersonName,t.apply_time,reason,
+	e1.idCardNumber,e1.sex,prr.positionNo,prr.positionName,prr.rank
+	
+	FROM departmentTransferApply t
+	LEFT JOIN employee e1 ON e1.employeeId = t.employeeId
+	LEFT JOIN positionRankRelation prr ON e1.positionId=prr.positionNo
+	LEFT JOIN employee e2 ON e2.employeeId = t.processor
+	LEFT JOIN employee e3 ON e3.employeeId = t.apply_person_id
+	LEFT JOIN department d1 ON d1.departmentId = t.oldFirstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = t.oldSecDepartment
+	LEFT JOIN department d3 ON d3.departmentId = t.newFirstDepartment
+	LEFT JOIN department d4 ON d4.departmentId = t.newSecDepartment
+	WHERE 1=1
+	<if test="superLeader != null">
+	    AND (d1.superLeader = #{superLeader} OR d3.superLeader = #{superLeader})
+	</if>
+	<if test="leader != null">
+		AND (d1.userId = #{leader} OR d3.userId = #{leader})
+	</if>
+	<if test="secLeader != null">
+		AND (d2.userId = #{secLeader} OR d4.userId = #{secLeader})
+	</if>
+	<if test="oldFirDepartmentId !=null">
+		 and d1.departmentId=#{oldFirDepartmentId}
+	</if>
+	<if test="oldSecDepartmentId !=null and oldSecDepartmentId != ''">
+		 and d2.departmentId=#{oldSecDepartmentId}
+	</if>
+	<if test="newFirDepartmentId !=null and newFirDepartmentId != ''">
+		 and d3.departmentId=#{newFirDepartmentId}
+	</if>
+	<if test="newSecDepartmentId !=null and newSecDepartmentId != ''">
+		 and d4.departmentId=#{newSecDepartmentId}
+	</if>
+	<if test="employeeName != null and employeeName != ''">
+		and e1.name like CONCAT('%',#{employeeName},'%')
+	</if>
+	<if test="transfDateStart!=null and transfDateStart!=''">
+		and t.startTime &gt;= #{transfDateStart}
+	</if>
+	<if test="transfDateEnd!=null and transfDateEnd!=''">
+		and t.startTime &lt;= #{transfDateEnd}
+	</if>
+	<if test="status!=null and status!=''">
+		and t.status = #{status}
+	</if>
+	ORDER BY t.startTime DESC
+</select>
+
+<select id="queryDepartmentTransfApplyList" resultType="java.util.Map">
+	SELECT t.id,t.startTime,e1.employeeId,e1.name employeeName,d1.departmentName AS "oldFirstDepartmentName",d2.departmentName AS "oldSecDepartmentName",
+	d3.departmentName AS "newFirstDepartmentName", d4.departmentName AS "newSecDepartmentName", t.processor, e2.name AS "processorName", t.status,
+	applyPerson.employeeId applyPersonId, applyPerson.name applyPersonName, DATE_FORMAT(t.apply_time, '%Y-%m-%d %H:%i') applyTime, t.reason
+	FROM departmentTransferApply t
+	LEFT JOIN employee e1 ON e1.employeeId = t.employeeId
+	LEFT JOIN employee e2 ON e2.employeeId = t.processor
+	LEFT JOIN employee applyPerson ON applyPerson.employeeId = t.apply_person_id
+	LEFT JOIN department d1 ON d1.departmentId = t.oldFirstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = t.oldSecDepartment
+	LEFT JOIN department d3 ON d3.departmentId = t.newFirstDepartment
+	LEFT JOIN department d4 ON d4.departmentId = t.newSecDepartment
+	WHERE  t.apply_person_id = #{applyPersonId}
+	AND (t.status = 0 OR t.status = 4)
+	<if test="oldFirstDepartment != null">
+		AND d1.departmentId = #{oldFirstDepartment}
+	</if>
+	<if test="newFirstDepartment != null">
+		AND d3.departmentId = #{newFirstDepartment}
+	</if>
+	<if test="oldSecDepartment != null">
+		AND  d2.departmentId = #{oldSecDepartment}
+	</if>
+	<if test="newSecDepartment != null">
+		AND  d4.departmentId = #{newSecDepartment}
+	</if>
+	<if test="employeeName != null">
+		AND  e1.name LIKE #{employeeName}
+	</if>
+	<if test="startTime != null">
+		AND  t.startTime &gt;= #{startTime}
+	</if>
+	<if test="endTime != null">
+		AND  t.startTime &lt;= #{endTime}
+	</if>
+	ORDER BY t.startTime DESC
+</select>
+
+
+<select id="selectMsgForschedule" resultType="java.util.Map">
+SELECT * FROM departmentTransferApply
+WHERE startTime = DATE_FORMAT(NOW(), '%Y-%m-%d') AND `status` = '3'
+</select>
+
+<delete id = "deleteTransferApply"  parameterType="java.lang.Integer">
+	delete 
+		from departmentTransferApply
+	where
+		id = #{id}
+</delete>
+<delete id = "batchDeleteTransferApply" >
+	delete
+		from departmentTransferApply
+	where
+		id IN
+	<foreach collection="idList" item="id" open="(" separator="," close=")">
+			#{id}
+	</foreach>
+</delete>
+
+<select id="findtransfRecodeByStartTime" resultType="java.util.Map">
+SELECT * FROM departmentTransferApply
+WHERE  employeeId = #{employeeId} and status in ('0','1','2','4')
+</select>
+
+<select id="findtransfInfoById" resultType="com.nantian.erp.hr.data.model.DepartmentTransfApply">
+	SELECT id,
+		  employeeId,
+		  oldFirstDepartment,
+		  oldSecDepartment,
+		  newFirstDepartment,
+		  newSecDepartment,
+		  startTime,
+		  status,
+		  processor,
+		  reason,
+		  apply_person_id applyPersonId,
+		  apply_time applyTime,
+		  gmt_create createTime,
+		  gmt_modified modifiedTime
+   FROM departmentTransferApply
+		WHERE  id = #{id}
+</select>
+<select id="queryDepartmentTransfApplyInfo"  resultType="java.util.Map">
+	SELECT dta.id,
+		  dta.employeeId,
+		  e.name employeeName,
+		  e.sex employeeSex,
+		  e.position position,
+		  e.positionId positionId,
+		  e.rank rank,
+		  dta.oldFirstDepartment,
+		  ofd.departmentName oldFirstDepartmentName,
+		  dta.oldSecDepartment,
+		  osd.departmentName oldSecDepartmentName,
+		  dta.newFirstDepartment,
+		  nfd.departmentName newFirstDepartmentName,
+		  dta.newSecDepartment,
+		  nsd.departmentName newSecDepartmentName,
+		  dta.startTime,
+		  dta.status,
+		  dta.processor,
+		  dta.reason,
+		  dta.apply_person_id applyPersonId,
+		  dta.apply_time applyTime,
+		  dta.gmt_create createTime,
+		  dta.gmt_modified modifiedTime
+   FROM departmentTransferApply dta
+   LEFT JOIN employee e ON e.employeeId = dta.employeeId
+   LEFT JOIN department ofd ON  dta.oldFirstDepartment = ofd.departmentId
+   LEFT JOIN department osd ON  dta.oldSecDepartment = osd.departmentId
+	LEFT JOIN department nfd ON  dta.newFirstDepartment = nfd.departmentId
+	LEFT JOIN department nsd ON  dta.newSecDepartment = nsd.departmentId
+
+		WHERE  dta.id = #{id}
+</select>
+
+</mapper>

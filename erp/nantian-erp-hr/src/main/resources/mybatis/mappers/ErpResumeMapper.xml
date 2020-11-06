@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpResumeMapper"> 
+
+<!-- 查询 所有的简历  根据参数Valid 判断结果是 有效的或是失效的 add by caoxb-->
+<select id="findResumeByValid" resultType="map" parameterType="map">
+	SELECT a.resumeId,a.name,a.birthday,a.phone,a.sex,a.experience,a.degree,  
+       a.jobDirection,a.isValid,a.status,a.fileName,a.email, a.school
+	FROM resume a
+	WHERE 1 = 1
+	<if test="isValid != null ">
+		AND a.isValid = #{isValid}
+	</if>
+</select>
+
+<insert id="insertResume" parameterType="com.nantian.erp.hr.data.model.ErpResume">
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="resumeId">
+        SELECT LAST_INSERT_ID() AS resumeId
+        </selectKey>
+	INSERT INTO resume(
+		name,birthday,phone,sex,experience,degree,jobDirection,
+		isValid,status,fileName,email,remark,isTrainee,school,createPersonId
+		)
+	VALUES(
+		#{name},#{birthday},#{phone},#{sex},#{experience},#{degree},#{jobDirection},
+		#{isValid},#{status},#{fileName},#{email},#{remark},#{isTrainee},#{school},#{createPersonId}
+		)
+</insert>
+
+ <update id="updateResume" parameterType="com.nantian.erp.hr.data.model.ErpResume" >
+    update resume
+    <set>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex},
+      </if>
+      <if test="experience != null" >
+        experience = #{experience},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree},
+      </if>
+      <if test="jobDirection != null" >
+        jobDirection = #{jobDirection},
+      </if>
+      <if test="isValid != null" >
+        isValid = #{isValid},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="fileName != null" >
+        fileName = #{fileName},
+      </if>
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="isTrainee != null" >
+        isTrainee = #{isTrainee},
+      </if>
+      <if test="school != null" >
+        school = #{school}
+      </if>
+    </set>
+    where resumeId = #{resumeId}
+  </update>
+  
+  <select id="selectResumeDetail" resultType="java.util.Map" parameterType="java.lang.Integer">
+  	SELECT r.resumeId,r.name,r.birthday,r.phone,r.sex,r.experience,r.degree,r.jobDirection,r.isValid,
+		r.fileName,r.email,r.remark,r.isTrainee,r.school,r.status,a.dic_name as "statusName"
+	from resume r
+	inner join admin_dic a on r.status=a.dic_code
+	where a.dic_type='RESUME_STATUS_TYPE' and resumeId=#{resumeId}
+  </select>
+
+<select id="findValidResume" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT r.resumeId,r.name,r.birthday,r.phone,r.sex,r.experience,r.degree,r.jobDirection,r.isValid,
+		r.fileName,r.email,r.remark,r.isTrainee,r.school,r.status,a.dic_name as "statusName",
+		e.name as 'createPersonName'
+	from resume r
+	inner join admin_dic a on r.status=a.dic_code
+	left join employee e on e.employeeId = r.createPersonId
+	where a.dic_type='RESUME_STATUS_TYPE' and r.isValid=true
+	<if test="isTrainee != null" >
+    	and r.isTrainee=#{isTrainee}
+    </if>
+	<if test="status != null" >
+    	and r.status=#{status}
+    </if>
+	order by r.resumeId desc
+</select>
+
+<select id="findArchivedResume" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT r.resumeId,r.name,r.birthday,r.phone,r.sex,r.experience,r.degree,r.jobDirection,r.isValid,
+		r.fileName,r.email,r.remark,r.isTrainee,r.status,r.school,a.dic_name as "statusName",
+		e.name as 'createPersonName'
+	from resume r
+	inner join admin_dic a on r.status=a.dic_code
+	left join employee e on e.employeeId = r.createPersonId
+	where a.dic_type='RESUME_STATUS_TYPE' and r.isValid=false and r.isTrainee=#{isTrainee}
+	<if test="keyword != null ">
+		and (r.name like #{keyword} or r.phone like #{keyword} or r.email like #{keyword} or e.name like #{keyword})
+	</if>
+	order by r.resumeId desc
+	limit #{limit} offset #{offset}
+</select>
+
+<select id="findTotalCountOfArchivedResume" parameterType="java.util.Map" resultType="java.lang.Long">
+	select count(*) 
+	from resume
+	where isValid = false and isTrainee=#{isTrainee}
+	<if test="keyword != null ">
+		and (name like #{keyword} or phone like #{keyword} or email like #{keyword})
+	</if>
+</select>
+
+<select id="validPhoneAndEmail" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.model.ErpResume">
+	SELECT resumeId,phone,email
+	from resume
+	where 1=1
+	<if test="phone != null" >
+    	and phone = #{phone}
+    </if>
+	<if test="email != null" >
+    	and email = #{email}
+    </if>
+</select>
+
+</mapper>

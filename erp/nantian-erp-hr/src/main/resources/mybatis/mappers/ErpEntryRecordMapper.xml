@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEntryRecordMapper">
+
+<insert id="insertEntryRecord" parameterType="com.nantian.erp.hr.data.model.ErpEntryRecord">
+	INSERT INTO entry_record(
+		offerId,time,content,processoer
+		)
+	VALUES(
+		#{offerId},#{time},#{content},#{processoer}
+		)
+</insert>
+
+<select id="findByOfferId" parameterType="java.lang.Integer" resultType="com.nantian.erp.hr.data.model.ErpEntryRecord">
+	select offerId,time,content,processoer
+	from entry_record
+	where offerId = #{offerId}
+	order by id desc
+</select>
+
+</mapper>

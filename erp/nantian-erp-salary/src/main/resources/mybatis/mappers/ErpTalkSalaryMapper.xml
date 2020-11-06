@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpTalkSalaryMapper" >
+  
+  <!-- 新增面试谈薪 -->
+  <insert id="insertTalkSalary" parameterType="com.nantian.erp.salary.data.model.ErpTalkSalary">
+  	insert into erp_talk_salary(
+		offerId,monthIncome,socialSecurityBase,accumulationFundBase,
+		baseWage,monthAllowance,remark
+  		)
+	values(
+		#{offerId},#{monthIncome},#{socialSecurityBase},#{accumulationFundBase},
+		#{baseWage},#{monthAllowance},#{remark}
+		)
+  </insert>
+  
+   <!-- 修改面试谈薪 -->
+   <update id="updateTalkSalary" parameterType="com.nantian.erp.salary.data.model.ErpTalkSalary" >
+    update erp_talk_salary
+    <set>
+      <if test="monthIncome != null" >
+        monthIncome = #{monthIncome},
+      </if>
+      <if test="socialSecurityBase != null" >
+        socialSecurityBase = #{socialSecurityBase},
+      </if>
+      <if test="accumulationFundBase != null" >
+        accumulationFundBase = #{accumulationFundBase},
+      </if>
+      <if test="baseWage != null" >
+        baseWage = #{baseWage},
+      </if>
+      <if test="monthAllowance != null" >
+        monthAllowance = #{monthAllowance},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark}
+      </if>
+    </set>
+    where offerId = #{offerId}
+  </update>
+  
+  <!-- 主键查询 -->
+  <select id="findOneByOfferId" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpTalkSalary">
+  	select offerId,monthIncome,socialSecurityBase,accumulationFundBase,
+		baseWage,monthAllowance,remark
+	from erp_talk_salary
+	where offerId = #{offerId}
+  </select>
+  
+</mapper>

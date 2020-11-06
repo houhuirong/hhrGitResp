@@ -1,0 +1,1418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpEmployeeMapper"> 
+
+<select id="findAllEntry" resultType="java.util.Map">
+select e.employeeId,e.name,e.sex,e.position,e.rank,e.personalEmail,e.entryTime,
+	d1.departmentName as "firstDepartmentName",d2.departmentName as "secondDepartmentName",
+	c.beginTime as "contractBeginTime",c.endTime as "contractEndTime",c.probationEndTime as "probationEndTime", r.phone
+	from employee e
+	left join contract c on c.employeeId=e.employeeId
+	left join department d1 on d1.departmentId=e.firstDepartment
+	left join department d2 on d2.departmentId=e.secondDepartment
+	left JOIN resume r ON r.resumeId = e.resumeId
+	where e.entryTime BETWEEN #{startDate} AND #{endDate}
+</select>
+
+<select id="findAllDimission" resultType="java.util.Map">
+	SELECT d.id,d.employeeId,d.dimissionTime,d.dimissionReason,d.dimissionDirection,d.dealWithTime,
+	e.name,e.sex,e.position,e.rank,e.entryTime,e.personalEmail,
+	d1.departmentName AS "firstDepartmentName",d2.departmentName AS "secondDepartmentName",
+	p.manager,p.projectName,r.phone userPhone
+	FROM dimission d
+	LEFT JOIN employee e ON e.employeeId = d.employeeId
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN admin_dic a ON a.dic_code = e.status
+	LEFT JOIN projectinfo p ON p.projectInfoId=e.projectInfoId
+	LEFT JOIN resume r ON r.resumeId = e.resumeId
+	WHERE a.dic_type = 'EMPLOYEE_STATUS_TYPE'
+	and d.dimissionTime BETWEEN #{startDate} AND #{endDate}
+</select>
+
+<!-- 根据需要过滤掉已经离职员工 -->
+<select id="selectAllEmployee" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT
+	e.employeeId,
+	e.name,
+	e.socialSecurity,
+	e.sex,
+	e.position,
+	e.positionId,
+	e.rank,
+	e.resumeId,
+	e.isActive,
+	e.offerId,
+	e.projectInfoId,
+	e.entryTime,
+	e.takeJobTime,
+	con.beginTime AS contractBeginTime,
+	con.endTime AS contractEndTime,
+	con.probationEndTime AS probationEndTime,
+	e.salaryCardNumber,
+	e.idCardNumber,
+	e.school,
+	e.major,
+	e.education,
+	e.status,
+	e.personalEmail,
+	d1.departmentName AS firstDepartment,
+	d2.departmentName AS secondDepartment,
+	a.dic_name AS "statusName",
+	e.firstDepartment AS firstDepartmentId,
+	e.secondDepartment AS secondDepartmentId,
+	a2.dic_name politicalName,
+	a2.dic_code politicalCode,
+	a1.dic_name AS groupsName,
+	a1.dic_code groupsCode,	
+	pftn.dic_name positionFamilyName,
+	ptn.dic_name positionTypeName,
+	pctn.dic_name positionChildName
+FROM
+	employee e
+LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+LEFT JOIN contract con ON con.employeeId = e.employeeId
+INNER JOIN admin_dic a ON a.dic_code = e. STATUS
+LEFT JOIN admin_dic a1 ON a1.dic_code=e.groups AND a1.dic_type='GROUPS_TYPE'
+LEFT JOIN admin_dic a2 ON a2.dic_code=e.politicalStatus AND a2.dic_type='POLITICAL_STATUS'
+LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+LEFT JOIN admin_dic ptn ON ptn.dic_type = prr.positionFamilyType AND ptn.dic_code = prr.positionType
+LEFT JOIN admin_dic pftn ON pftn.dic_code = prr.positionFamilyType
+LEFT JOIN admin_dic pctn ON pctn.dic_type = CONCAT(prr.positionFamilyType,prr.positionType) AND pctn.dic_code = prr.positionChildType
+WHERE
+	a.dic_type = 'EMPLOYEE_STATUS_TYPE'
+	and e.STATUS in (0,1,2,3)
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="secLeaderId != null">
+		AND d2.userId=#{secLeaderId}
+	</if>
+	<if test="firstDepartment != null">
+		AND d1.departmentId=#{firstDepartment}
+	</if>
+	<if test="departmentId != null">
+		AND d2.departmentId=#{departmentId}
+	</if>
+	<if test="name != null">
+		AND e.name LIKE CONCAT('%',#{name},'%')
+	</if>
+	<if test="employeeIds != null and employeeIds.size > 0">
+		AND e.employeeId in 
+	<foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
+			#{employeeId}
+		</foreach>
+	</if>
+	GROUP BY e.employeeId
+	order by e.employeeId
+	<if test="limit != null and offset != null" >
+        limit #{limit} offset #{offset}
+    </if>
+</select>
+<!-- 根据需要过滤掉提交离职与已离职员工 -->
+<select id="selectNotDimissionEmployee" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT
+	e.employeeId,
+	e.name,
+	e.socialSecurity,
+	e.sex,
+	e.position,
+	e.positionId,
+	e.rank,
+	e.resumeId,
+	e.isActive,
+	e.offerId,
+	e.projectInfoId,
+	e.entryTime,
+	e.takeJobTime,
+	con.beginTime AS contractBeginTime,
+	con.endTime AS contractEndTime,
+	con.probationEndTime AS probationEndTime,
+	e.salaryCardNumber,
+	e.idCardNumber,
+	e.school,
+	e.major,
+	e.education,
+	e.status,
+	e.personalEmail,
+	d1.departmentName AS firstDepartment,
+	d2.departmentName AS secondDepartment,
+	a.dic_name AS "statusName",
+	e.firstDepartment AS firstDepartmentId,
+	e.secondDepartment AS secondDepartmentId,
+	a2.dic_name politicalName,
+	a2.dic_code politicalCode,
+	a1.dic_name AS groupsName,
+	a1.dic_code groupsCode,
+	pftn.dic_name positionFamilyName,
+	ptn.dic_name positionTypeName,
+	pctn.dic_name positionChildName
+	FROM
+	employee e
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN contract con ON con.employeeId = e.employeeId
+	INNER JOIN admin_dic a ON a.dic_code = e. STATUS
+	LEFT JOIN admin_dic a1 ON a1.dic_code=e.groups AND a1.dic_type='GROUPS_TYPE'
+	LEFT JOIN admin_dic a2 ON a2.dic_code=e.politicalStatus AND a2.dic_type='POLITICAL_STATUS'
+	LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+	LEFT JOIN admin_dic ptn ON ptn.dic_type = prr.positionFamilyType AND ptn.dic_code = prr.positionType
+	LEFT JOIN admin_dic pftn ON pftn.dic_code = prr.positionFamilyType
+	LEFT JOIN admin_dic pctn ON pctn.dic_type = CONCAT(prr.positionFamilyType,prr.positionType) AND pctn.dic_code = prr.positionChildType
+	WHERE
+	a.dic_type = 'EMPLOYEE_STATUS_TYPE'
+	and e.STATUS in (0,1,2)
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	<if test="secLeaderId != null">
+		AND d2.userId=#{secLeaderId}
+	</if>
+	GROUP BY e.employeeId
+	order by e.employeeId
+</select>
+
+<select id="selectByEmployeeId" resultType="java.util.Map" parameterType="java.lang.Integer">
+	select e.employeeId,e.name,e.sex,e.socialSecurity,p.positionName position,e.rank,e.resumeId,e.isActive,e.offerId,
+	e.projectInfoId,e.entryTime,e.takeJobTime,c.beginTime  as contractBeginTime, c.endTime as contractEndTime, c.probationEndTime,
+	e.salaryCardNumber,e.idCardNumber,e.school,e.major,e.education,e.status,r.isTrainee,
+	d1.departmentName as firstDepartment,d2.departmentName as secondDepartment,
+	a.dic_name as "statusName"
+	from employee e
+	LEFT JOIN department d1 on d1.departmentId=e.firstDepartment
+	LEFT JOIN department d2 on d2.departmentId=e.secondDepartment
+	LEFT JOIN admin_dic a on a.dic_code=e.status
+	LEFT JOIN positionRankRelation p on p.positionNo=e.positionId
+	LEFT JOIN contract c on c.employeeId=e.employeeId
+	LEFT JOIN resume r on r.resumeId=e.resumeId
+	where a.dic_type='EMPLOYEE_STATUS_TYPE' and e.employeeId = #{employeeId}
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} OR d1.superLeader=#{leaderId})
+	</if>
+	ORDER BY contractId DESC LIMIT 1
+</select>
+
+<select id="findEmpIdByIdCardNumAndName" resultType="java.lang.Integer" parameterType="java.util.Map">
+	select employeeId
+	from employee
+	where trim(name) = #{name} and idCardNumber = #{idCardNumber}
+</select>
+
+<select id="findEmpIdByIdCardNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+	select employeeId
+	from employee
+	where idCardNumber = #{idCardNumber}
+</select>
+
+<select id="findEmployeeTable" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT e.employeeId,e.name,e.socialSecurity,e.sex,e.position,e.rank,e.idCardNumber,e.offerId,
+	e.firstDepartment,e.secondDepartment,e.status,e.takeJobTime,e.entryTime,e.idCardNumber,
+	d1.departmentName as firstDepartmentName,d2.departmentName as secondDepartmentName,
+	a.dic_name as statusName,d1.userId AS 'firstDepLeader',d1.superLeader,d2.userId AS 'secDepLeader',
+	d.dimissionTime, c.probationEndTime
+	FROM employee e
+	LEFT JOIN department d1 on d1.departmentId=e.firstDepartment
+	LEFT JOIN department d2 on d2.departmentId=e.secondDepartment
+	LEFT JOIN admin_dic a on a.dic_code=e.status
+	LEFT JOIN dimission d on d.employeeId = e.employeeId
+	LEFT JOIN contract c on c.employeeId = e.employeeId	
+	WHERE a.dic_type='EMPLOYEE_STATUS_TYPE'
+	
+	<if test="groupId != null">
+		AND e.projectInfoId = #{groupId}
+	</if>
+	<if test="firDepManagerId != null">
+		AND d1.rank='1' AND (d1.userId = #{firDepManagerId} or d1.superLeader = #{firDepManagerId})
+	</if>
+	<if test="superLeaderId != null">
+		AND d1.rank='1' AND d1.superLeader = #{superLeaderId}
+	</if>
+	<if test="secDepManagerId != null">
+		AND d2.rank='2' AND d2.userId = #{secDepManagerId}
+	</if>
+	<if test="firstDepartmentId != null">
+		AND e.firstDepartment = #{firstDepartmentId}
+	</if>
+	<if test="secondDepartmentId != null">
+		AND e.secondDepartment = #{secondDepartmentId}
+	</if>
+	<if test="departmentId != null">
+	AND e.firstDepartment=#{departmentId} or e.secondDepartment=#{departmentId}
+	</if>
+	<if test="statusList != null">
+		AND e.status IN
+		<foreach collection="statusList" index="index" item="status" open="(" separator="," close=")">
+			#{status}
+		</foreach>
+	</if>
+	<if test="dimissionTimeStart != null and dimissionTimeEnd != null">
+		and ((e.status = 4 AND d.dimissionTime BETWEEN #{dimissionTimeStart} AND #{dimissionTimeEnd}) or e.status != 4)
+	</if>
+	<if test="entryTime != null">
+		AND e.entryTime &lt;= #{entryTime}
+	</if>
+	
+	<if test="keyword != null">
+		AND e.name LIKE #{keyword}
+	</if>
+	ORDER BY d1.departmentName,d2.departmentName ASC
+</select>
+
+<select id="findEmployeeDetail" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select e.employeeId,e.name,r.isTrainee,e.`status`,e.socialSecurity,e.sex,e.positionId,e.position,e.rank,e.idCardNumber,e.projectInfoId,
+	e.education,e.school,e.major,e.takeJobTime,e.resumeId,e.personalEmail,d1.userId,
+	e.empPictureFileName,e.frontIdCardFileName,e.backIdCardFileName,c.probationEndTime,
+	e.firstDepartment as "firstDepartmentId",e.secondDepartment as "secondDepartmentId",
+	d1.departmentName as "firstDepartmentName",d2.departmentName as "secondDepartmentName"
+	from employee e
+	left join resume r on r.resumeId = e.resumeId
+	left join department d1 on d1.departmentId=e.firstDepartment
+	left join department d2 on d2.departmentId=e.secondDepartment
+	left JOIN contract c on c.employeeId=e.employeeId
+	where e.employeeId = #{employeeId}
+	ORDER BY e.employeeId DESC
+	LIMIT 1
+</select>
+
+<select id="findEmployeeAll" resultType="java.util.Map">
+	select e.employeeId,e.name,e.sex,e.idCardNumber,e.position,e.rank,e.entryTime,
+	e.firstDepartment as "firstDepartmentId",e.secondDepartment as "secondDepartmentId",
+	d1.departmentName as "firstDepartmentName",d2.departmentName as "secondDepartmentName",
+	e.status,a.dic_name as "statusName", d.dimissionTime, c.beginTime, c.probationEndTime
+	from employee e
+	left join department d1 on d1.departmentId=e.firstDepartment
+	left join department d2 on d2.departmentId=e.secondDepartment
+	left join admin_dic a on a.dic_code=e.status
+	left join contract c on c.employeeId = e.employeeId
+	left join dimission d on d.employeeId = e.employeeId
+	where a.dic_type='EMPLOYEE_STATUS_TYPE'
+</select>
+
+	<select id="findEmployeeAllByParams" resultType="java.util.Map">
+	select e.employeeId,e.name,e.sex,e.idCardNumber,e.position,e.rank,e.entryTime,
+	e.firstDepartment as "firstDepartmentId",e.secondDepartment as "secondDepartmentId",
+	d1.departmentName as "firstDepartmentName",d2.departmentName as "secondDepartmentName",
+	e.status,a.dic_name as "statusName", d.dimissionTime, c.beginTime, c.probationEndTime,
+	d1.userId firstDepartmentUserId, d2.userId secondDepartmentUserId,
+	firstDepartmentSuperLeader.employeeId firstDepartmentSuperLeaderId, firstDepartmentSuperLeader.name firstDepartmentSuperLeaderName
+	from employee e
+	left join department d1 on d1.departmentId=e.firstDepartment
+	left join department d2 on d2.departmentId=e.secondDepartment
+	left join admin_dic a on a.dic_code=e.status AND a.dic_type='EMPLOYEE_STATUS_TYPE'
+	left join contract c on c.employeeId = e.employeeId
+	left join dimission d on d.employeeId = e.employeeId
+	left join employee firstDepartmentSuperLeader on d1.superLeader = firstDepartmentSuperLeader.employeeId
+		where 1=1
+		<if test="departmentName!=null and departmentName != '' and departmentName != 'null'">
+			and (d2.departmentName LIKE CONCAT('%',#{departmentName},'%') OR d1.departmentName LIKE CONCAT('%',#{departmentName},'%'))
+		</if>
+		<if test="employeeName!=null and employeeName != '' and employeeName != 'null'">
+			and e.name LIKE CONCAT('%',#{employeeName},'%')
+		</if>
+</select>
+
+
+<select id="selectByOfferId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select employeeId
+	from employee
+	where offerId = #{offerId}
+</select>
+
+<insert id="insertEmployee" parameterType="com.nantian.erp.hr.data.model.ErpEmployee">
+	 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="employeeId">
+        SELECT LAST_INSERT_ID() AS employeeId
+        </selectKey>
+	INSERT INTO employee(
+		name,socialSecurity,sex,firstDepartment,secondDepartment,position,positionId,rank,resumeId,
+		isActive,offerId,personalEmail,projectInfoId,entryTime,takeJobTime,salaryCardNumber,idCardNumber,
+		school,major,education,status,empFinanceNumber,
+		postPayrollStatus,positivePayrollStatus,firstDepartmentName,secondDepartmentName,
+		politicalStatus,groups
+		)
+	VALUES(
+		#{name},#{socialSecurity},#{sex},#{firstDepartment},#{secondDepartment},#{position},#{positionId},#{rank},#{resumeId},
+		#{isActive},#{offerId},#{personalEmail},#{projectInfoId},#{entryTime},#{takeJobTime},#{salaryCardNumber},#{idCardNumber},
+		#{school},#{major},#{education},#{status},#{empFinanceNumber},
+		#{postPayrollStatus},#{positivePayrollStatus},#{firstDepartmentName},#{secondDepartmentName},
+		#{politicalStatus},#{groups}
+		)
+</insert>
+
+<update id="updateEmployee" parameterType="com.nantian.erp.hr.data.model.ErpEmployee" >
+    update employee
+    <set>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="socialSecurity != null and  socialSecurity != ''" >
+        socialSecurity = #{socialSecurity},
+      </if>
+      <if test="sex != null and sex != ''" >
+        sex = #{sex},
+      </if>
+      <if test="firstDepartment != null and firstDepartment != ''" > 
+        firstDepartment = #{firstDepartment},
+      </if>
+      <if test="secondDepartment != null and secondDepartment != ''" >
+        secondDepartment = #{secondDepartment},
+      </if>
+      <if test="firstDepartmentName != null and firstDepartmentName != ''" > 
+        firstDepartmentName = #{firstDepartmentName},
+      </if>
+      <if test="secondDepartmentName != null and secondDepartmentName != ''" >
+        secondDepartmentName = #{secondDepartmentName},
+      </if>
+      <if test="position != null and position != ''" >
+        position = #{position},
+      </if>
+      <if test="positionId != null and positionId != ''" >
+        positionId = #{positionId},
+      </if>
+      <if test="rank != null and rank != ''" >
+        rank = #{rank},
+      </if>
+      <if test="resumeId != null and resumeId != ''" >
+        resumeId = #{resumeId},
+      </if>
+      <if test="isActive != null and isActive != ''" >
+        isActive = #{isActive},
+      </if>
+      <if test="offerId != null and offerId != ''" >
+        offerId = #{offerId},
+      </if>
+      <if test="personalEmail != null and personalEmail != ''" >
+        personalEmail = #{personalEmail},
+      </if>
+      <if test="projectInfoId != null and projectInfoId != ''" >
+        projectInfoId = #{projectInfoId},
+      </if>
+      <if test="entryTime != null and entryTime != ''" >
+        entryTime = #{entryTime},
+      </if>
+      <if test="takeJobTime != null and takeJobTime != ''" >
+        takeJobTime = #{takeJobTime},
+      </if>
+      <if test="salaryCardNumber != null and salaryCardNumber != ''" >
+        salaryCardNumber = #{salaryCardNumber},
+      </if>
+      <if test="idCardNumber != null and idCardNumber != ''" >
+        idCardNumber = #{idCardNumber},
+      </if>
+      <if test="school != null and school != ''" >
+        school = #{school},
+      </if>
+      <if test="major != null and major != ''" >
+        major = #{major},
+      </if>
+      <if test="education != null and education != ''" >
+        education = #{education},
+      </if>
+      <if test="status != null and status != ''" >
+        status = #{status},
+      </if>
+      <if test="empFinanceNumber != null and empFinanceNumber != ''" >
+        empFinanceNumber = #{empFinanceNumber},
+      </if>
+      <if test="postPayrollStatus != null and postPayrollStatus != ''" >
+        postPayrollStatus = #{postPayrollStatus},
+      </if>
+      <if test="positivePayrollStatus != null and positivePayrollStatus != ''" >
+        positivePayrollStatus = #{positivePayrollStatus},
+      </if>
+      <if test="politicalStatus != null and politicalStatus !=''">
+      	politicalStatus = #{politicalStatus},
+      </if>
+      <if test="groups !=null and groups !=''">
+        groups=#{groups}
+      </if>
+    </set>
+    where employeeId = #{employeeId}
+  </update>
+  
+<delete id="deleteByEmployeeId" parameterType="java.lang.Integer">
+	delete from employee
+	where employeeId = #{employeeId}
+</delete>
+
+<select id="findEmployeeIdByOfferIdAndResumeId" resultType="java.lang.Integer" parameterType="com.nantian.erp.hr.data.model.ErpEmployee">
+	select e.employeeId
+	from employee e 
+	where e.offerId=#{offerId} and e.resumeId=#{resumeId} and e.name=#{name}
+</select>
+
+<select id="findCountByEntryTime" resultType="java.lang.Integer" parameterType="java.lang.String">
+	select count(*)
+	from employee e
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment	
+	where e.entryTime like #{yearAndMonth}
+	<if test="leaderId != null">
+		AND (d1.userId=#{leaderId} or d1.superLeader=#{leaderId})
+	</if>
+	<if test="superLeaderId != null">
+		AND d1.superLeader=#{superLeaderId}
+	</if>
+</select>
+
+<select id="findEmployeeListByParams" resultType="java.util.Map" parameterType="java.util.Map">
+	select e.employeeId,e.name,e.socialSecurity,e.sex,p.positionName position,e.rank,e.resumeId,
+	e.postPayrollStatus,e.positivePayrollStatus,e.status,
+	d1.departmentName as firstDepartmentName,d2.departmentName as secondDepartmentName,
+	p.postName
+	from employee e
+	inner join department d1 on d1.departmentId=e.firstDepartment
+	inner join department d2 on d2.departmentId=e.secondDepartment
+	inner join offer o on o.offerId=e.offerId
+	inner join post p on p.postId=o.postId
+	where 1=1
+	<if test="departmentManagerEmail != null">
+	   and d1.departmentManagerEmail = #{departmentManagerEmail}
+    </if>
+	<if test="postPayrollStatus != null" >
+       and e.postPayrollStatus = #{postPayrollStatus}
+    </if>
+	<if test="positivePayrollStatus != null" >
+       and e.positivePayrollStatus = #{positivePayrollStatus}
+    </if>
+</select>
+
+<!-- 根据部门ID查询对应部门经理编号 -->
+<select id="findUserIdByDepartID" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select UserID from department where departmentId=#{departmentId}
+</select>
+<!-- 员工的教育经历 -->
+
+	<!-- 查询多条 -->
+<select id="findAllEducationByEmp" resultType="java.util.Map">
+	 SELECT id,employeeId,startTime,endTime,school,major,degree,filename,filename1
+	 FROM educationExperience
+	 WHERE employeeId=#{employeeId} 
+	 ORDER BY startTime DESC
+</select>
+
+<!-- 查询一条 -->
+<select id="findEducationById" resultType="java.util.Map">
+	 SELECT id,employeeId,startTime,endTime,school,major,degree,filename,filename1
+	 FROM educationExperience
+	 WHERE id = #{id} 
+</select>
+
+	<!-- 添加 -->
+<insert id="addEducationByEmp" parameterType="com.nantian.erp.hr.data.model.ErpEducationExperience">
+	INSERT INTO educationExperience(employeeId,startTime,endTime,school,major,degree,filename,filename1) 
+	VALUES(#{employeeId},#{startTime},#{endTime},#{school},#{major},#{degree},#{filename},#{filename1})
+</insert>
+
+ 	<!-- 删除 -->
+<delete id="deleteEducationByEmp" parameterType="java.lang.Integer">
+	delete from educationExperience 
+	where id = #{id}
+</delete>
+
+	<!-- 修改 -->
+<update id="updateEducationByEmp" parameterType="com.nantian.erp.hr.data.model.ErpEducationExperience">
+    update educationExperience
+    <set>
+      <if test="startTime != null" >
+        startTime = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime},
+      </if>
+      <if test="school != null" >
+        school = #{school},
+      </if>
+      <if test="major != null" >
+        major = #{major},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree},
+      </if>
+      <if test="filename != null" >
+        filename = #{filename},
+      </if>
+      <if test="filename1 != null" >
+        filename1 = #{filename1},
+      </if>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </set>
+    where id = #{id}
+ </update>
+ 
+<!-- 员工的工作经历 -->
+
+	<!-- 查询 -->
+<select id="findAllWorkExperienceByEmp" resultType="java.util.Map">
+	 SELECT id,startTime,endTime,company,position FROM workExperience WHERE employeeId=#{employeeId} ORDER BY startTime DESC
+</select>
+
+	<!-- 添加 -->
+<insert id="addWorkExperienceByEmp" parameterType="com.nantian.erp.hr.data.model.ErpWorkExperience">
+	INSERT INTO workExperience(employeeId,startTime,endTime,company,position) VALUES(#{employeeId},#{startTime},#{endTime},#{company},#{position})
+</insert>
+
+	<!-- 修改 -->
+<update id="updateWorkExperienceByEmp" parameterType="com.nantian.erp.hr.data.model.ErpWorkExperience">
+    update workExperience
+    <set>
+      <if test="startTime != null" >
+        startTime = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime},
+      </if>
+      <if test="company != null" >
+        company = #{company},
+      </if>
+      <if test="position != null" >
+        position = #{position},
+      </if>
+    </set>
+    where id = #{id}
+ </update>
+ 
+ 	<!-- 删除 -->
+<delete id="deleteWorkExperienceByEmp" parameterType="java.lang.Integer">
+	delete from workExperience where id = #{id}
+</delete>
+
+<!-- 员工的项目经历 -->
+
+	<!-- 查询 -->
+<select id="findAllProjectExperienceByEmp" resultType="java.util.Map">
+	 SELECT id,startTime,endTime,projectName,post,description,responsibility FROM projectExperience WHERE employeeId=#{employeeId} ORDER BY startTime DESC
+</select>
+
+	<!-- 添加 -->
+<insert id="addProjectExperienceByEmp" parameterType="com.nantian.erp.hr.data.model.ErpProjectExperience">
+	INSERT INTO projectExperience(employeeId,startTime,endTime,projectName,post,description,responsibility) VALUES(#{employeeId},#{startTime},#{endTime},#{projectName},#{post},#{description},#{responsibility})
+</insert>
+
+	<!-- 修改 -->
+<update id="updateProjectExperienceByEmp" parameterType="com.nantian.erp.hr.data.model.ErpProjectExperience">
+    update projectExperience
+    <set>
+      <if test="startTime != null" >
+        startTime = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime},
+      </if>
+      <if test="projectName != null" >
+        projectName = #{projectName},
+      </if>
+      <if test="post != null" >
+        post = #{post},
+      </if>
+      <if test="description != null" >
+        description = #{description},
+      </if>
+      <if test="responsibility != null" >
+        responsibility = #{responsibility},
+      </if>
+    </set>
+    where id = #{id}
+ </update>
+ 
+ 	<!-- 删除 -->
+<delete id="deleteProjectExperienceByEmp" parameterType="java.lang.Integer">
+	delete from projectExperience where id = #{id}
+</delete>
+
+<!-- 员工的技术特长 -->
+
+	<!-- 查询 -->
+<select id="findAllTechnicaExpertiseByEmp" resultType="java.util.Map">
+	 SELECT id,technicalName,qualification FROM technicaExpertise WHERE employeeId=#{employeeId}
+</select>
+
+	<!-- 添加 -->
+<insert id="addTechnicaExpertiseByEmp" parameterType="com.nantian.erp.hr.data.model.ErpTechnicaExpertise">
+	INSERT INTO technicaExpertise(employeeId,technicalName,qualification) VALUES(#{employeeId},#{technicalName},#{qualification})
+</insert>
+
+	<!-- 修改 -->
+<update id="updateTechnicaExpertiseByEmp" parameterType="com.nantian.erp.hr.data.model.ErpTechnicaExpertise">
+    update technicaExpertise
+    <set>
+      <if test="technicalName != null" >
+        technicalName = #{technicalName},
+      </if>
+      <if test="qualification != null" >
+        qualification = #{qualification},
+      </if>
+    </set>
+    where id = #{id}
+ </update>
+ 
+ 	<!-- 删除 -->
+<delete id="deleteTechnicaExpertiseByEmp" parameterType="java.lang.Integer">
+	delete from technicaExpertise where id = #{id}
+</delete>
+<!-- 员工的证书 -->
+
+	<!-- 查询 -->
+<select id="findAllCertificateByEmp" resultType="java.util.Map">
+	 SELECT id,time,certificateName,level,organization,description, category, filename FROM certificate WHERE employeeId=#{employeeId} ORDER BY time DESC
+</select>
+	<!-- 根据证书主键id查看证书  -->
+<select id="seceltCertificateById" resultType="java.util.Map">
+	 SELECT id,time,certificateName,level,organization,description, category, filename FROM certificate WHERE id=#{id}
+</select>
+
+	<!-- 添加 -->
+<insert id="addCertificateByEmp" parameterType="com.nantian.erp.hr.data.model.ErpCertificate">
+	INSERT INTO certificate(employeeId,time,filename,level,organization,description,category,certificateName) VALUES(#{employeeId},#{time},#{filename},#{level},#{organization},#{description},#{category},#{certificateName})
+</insert>
+
+	<!-- 修改 -->
+<update id="updateCertificateByEmp" parameterType="com.nantian.erp.hr.data.model.ErpCertificate">
+    update certificate
+    <set>
+      <if test="filename != null" >
+        filename = #{filename},
+      </if>
+      <if test="description != null" >
+        description = #{description},
+      </if>
+      <if test="certificateName != null" >
+        certificateName = #{certificateName},
+      </if>
+      <if test="time != null" >
+        time = #{time},
+      </if>
+      <if test="level != null" >
+        level = #{level},
+      </if>
+      <if test="organization != null" >
+        organization = #{organization},
+      </if>
+      <if test="category != null" >
+        category = #{category},
+      </if>
+    </set>
+    where id = #{id}
+ </update>
+ 
+ 	<!-- 删除 -->
+<delete id="deleteCertificateByEmp" parameterType="java.lang.Integer">
+	delete from certificate where id = #{id}
+</delete>
+<!-- 根据员工id导出员工信息,合同开始/结束时间从合同表获取 -->
+<select id="selectAllEmployeeById" resultType="java.util.Map">
+	select 
+		e.employeeId,e.name,e.socialSecurity,
+		e.sex,e.position,e.positionId,
+		e.rank,e.resumeId,e.isActive,
+		e.offerId,e.personalEmail,
+		e.projectInfoId,e.entryTime,
+		e.takeJobTime,
+		con.beginTime as contractBeginTime,
+		con.endTime as contractEndTime,
+		con.probationEndTime as probationEndTime,
+		con.renewalStartTime1,con.renewalEndTime1,con.renewalStartTime2,con.renewalEndTime2,
+		e.salaryCardNumber,e.idCardNumber,
+		e.school,e.major,e.education,e.status,
+		d1.departmentName as firstDepartment,
+		d2.departmentName as secondDepartment,
+		a.dic_name as "statusName",
+		a1.dic_name AS groupsName,
+		a2.dic_name AS politicalName,
+		pftn.dic_name positionFamilyName,
+		ptn.dic_name positionTypeName,
+		pctn.dic_name positionChildName
+	from employee e
+		left join department d1 on d1.departmentId=e.firstDepartment
+		left join department d2 on d2.departmentId=e.secondDepartment
+		left join admin_dic a on a.dic_code=e.status
+		LEFT JOIN admin_dic a1 ON a1.dic_code=e.groups AND a1.dic_type='GROUPS_TYPE'
+		LEFT JOIN admin_dic a2 ON a2.dic_code=e.politicalStatus AND a2.dic_type='POLITICAL_STATUS'
+		LEFT JOIN  contract con on con.employeeId = e.employeeId
+		LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+		LEFT JOIN admin_dic ptn ON ptn.dic_type = prr.positionFamilyType AND ptn.dic_code = prr.positionType
+		LEFT JOIN admin_dic pftn ON pftn.dic_code = prr.positionFamilyType
+		LEFT JOIN admin_dic pctn ON pctn.dic_type = CONCAT(prr.positionFamilyType,prr.positionType) AND pctn.dic_code = prr.positionChildType
+	where a.dic_type='EMPLOYEE_STATUS_TYPE' AND e.employeeId=#{employeeId}
+	order by e.employeeId DESC
+	LIMIT 1
+</select>
+
+<update id="updateEmployeeByMap" parameterType="java.util.Map" >
+    update employee
+    <set>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="sex != null and sex != '' " >
+        sex = #{sex},
+      </if>
+      <if test="salaryCardNumber != null and salaryCardNumber != ''" >
+        salaryCardNumber = #{salaryCardNumber},
+      </if>
+      <if test="idCardNumber != null and idCardNumber != ''" >
+        idCardNumber = #{idCardNumber},
+      </if>
+      <if test="school != null and school != ''" >
+        school = #{school},
+      </if>
+      <if test="major != null and major !='' " >
+        major = #{major},
+      </if>
+      <if test="education != null and education != '' " >
+        education = #{education},
+      </if>
+      <if test="takeJobTime != null and takeJobTime != '' " >
+        takeJobTime = #{takeJobTime},
+      </if>
+<!--       员工对应的财务序号（对应的绩效序号） -->
+<!--       <if test="empFinanceNumber != null" > -->
+<!--         empFinanceNumber = #{empFinanceNumber} -->
+<!--       </if> -->
+	  <if test="empPictureFileName != null and empPictureFileName != '' " >
+        empPictureFileName = #{empPictureFileName},
+      </if>
+      <if test="frontIdCardFileName != null and frontIdCardFileName != '' " >
+        frontIdCardFileName = #{frontIdCardFileName},
+      </if>
+      <if test="backIdCardFileName != null and backIdCardFileName != '' " >
+        backIdCardFileName = #{backIdCardFileName},
+      </if>
+      <if test="politicalStatus != null and politicalStatus !=''">
+      	politicalStatus = #{politicalStatus},
+      </if>
+      <if test="groups !=null and groups !=''">
+        groups=#{groups},
+      </if>
+      employeeId = #{employeeId}
+    </set>
+    where employeeId = #{employeeId}
+  </update>
+	
+<!-- 	身份证唯一验证 -->
+	<select id="volidatePersonIdCard" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(idCardNumber) as idCardNumber FROM employee where idCardNumber = #{idCardNumber}
+	</select>
+	
+<!-- 根据一级部门Id查找部门经理 -->
+ <select id="selectManagerByFirstDepartment" parameterType="java.lang.Integer" resultType="map">
+	select d.userId,d.departmentName,d.departmentManagerEmail,d.superLeader
+	 from department d
+	where 1=1
+	and  d.rank = 1
+	and d.departmentId = #{firstDepartment}
+	
+ </select>
+ 
+ <!--  根据员工Id只查找单个员工表的信息 -->
+ <select id="selectByEmployeeIdForlx" resultType="java.util.Map" parameterType="java.lang.Integer">
+	SELECT
+		e.name,
+		e.sex,
+		e.socialSecurity,
+		e.rank,
+		e.resumeId,
+		e.isActive,
+		e.offerId,
+		e.projectInfoId,
+		e.takeJobTime,
+		e.entryTime,
+		e.position,
+		con.beginTime AS contractBeginTime,
+		con.endTime AS contractEndTime,
+		con.probationEndTime AS probationEndTime,
+		con.renewalStartTime1,con.renewalEndTime1,con.renewalStartTime2,con.renewalEndTime2,
+		e.salaryCardNumber,
+		e.idCardNumber,
+		e.school,
+		e.major,
+		e.education,
+		e.status,
+		e.firstDepartment AS firstDepartmentId,
+		e.secondDepartment AS secondDepartmentId,
+		d1.departmentName AS firstDepartment,
+		d2.departmentName AS secondDepartment,
+		e.empPictureFileName,e.frontIdCardFileName,e.backIdCardFileName,
+		e.personalEmail,
+		a2.dic_name politicalStatus,
+		a2.dic_code politicalCode,
+		a1.dic_name AS groups,
+		a1.dic_code groupsCode,
+		pftn.dic_name positionFamilyName,
+		ptn.dic_name positionTypeName,
+		pctn.dic_name positionChildName,
+		r.phone userPhone
+	FROM
+		employee e
+	LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	LEFT JOIN contract con ON con.employeeId = e.employeeId
+	LEFT JOIN admin_dic a1 ON a1.dic_code=e.groups AND a1.dic_type='GROUPS_TYPE'
+	LEFT JOIN admin_dic a2 ON a2.dic_code=e.politicalStatus AND a2.dic_type='POLITICAL_STATUS'
+	LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+	LEFT JOIN admin_dic ptn ON ptn.dic_type = prr.positionFamilyType AND ptn.dic_code = prr.positionType
+	LEFT JOIN admin_dic pftn ON pftn.dic_code = prr.positionFamilyType
+	LEFT JOIN admin_dic pctn ON pctn.dic_type = CONCAT(prr.positionFamilyType,prr.positionType) AND pctn.dic_code = prr.positionChildType
+	LEFT JOIN resume r ON r.resumeId = e.resumeId
+	WHERE
+ 	e.employeeId = #{employeeId}
+ 	ORDER BY con.contractId desc
+	LIMIT 1
+</select>
+
+<!-- 离职更新员工表 -->
+<update id="updateDimissionEmployeeInfo" parameterType="java.lang.Integer">
+    update employee e 
+    LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+	LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+	
+    <set>
+    	e.firstDepartmentName = d1.departmentName,
+    	e.secondDepartmentName = d2.departmentName,
+    	e.status = 4
+    </set>
+    where employeeId = #{employeeId}
+ </update>
+
+ <select id="findEmployeeByPositiveMonth" resultType="java.util.Map" parameterType="java.lang.String">
+	select e.employeeId,e.name,e.sex,r.isTrainee,e.socialSecurity,p.positionName position,e.rank,e.resumeId,e.isActive,e.offerId,
+	e.projectInfoId,e.entryTime,c.probationEndTime,e.takeJobTime,c.beginTime as contractBeginTime,c.endTime as contractEndTime,
+	e.salaryCardNumber,e.idCardNumber,e.school,e.major,e.education,e.status,
+	d1.departmentName as firstDepartment,d2.departmentName as secondDepartment,
+	a.dic_name as "statusName"
+	from employee e
+	left join resume r on r.resumeId = e.resumeId
+	LEFT JOIN department d1 on d1.departmentId=e.firstDepartment
+	LEFT JOIN department d2 on d2.departmentId=e.secondDepartment
+	LEFT JOIN admin_dic a on a.dic_code=e.status
+	LEFT JOIN positionRankRelation p on p.positionNo=e.positionId
+	INNER JOIN contract c on c.employeeId=e.employeeId
+	where a.dic_type='EMPLOYEE_STATUS_TYPE'	and DATE_FORMAT(c.probationEndTime, '%Y-%m')= #{probationEndTime};
+</select>
+
+<select id="findPostApplicantNameByEmpId" resultType="java.util.Map" parameterType="java.lang.Integer">
+	select e.`name`
+	from employee e
+	LEFT JOIN positionRankRelation p on p.positionNo=e.positionId
+	where e.employeeId = #{employeeId}
+</select>
+
+<select id="findSameEmployeeByOfferId" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT
+	employeeId
+	FROM
+	`employee`
+	WHERE
+	offerId = #{offerId}
+	AND resumeId = #{resumeId};
+</select>
+
+<!-- 查询一级部门下的所有员工信息 -->
+<select id="selectAllEmployeeByDepId" parameterType="java.util.List"  resultType="java.util.Map" >
+	select 
+		e.employeeId,e.name,e.socialSecurity,
+		e.sex,e.position,e.positionId,
+		e.rank,e.resumeId,e.isActive,
+		e.offerId,e.personalEmail,
+		e.projectInfoId,e.entryTime,
+		e.takeJobTime,
+		con.beginTime as contractBeginTime,
+		con.endTime as contractEndTime,
+		con.probationEndTime as probationEndTime,
+		e.salaryCardNumber,e.idCardNumber,
+		e.school,e.major,e.education,e.status,
+		d1.departmentName as firstDepartment,
+		d2.departmentName as secondDepartment,
+		a.dic_name as "statusName",
+		pftn.dic_name positionFamilyName,
+		ptn.dic_name positionTypeName,
+		pctn.dic_name positionChildName
+	from employee e
+	LEFT JOIN  department d1 on d1.departmentId=e.firstDepartment
+	LEFT JOIN  department d2 on d2.departmentId=e.secondDepartment
+	inner join admin_dic a on a.dic_code=e.status
+	LEFT JOIN  contract con on con.employeeId = e.employeeId
+	LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+	LEFT JOIN admin_dic ptn ON ptn.dic_type = prr.positionFamilyType AND ptn.dic_code = prr.positionType
+	LEFT JOIN admin_dic pftn ON pftn.dic_code = prr.positionFamilyType
+	LEFT JOIN admin_dic pctn ON pctn.dic_type = CONCAT(prr.positionFamilyType,prr.positionType) AND pctn.dic_code = prr.positionChildType
+	where a.dic_type='EMPLOYEE_STATUS_TYPE' and e.status in (0,1,2,3)
+ AND e.firstDepartment in
+  <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    </foreach>
+    order by e.employeeId
+</select>
+<!-- 通过员工ID开始时间和结束时间查询教育经历 -->
+<select id="findEduByEmpIdStartEnd" resultType="java.lang.Integer">
+	select id 
+	from educationExperience
+	where employeeId = #{employeeId}
+	and startTime = #{startTime}
+	and endTime = #{endTime}
+	
+</select>
+
+<!-- 通过员工ID开始时间和结束时间查询工作经历 -->
+<select id="findWorkByEmpIdStartEnd" resultType="java.lang.Integer">
+	select id 
+	from workExperience
+	where employeeId = #{employeeId}
+	and startTime = #{startTime}
+	and endTime = #{endTime}
+	
+</select>
+
+<!-- 通过员工ID开始时间和结束时间查询项目经历 -->
+<select id="findProjExperByEmpIdStartEnd" resultType="java.lang.Integer">
+	select id
+	from projectExperience
+	where employeeId = #{employeeId}
+	and startTime = #{startTime}
+	and endTime = #{endTime}
+	
+</select>
+<!-- 通过员工ID和技能名称查询技术特长 -->
+<select id="findTechnicaExperByEmpIdTechnicalName" resultType="java.lang.Integer">
+	select id 
+	from technicaExpertise
+	where employeeId = #{employeeId}
+	and technicalName = #{technicalName}
+	
+</select>
+<!-- 证书名称和发证时间进行数据重复校验 -->
+<select id="findRepeatCertificateByEmpIdCertifName" resultType="java.lang.Integer">
+	select id 
+	from certificate
+	where employeeId = #{employeeId}
+	and certificateName = #{certificateName}
+	and time = #{time}
+	
+</select>
+
+<select id="selectEmployeeById" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select *
+	from employee
+	where employeeId=#{id}
+</select>
+
+<!-- 根据二级部门id 查找员工信息 -->
+<select id="selectEmployeeBySId" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select * 
+	from employee
+	where secondDepartment=#{id}
+</select>
+
+<!-- 模糊查询 5张表 certificate  educationExperience  projectExperience  technicaExpertise   workExperience-->
+
+<select id="fuzzyQueryCertificate" parameterType="String" resultType="Integer">
+	select employeeId
+	from certificate
+	WHERE category LIKE #{str} or description LIKE #{str} or certificateName LIKE #{str} or level like #{str} or organization like #{str}
+</select>
+
+<select id="fuzzyQueryEducationExperience" parameterType="String" resultType="Integer">
+	select employeeId
+	from educationExperience
+	WHERE school LIKE #{str} or major LIKE #{str} or degree LIKE #{str}
+</select>
+
+<select id="fuzzyQueryProjectExperience" parameterType="String" resultType="Integer">
+	select employeeId
+	from projectExperience
+	WHERE projectName LIKE #{str} or post LIKE #{str} or description LIKE #{str} or responsibility like #{str}
+</select>
+
+<select id="fuzzyQueryTechnicaExpertise" parameterType="String" resultType="Integer">
+	select employeeId
+	from technicaExpertise
+	WHERE technicalName LIKE #{str} or qualification LIKE #{str}
+</select>
+
+<select id="fuzzyQueryWorkExperience" parameterType="String" resultType="Integer">
+	select employeeId
+	from workExperience
+	WHERE company LIKE #{str} or position LIKE #{str}
+</select>
+
+<insert id="addFrequentContacts" parameterType="map">
+	insert into frequentContacts(departmentName,name,landline,duty,remark)
+	values(#{departmentName},#{name},#{landline},#{duty},#{remark})
+</insert>
+
+<update id="updateFrequentContacts" parameterType="map">
+	update frequentContacts
+	set 
+		departmentName=#{departmentName},
+	 	name=#{name},
+	 	landline=#{landline},
+	 	duty=#{duty},
+	 	remark=#{remark}
+	 where id=#{id}
+</update>
+
+<delete id="deleteFrequentContacts" parameterType="integer">
+	delete from frequentContacts
+	where id=#{id}
+</delete>
+<select id="findFrequentContacts" resultType="map">
+	select id,departmentName,name,landline,duty,remark
+	from frequentContacts
+</select>
+
+<insert id="addExpenseReimbursement" parameterType="com.nantian.erp.hr.data.vo.ExpenseReimbursementVo" useGeneratedKeys="true" keyProperty="id">
+	insert into expenseReimbursement(title,photoPath,notes) 
+	values(#{title},#{photoPath},#{notes})
+</insert>
+
+<insert id="addAttachmentPath" parameterType="map">
+	insert into attachmentPath(expReimId,path) 
+	values(#{expReimId},#{path})
+</insert>
+
+<select id="findExpenseReimbursement" resultType="map">
+	select * from expenseReimbursement
+</select>
+
+<select id="findAttachmentPath" parameterType="integer" resultType="String">
+	select path from attachmentPath where expReimId = #{expReimId}
+</select>
+
+<update id="updateExpenseReimbursementByMap" parameterType="map">
+	update expenseReimbursement
+	<set>
+        title=#{title},
+      <if test="photoPath != null" >
+        photoPath=#{photoPath},
+      </if>
+        notes=#{notes}
+    </set>
+    where id=#{id}
+</update>
+
+<delete id="deleteAttachmentByExpReimId" parameterType="java.lang.Integer">
+	delete from attachmentPath where expReimId=#{id}
+</delete>
+
+<delete id="deleteExpenseReimbursementById" parameterType="java.lang.Integer">
+	delete from expenseReimbursement where id = #{id}
+</delete>
+
+<select id="findExpenseReimbursementById" parameterType="java.lang.Integer" resultType="java.lang.String">
+	select photoPath from expenseReimbursement where id=#{id}
+</select>
+
+<delete id="deleteExpenseReimbursementById2">
+	delete from attachmentPath where expReimId=#{param1} and path=#{param2}
+</delete>
+
+<select id="findSimpleEmployeeById" parameterType="java.lang.Integer" resultType="java.lang.String" >
+	select name from employee where employeeId=#{id}
+</select>
+
+<select id="findPeopleCountByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*) from employee where projectInfoId=#{groupId}
+</select>
+
+<select id="findPositionPeopByGroupId" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select employeeId,name,position,positionId,positionName from employee as em left join positionRankRelation as pt on em.positionId = pt.positionNo  where projectInfoId=#{id}
+</select>
+
+	<select id="findEmployeeByEmpIdArray" resultType="java.util.Map">
+		SELECT
+			e.employeeId,
+			e.name,
+			e.sex,
+			e.socialSecurity,
+			e.rank,
+			e.resumeId,
+			e.isActive,
+			e.offerId,
+			e.projectInfoId,
+			e.takeJobTime,
+			e.entryTime,
+			e.position,
+			con.beginTime AS contractBeginTime,
+			con.endTime AS contractEndTime,
+			con.probationEndTime AS probationEndTime,
+			e.salaryCardNumber,
+			e.idCardNumber,
+			e.school,
+			e.major,
+			e.education,
+			e. STATUS,
+			e.firstDepartment AS firstDepartmentId,
+			e.secondDepartment AS secondDepartmentId,
+			d1.departmentName AS firstDepartment,
+			d2.departmentName AS secondDepartment,
+			EFLeader.name as firstDeptLeaderName,
+			EFLeader.employeeId as firstDeptLeaderID
+		FROM
+			employee e
+		LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+		LEFT JOIN contract con ON con.employeeId = e.employeeId
+		LEFT JOIN employee EFLeader ON d1.userId = EFLeader.employeeId
+		WHERE
+			e.employeeId in ${_parameter} 
+	</select>
+	
+	<select id="findEmployeeByProjectId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT
+			e.employeeId,
+			e.name,
+			e.sex,
+			e.socialSecurity,
+			e.rank,
+			e.resumeId,
+			e.isActive,
+			e.offerId,
+			e.projectInfoId,
+			e.takeJobTime,
+			e.entryTime,
+			e.position,
+			con.beginTime AS contractBeginTime,
+			con.endTime AS contractEndTime,
+			con.probationEndTime AS probationEndTime,
+			e.salaryCardNumber,
+			e.idCardNumber,
+			e.school,
+			e.major,
+			e.education,
+			e. STATUS,
+			e.firstDepartment AS firstDepartmentId,
+			e.secondDepartment AS secondDepartmentId,
+			d1.departmentName AS firstDepartment,
+			d2.departmentName AS secondDepartment
+		FROM
+			employee e
+		LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+		LEFT JOIN contract con ON con.employeeId = e.employeeId
+		WHERE
+			e.projectInfoId = #{projectId}
+	</select>
+	
+	<select id="findDepartmentManagerByDepId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		SELECT
+			e.firstDepartment,e.secondDepartment,d1.userId AS firstDepManager, d2.userId AS secondDepManager
+		FROM
+			employee e
+		LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+
+		WHERE
+			e.employeeId = #{employeeId}
+	</select>
+	
+	<select id="findDepartmentManager" resultType="java.util.Map">
+		SELECT
+			e.employeeId as depManagerId,
+			e.name as depManagerName,
+			e.firstDepartment AS firstDepartmentId,
+			e.secondDepartment AS secondDepartmentId,
+			d1.departmentName AS firstDepartmentName,
+			d2.departmentName AS secondDepartmentName
+		FROM
+			employee e
+		LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+		inner join
+			department d
+		on
+			d.userId = e.employeeId
+	</select>
+	
+	<!-- 修改关联项目组id，为工作调动使用 -->
+	<update id="updataEmpProjectid" parameterType="com.nantian.erp.hr.data.model.ErpEmployee">
+		UPDATE nantianerp.employee 
+		SET projectInfoId = #{projectInfoId}
+		WHERE employeeId = #{employeeId}
+</update>
+
+	<!-- 获取员工名 add by hehui 2019-4-20-->
+	<select id="getUserNameList" parameterType="java.lang.String" resultType="java.util.Map">
+		select e.employeeId ,
+				e.name 
+		from employee e 
+		where e.name like #{name}; 
+	</select> 
+	
+	<!-- 根据职位获取员工列表 add by hehui 2019-4-20-->
+	<select id="getUserListByPosition" parameterType="java.lang.String" resultType="java.util.Map">
+		select e.employeeId ,
+				e.name 
+		from employee e
+		where  1 = 1
+		<if test="position=='1'.toString()" >
+			AND e.rank &lt;= 3
+		</if>
+		<if test="position=='2'.toString()" >
+			AND e.rank = 4
+		</if>
+		<if test="position=='3'.toString()" >
+			AND e.rank = 5
+		</if>
+		<if test="position=='4'.toString()" >
+			AND e.rank &gt;= 6
+		</if>
+	</select> 
+
+	<select id="findAllGroupsFromAdminDic" resultType="java.util.Map">
+		select dic_code as "groupsId",dic_name as "groupsName"
+		from admin_dic
+		where dic_type='GROUPS_TYPE'
+	</select>
+	
+	<select id="findAllPoliticalFromAdminDic" resultType="java.util.Map">
+		select dic_code as "politicalId",dic_name as "politicalName"
+		from admin_dic
+		where dic_type='POLITICAL_STATUS'
+	</select>
+	
+	<select id="findEmployeeUnionMaxPositiveID" resultType="java.util.Map">
+		SELECT e.employeeId,e.`name`,e.offerId,e.resumeId,e.idCardNumber,e.`status`,tempPositive.epstatus,tempPositive.currentPersonID,tempContract.beginTime,tempContract.probationEndTime,tempContract.contractId, tempDismisson.demployeeId,tempDismisson.dismissionID,tempDismisson.dimissionTime FROM employee e
+		LEFT JOIN ((SELECT ep_a.id as epid,ep_a.employeeId as epemployeeId, ep_a.`status` as epstatus,ep_a.currentPersonID FROM employee_postive ep_a WHERE ep_a.id IN(SELECT MAX(id) FROM employee_postive ep GROUP BY ep.employeeId)) as tempPositive) ON e.employeeId = tempPositive.epemployeeId
+		LEFT JOIN ((SELECT c_a.contractId as contractId,c_a.employeeId as cemployeeId, c_a.beginTime, c_a.probationEndTime FROM contract c_a WHERE c_a.contractId IN(SELECT MAX(contractId) FROM contract c GROUP BY c.employeeId)) as tempContract) ON e.employeeId = tempContract.cemployeeId
+		LEFT JOIN ((SELECT d_a.id as dismissionID, d_a.employeeId as demployeeId, d_a.dimissionTime FROM  dimission d_a WHERE d_a.id in(SELECT MAX(id) FROM dimission d GROUP BY d.employeeId)) as tempDismisson) ON e.employeeId = tempDismisson.demployeeId
+    	WHERE e.resumeId IS NOT NULL and e.offerId IS NOT NULL AND e.`status`!="0";
+	</select>
+
+	<!-- 根据入职离职时间与部门查询人员列表 -->
+	<select id="findEmployeeByDepartmentIdAndMonth" resultType="java.util.Map">
+		select e.employeeId employeeId, e.name name, e.sex sex, d1.departmentName firstDepartmentName,
+		d2.departmentName secondDepartmentName, e.entryTime entryTime
+		from employee e
+		LEFT JOIN department d1 ON d1.departmentId = e.firstDepartment
+		LEFT JOIN department d2 ON d2.departmentId = e.secondDepartment
+		LEFT JOIN dimission d on d.employeeId = e.employeeId
+		where (e.firstDepartment = #{departmentId} or e.secondDepartment = #{departmentId})
+		and ((e.status = 4 AND d.dimissionTime &gt;= #{dimissionTime} )or e.status != 4)
+		and e.entryTime &lt;= #{entryTime}
+	order by e.employeeId
+</select>
+
+<select id="findEmployeeByDeptAndUser" parameterType="java.util.Map" resultType="com.nantian.erp.hr.data.vo.EmployeeQueryByDeptUserVo">
+	SELECT <if test="count != null ">count(*) as count,</if>e.`name`,e.employeeId,e.status,a.dic_name as "statusName",e.sex,e.entryTime,fd.departmentId firstDepartmentId,
+	sd.departmentId secondDepartmentId,  fd.departmentName AS firstDeptName,sd.departmentName AS secondDeptName,prr.rank,prr.positionName,d.dimissionTime,c.probationEndTime,e.idCardNumber
+	FROM employee e 
+	LEFT JOIN department fd ON e.firstDepartment = fd.departmentId
+	LEFT JOIN department sd ON e.secondDepartment = sd.departmentId
+	LEFT JOIN positionRankRelation prr ON e.positionId = prr.positionNo
+	LEFT JOIN dimission d ON d.employeeId = e.employeeId
+	LEFT JOIN contract c ON c.employeeId = e.employeeId
+	LEFT JOIN admin_dic a ON a.dic_code=e.status AND a.dic_type='EMPLOYEE_STATUS_TYPE'
+	WHERE 1= 1
+	
+	<if test="status !=null and status.size() > 0">
+		AND e.status IN
+		<foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+   		</foreach>    
+	</if>
+	<if test="firstDeptId != null" >
+		AND fd.departmentId = #{firstDeptId}
+	</if>
+	<if test="secondDeptId != null" >
+		AND sd.departmentId = #{secondDeptId}
+	</if>
+	<if test="exportDepartmentIdList != null and exportDepartmentIdList.size() > 0" >
+		AND fd.departmentId  IN
+		<foreach collection="exportDepartmentIdList" index="index" item="exportDepartmentId" open="(" separator="," close=")">
+			#{exportDepartmentId}
+		</foreach>
+	</if>
+	<if test="exportDepartmentIdList != null and exportDepartmentIdList.size() == 0" >
+		AND 1 = 0
+	</if>
+	<if test="superLeaderId !=null">
+		AND fd.superLeader=#{superLeaderId}
+	</if>
+	<if test="leaderId !=null">
+		AND (fd.userId=#{leaderId} or fd.superLeader=#{leaderId})
+	</if>
+	<if test="sdLeaderID !=null">
+		AND sd.userId=#{sdLeaderID}
+	</if>
+	<if test="rank != null ">
+		<if test="deptId !=null">
+			<choose>
+				<when test="rank==2">
+					AND sd.departmentId=#{deptId}
+				</when>
+				<when test="rank==1">
+					AND fd.departmentId=#{deptId}
+				</when>
+			</choose>
+		</if>
+	</if>
+	<if test="employeeName !=null">
+		AND e.name like CONCAT('%',#{employeeName},'%')
+	</if>
+	<if test="dimissionTime !=null">
+		and ((e.status = 4 AND d.dimissionTime &gt;= #{dimissionTime} )or e.status != 4)
+	</if>
+	<if test="entryTime !=null">
+		and e.entryTime &lt;= #{entryTime}
+	</if>
+	<if test="firDeptIds !=null and secDeptIds !=null" >
+		AND (
+		(fd.rank=1 and fd.departmentId  IN
+		<foreach collection="firDeptIds" index="index" item="firDeptId" open="(" separator="," close=")">
+			#{firDeptId}
+		</foreach>
+		) and (sd.rank=2 and sd.departmentId in 
+		<foreach collection="secDeptIds" index="index" item="secDeptId" open="(" separator="," close=")">
+			#{secDeptId}
+		</foreach>
+		)
+		)
+	</if>
+	
+	ORDER BY firstDeptName,secondDeptName,e.name
+	<if test="count == null and limit != null and offset != null" >
+		limit #{limit} offset #{offset}
+	</if>
+</select>
+
+	<select id="findFirstDepartmentCountMap" resultType="java.util.Map">
+			SELECT firstDepartment firstDepartment, COUNT(employeeId) employeeCount from employee where status in (0,1,2,3)  GROUP BY firstDepartment
+	</select>
+
+	<select id="findEmployeeDetailById" resultType="com.nantian.erp.hr.data.model.ErpEmployee">
+		SELECT e.employeeId, e.name, e.sex, e.firstDepartment, e.secondDepartment, e.status, ad.dic_name statusName, e.position, d.dimissionTime
+		FROM employee e
+		LEFT JOIN admin_dic ad ON e.status = ad.dic_code AND dic_type = 'EMPLOYEE_STATUS_TYPE'
+		LEFT JOIN dimission d ON d.employeeId = e.employeeId
+		WHERE e.employeeId = #{employeeId}
+
+	</select>
+	<select id="findProjectDirectorOfEmployee" resultType="java.lang.Integer">
+	SELECT DISTINCT
+	employeeId
+	FROM
+		employee
+	WHERE
+		firstDepartment = (
+			SELECT
+				e.firstDepartment
+			FROM
+				employee e
+			WHERE
+				e.employeeId = #{employeeId}
+		)
+	</select>
+</mapper>

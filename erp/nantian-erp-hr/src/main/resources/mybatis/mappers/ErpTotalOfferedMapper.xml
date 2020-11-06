@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpTotalOfferedMapper"> 
+
+<insert id="insertTotalOffered" parameterType="com.nantian.erp.hr.data.model.ErpTotalOffered">
+	INSERT INTO total_offered(
+		resumeId,postId
+		)
+	VALUES(
+		#{resumeId},#{postId}
+		)
+</insert>
+
+<select id="countOffered" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*) from total_offered where postId =#{postId}
+</select>
+
+</mapper>

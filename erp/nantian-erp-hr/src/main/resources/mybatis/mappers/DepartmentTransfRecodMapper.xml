@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nantian.erp.hr.data.dao.DepartmentTransfRecodMapper">
+<!-- 新增工作调动申请记录 -->
+<insert id="insertTransfRecod" parameterType="com.nantian.erp.hr.data.model.DepartmentTransfRecod">
+	INSERT departmentTransferRecod(id,transferApplyID,processor,content,rcTime)
+	VALUES(id,#{transferApplyID},#{processor},#{content},#{rcTime})
+</insert>
+
+<!-- 根据申请id查询审批记录 -->
+<select id="findtransfRecode" resultType="java.util.Map">
+	SELECT t.transferApplyID,t.processor,t.content,t.rcTime,e.`name`
+	FROM departmentTransferRecod  t
+	LEFT JOIN employee e ON e.employeeId = t.processor
+	WHERE transferApplyID = #{transferApplyID}
+	ORDER BY t.rcTime DESC
+</select>
+
+<delete id = "deleteTransfRecode"  parameterType="java.util.Map">
+	delete 
+		from departmentTransferRecod
+	where
+		transferApplyID = #{transferApplyID}
+</delete>
+
+	<delete id = "batchDeleteTransfRecode"  parameterType="java.util.Map">
+	delete
+		from departmentTransferRecod
+	where
+		transferApplyID IN
+		<foreach collection="transferApplyIdList" item="transferApplyId" open="(" separator="," close=")">
+			#{transferApplyId}
+		</foreach>
+</delete>
+</mapper>

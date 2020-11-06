@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.nantian.erp.salary.data.dao.ErpActualInsuranceFundBaseMapper">
+
+	<insert id="insertActualInsuranceFundBase"
+		parameterType="com.nantian.erp.salary.data.model.ErpActualInsuranceFundBase">
+		INSERT t_actual_insurance_fund_base
+		(employee_id,endowment_insurance_base,unemployment_insurance_base,maternity_insurance_base,medical_insurance_base,injury_insurance_base,accumulation_fund_base,took_effect_date,gmt_modified,gmt_create)
+		VALUES(#{employeeId},#{endowmentInsuranceBase},#{unemploymentInsuranceBase},#{maternityInsuranceBase},#{medicalInsuranceBase},#{injuryInsuranceBase},#{accumulationFundBase},#{tookEffectDate},#{gmtModified},#{gmtCreate})
+	</insert>
+
+	<select id="selectActualInsuranceFundBaseByEmployeeID"
+		parameterType="java.util.Map"
+		resultType="com.nantian.erp.salary.data.model.ErpActualInsuranceFundBase">
+		SELECT * FROM t_actual_insurance_fund_base 
+		WHERE 1=1
+		<if test="employeeId != null">
+			AND employee_id	= #{employeeId}
+		</if>
+	</select>
+
+	<update id="updateActualInsuranceFundBase"
+		parameterType="com.nantian.erp.salary.data.model.ErpActualInsuranceFundBase">
+		UPDATE t_actual_insurance_fund_base
+		<set>
+			<if test="endowmentInsuranceBase != null">endowment_insurance_base = #{endowmentInsuranceBase},
+			</if>
+			<if test="unemploymentInsuranceBase != null">unemployment_insurance_base =
+				#{unemploymentInsuranceBase},</if>
+			<if test="maternityInsuranceBase != null">maternity_insurance_base = #{maternityInsuranceBase},
+			</if>
+			<if test="medicalInsuranceBase != null">medical_insurance_base = #{medicalInsuranceBase},</if>
+			<if test="injuryInsuranceBase != null">injury_insurance_base = #{injuryInsuranceBase},</if>
+			<if test="accumulationFundBase != null">accumulation_fund_base = #{accumulationFundBase},</if>
+			<if test="tookEffectDate != null">took_effect_date = #{tookEffectDate},</if>
+			<if test="gmtModified != null">gmt_modified = #{gmtModified}</if>
+		</set>
+		WHERE employee_id = #{employeeId}
+	</update>
+	
+	<select id="selectActualInsuranceFundBaseByParameters"
+		parameterType="java.util.Map"
+		resultType="com.nantian.erp.salary.data.model.ErpActualInsuranceFundBase">
+		SELECT * FROM t_actual_insurance_fund_base aifb WHERE 1=1 
+		<if test="month">and aifb.took_effect_date = #{month}</if>
+		<if test="list != null">
+			AND aifb.employee_id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+    		</foreach>    
+		</if>
+	</select>
+	
+	<select id="findActualSocialFundByIdAndMonth" resultType="com.nantian.erp.salary.data.model.ErpActualInsuranceFundBase">
+	SELECT
+		*
+	FROM
+		t_actual_insurance_fund_base tt
+	WHERE
+		tt.employee_id = #{employeeId}
+	AND tt.took_effect_date =#{queryTime}
+</select>
+</mapper>

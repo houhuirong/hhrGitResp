@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ErpContractMapper">
+
+<insert id="insertContract" parameterType="com.nantian.erp.hr.data.model.ErpContract">
+	INSERT INTO contract(
+		beginTime,probationEndTime,endTime,employeeId
+		)
+	VALUES(
+		#{beginTime},#{probationEndTime},#{endTime},#{employeeId}
+		)
+</insert>
+
+<update id="updateContractByEmployeeId" parameterType="com.nantian.erp.hr.data.model.ErpContract" >
+    update contract
+    <set>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime},
+      </if>
+      <if test="probationEndTime != null" >
+        probationEndTime = #{probationEndTime},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime},
+      </if>
+      <if test="renewalStartTime1 != null" >
+        renewalStartTime1 = #{renewalStartTime1},
+      </if>
+      <if test="renewalEndTime1 != null" >
+        renewalEndTime1 = #{renewalEndTime1},
+      </if>
+      <if test="renewalStartTime2 != null" >
+        renewalStartTime2 = #{renewalStartTime2},
+      </if>
+      <if test="renewalEndTime2 != null" >
+        renewalEndTime2 = #{renewalEndTime2}
+      </if>
+    </set>
+    where employeeId = #{employeeId}
+  </update>
+
+<!-- add by lx 通过员工ID查找合同信息 -->
+ <select id="findContractByEmpId" resultType="com.nantian.erp.hr.data.model.ErpContract">
+ 	select 
+	 	 contractId,
+	 	 beginTime,
+	 	 probationEndTime,
+	 	 endTime,
+	 	 employeeId 
+ 	from contract
+ 	where employeeId = #{employeeId}
+ </select>
+ 
+ <update id="updateContractById" parameterType="com.nantian.erp.hr.data.model.ErpContract" >
+    update contract
+    <set>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime},
+      </if>
+      <if test="probationEndTime != null" >
+        probationEndTime = #{probationEndTime},
+      </if>
+      <if test="endTime != null" >
+        endTime = #{endTime},
+      </if>
+      <if test="employeeId != null" >
+        employeeId = #{employeeId}
+      </if>
+    </set>
+    where contractId = #{contractId}
+  </update>
+</mapper>

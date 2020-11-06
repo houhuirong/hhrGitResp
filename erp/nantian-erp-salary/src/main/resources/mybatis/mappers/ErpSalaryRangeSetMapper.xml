@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpSalaryRangeSetMapper"> 
+
+<insert id="insertSalaryRangeSet" parameterType="com.nantian.erp.salary.data.model.ErpSalaryRangeSet">
+	INSERT INTO erp_salary_range_set(
+		erp_position_no,erp_salary_max,erp_salary_min,erp_social_security_max,erp_social_security_min
+		)
+	VALUES(
+		#{erpPositionNo},#{erpSalaryMax},#{erpSalaryMin},#{erpSocialSecurityMax},#{erpSocialSecurityMin}
+		)
+</insert>
+
+<update id="updateSalaryRangeSet" parameterType="com.nantian.erp.salary.data.model.ErpSalaryRangeSet" >
+	update erp_salary_range_set
+	<set>
+	  <if test="erpPositionNo != null" >
+	    erp_position_no = #{erpPositionNo},
+	  </if>
+	  <if test="erpSalaryMax != null" >
+	    erp_salary_max = #{erpSalaryMax},
+	  </if>
+	  <if test="erpSalaryMin != null" >
+	    erp_salary_min = #{erpSalaryMin},
+	  </if>
+	  <if test="erpSocialSecurityMax != null" >
+	    erp_social_security_max = #{erpSocialSecurityMax},
+	  </if>
+	  <if test="erpSocialSecurityMin != null" >
+	    erp_social_security_min = #{erpSocialSecurityMin}
+	  </if>
+	</set>
+	where erp_salary_range_set_id = #{erpSalaryRangeSetId}
+</update>
+
+<select id="findSalaryRangeSetByRank" parameterType="java.lang.Integer" resultType="com.nantian.erp.salary.data.model.ErpSalaryRangeSet">
+	SELECT * from erp_salary_range_set where erp_position_no = #{erpPositionNo}
+</select>
+
+<select id="findAllSalaryRangeSet" resultType="com.nantian.erp.salary.data.model.ErpSalaryRangeSet">
+	SELECT * from erp_salary_range_set
+</select>
+
+<delete id="deleteSalaryRangeSet" parameterType="java.lang.Integer">
+	delete from erp_salary_range_set where erp_salary_range_set_id = #{salaryRangeSetId}
+</delete>
+</mapper>

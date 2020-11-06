@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.salary.data.dao.ErpAdminDicMapper"> 
+
+<insert id="insertAdminDic" parameterType="com.nantian.erp.salary.data.model.ErpAdminDic">
+	insert admin_dic
+		(dic_code,dic_name,dic_type)
+	values
+		(#{dicCode},#{dicName},#{dicType})
+</insert>
+
+<delete id="deleteAdminDic" parameterType="java.lang.Integer">
+    delete from admin_dic
+    where dic_id = #{dicId}
+</delete>
+
+<update id="updateAdminDic" parameterType="com.nantian.erp.salary.data.model.ErpAdminDic">
+    update admin_dic
+    <set>
+      <if test="dicCode != null" >
+        dic_code = #{dicCode},
+      </if>
+      <if test="dicName != null" >
+        dic_name = #{dicName},
+      </if>
+      <if test="dicType != null" >
+        dic_type = #{dicType}
+      </if>
+    </set>
+    where dic_id = #{dicId}
+</update>
+
+<select id="selectAllType" resultType="com.nantian.erp.salary.data.model.ErpAdminDic">
+	select distinct dic_type
+	from admin_dic
+</select>
+
+<select id="selectAdminDicByType" parameterType="java.lang.String" resultType="com.nantian.erp.salary.data.model.ErpAdminDic">
+	select dic_id,dic_code,dic_name,dic_type
+	from admin_dic
+	where dic_type = #{dicType}
+</select>
+
+<select id="selectLastCodeByType" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select dic_code
+	from admin_dic
+	where dic_type = #{dicType}
+	order by dic_id desc
+	limit 0,1
+</select>
+
+<select id="selectAdminDicByParams" parameterType="com.nantian.erp.salary.data.model.ErpAdminDic" resultType="com.nantian.erp.salary.data.model.ErpAdminDic">
+	select dic_id,dic_code,dic_name,dic_type
+	from admin_dic
+	where dic_type = #{dicType} and dic_name = #{dicName}
+</select>
+
+</mapper>

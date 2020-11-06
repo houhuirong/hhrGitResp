@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-common-base" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-email" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-eureka-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-hr" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nantian-erp-salary" vcs="Git" />
+  </component>
+</project>

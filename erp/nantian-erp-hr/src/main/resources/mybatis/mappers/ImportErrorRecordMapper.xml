@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nantian.erp.hr.data.dao.ImportErrorRecordMapper">
+
+<insert id="insertErrorRecord" parameterType="com.nantian.erp.hr.data.model.ImportErrorRecord">
+	INSERT INTO importErrorRecord(
+		emp_name,emp_id_card_num,error_content,error_time
+		)
+	VALUES(
+		#{empName},#{empIdCardNum},#{errorContent},#{errorTime}
+		)
+</insert>
+
+ <insert id="insertErrorRecordByBatch" parameterType="java.util.List">
+        insert into importErrorRecord (emp_name,emp_id_card_num,error_content,error_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.empName,jdbcType=VARCHAR},
+             #{item.empIdCardNum,jdbcType=VARCHAR},
+            #{item.errorContent,jdbcType=VARCHAR},
+             #{item.errorTime,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+</mapper>
