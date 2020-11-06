@@ -19,4 +19,9 @@ public class Multservice {
         bookService.buyBook();
         bookService.updatePrice();
     }
+
+    //@Transactional
+    public void buyBook(){
+        bookService.buyBook();
+    }
 }
