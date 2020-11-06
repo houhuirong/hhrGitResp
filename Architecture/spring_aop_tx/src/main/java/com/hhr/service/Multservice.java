@@ -16,7 +16,12 @@ public class Multservice {
     private BookService bookService;
     @Transactional
     public void mult(){
+        try {
         bookService.buyBook();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("-------------");
         bookService.updatePrice();
     }
 

@@ -14,7 +14,7 @@ public class MyTest3 {
     @Test
     public void test01(){
         Multservice multservice = context.getBean(Multservice.class);
-        //multservice.mult();
-        multservice.buyBook();
+        multservice.mult();
+        //multservice.buyBook();
     }
 }

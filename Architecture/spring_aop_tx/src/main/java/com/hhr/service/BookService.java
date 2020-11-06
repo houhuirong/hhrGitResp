@@ -17,7 +17,7 @@ public class BookService {
     @Autowired
     private BookDao bookDao;
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.NESTED)
     public void buyBook(){
         bookDao.getPrice(1);
         bookDao.updateBalance("zhangsan",100);
