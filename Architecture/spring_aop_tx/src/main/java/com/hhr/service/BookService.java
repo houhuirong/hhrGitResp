@@ -17,7 +17,7 @@ public class BookService {
     @Autowired
     private BookDao bookDao;
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void buyBook(){
         bookDao.getPrice(1);
         bookDao.updateBalance("zhangsan",100);
