@@ -7,25 +7,31 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-driver" />
+        <module name="api-passenger" />
+        <module name="service-valuation" />
         <module name="eureka" />
         <module name="online-taxi-common" />
         <module name="service-sms" />
+        <module name="api-driver" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="api-driver" target="1.8" />
+      <module name="api-passenger" target="1.8" />
       <module name="eureka" target="1.8" />
       <module name="online-taxi-common" target="1.8" />
       <module name="service-sms" target="1.8" />
+      <module name="service-valuation" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-driver" options="-parameters" />
+      <module name="api-passenger" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="online-taxi-common" options="-parameters" />
       <module name="service-sms" options="-parameters" />
+      <module name="service-valuation" options="-parameters" />
     </option>
   </component>
 </project>

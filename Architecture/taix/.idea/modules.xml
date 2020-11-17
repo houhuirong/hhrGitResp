@@ -3,9 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/api-driver/api-driver.iml" filepath="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/api-driver/api-driver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-passenger/api-passenger.iml" filepath="$PROJECT_DIR$/api-passenger/api-passenger.iml" />
       <module fileurl="file://E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/eureka/eureka.iml" filepath="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/eureka/eureka.iml" />
       <module fileurl="file://E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/online-taxi-common/online-taxi-common.iml" filepath="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/online-taxi-common/online-taxi-common.iml" />
       <module fileurl="file://E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/service-sms/service-sms.iml" filepath="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/service-sms/service-sms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-valuation/service-valuation.iml" filepath="$PROJECT_DIR$/service-valuation/service-valuation.iml" />
       <module fileurl="file://$PROJECT_DIR$/taix.iml" filepath="$PROJECT_DIR$/taix.iml" />
     </modules>
   </component>
