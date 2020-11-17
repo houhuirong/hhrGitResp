@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/service-sms/pom.xml" />
+        <option value="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/online-taxi-common/pom.xml" />
+        <option value="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/eureka/pom.xml" />
+        <option value="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/api-driver/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
