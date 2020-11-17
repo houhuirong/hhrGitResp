@@ -56,10 +56,10 @@
 		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-sleuth</artifactId> 
 			</dependency> -->
 		<!-- zipkin -->
-		<!--<dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-zipkin</artifactId>
-		</dependency>-->
+		</dependency>
 
 		<!-- 引用自定义通用组件 -->
 		<dependency>

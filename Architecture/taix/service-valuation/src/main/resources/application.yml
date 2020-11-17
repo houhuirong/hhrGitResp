@@ -2,10 +2,10 @@
 spring: 
   application: 
     name: service-valuation
-#  security:
-#    user:
-#      name: root
-#      password: root
+  security:
+    user:
+      name: root
+      password: root
   profiles:
     active:
     - 8060
