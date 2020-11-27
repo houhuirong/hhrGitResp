@@ -45,8 +45,8 @@ feign:
     config:  
       service-valuation: 
         
-#        request-interceptors:
-#        - com.online.taxi.passenger.feign.interceptor.MyBasicAuthRequestInterceptor
+        request-interceptors:
+        - com.online.taxi.passenger.feign.interceptor.MyBasicAuthRequestInterceptor
         connect-timeout: 5000
         read-timeout: 5000
         logger-level: NONE

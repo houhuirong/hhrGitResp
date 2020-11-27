@@ -9,6 +9,9 @@
         <option value="E:/online-taxi-file-master/online-taxi-file-master/二期/代码/二期示例online-taxi-parent/online-taxi-parent/api-driver/pom.xml" />
         <option value="$PROJECT_DIR$/api-passenger/pom.xml" />
         <option value="$PROJECT_DIR$/service-valuation/pom.xml" />
+        <option value="$PROJECT_DIR$/hystrix-dashboard/pom.xml" />
+        <option value="$PROJECT_DIR$/online-taxi-zuul/pom.xml" />
+        <option value="$PROJECT_DIR$/study-hystrix/pom.xml" />
       </list>
     </option>
   </component>

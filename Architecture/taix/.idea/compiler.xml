@@ -9,9 +9,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-passenger" />
         <module name="service-valuation" />
+        <module name="online-taxi-zuul" />
         <module name="eureka" />
         <module name="online-taxi-common" />
+        <module name="hystrix-dashboard" />
         <module name="service-sms" />
+        <module name="study-hystrix" />
         <module name="api-driver" />
       </profile>
     </annotationProcessing>
@@ -19,9 +22,12 @@
       <module name="api-driver" target="1.8" />
       <module name="api-passenger" target="1.8" />
       <module name="eureka" target="1.8" />
+      <module name="hystrix-dashboard" target="1.8" />
       <module name="online-taxi-common" target="1.8" />
+      <module name="online-taxi-zuul" target="1.8" />
       <module name="service-sms" target="1.8" />
       <module name="service-valuation" target="1.8" />
+      <module name="study-hystrix" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -29,9 +35,12 @@
       <module name="api-driver" options="-parameters" />
       <module name="api-passenger" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="hystrix-dashboard" options="-parameters" />
       <module name="online-taxi-common" options="-parameters" />
+      <module name="online-taxi-zuul" options="-parameters" />
       <module name="service-sms" options="-parameters" />
       <module name="service-valuation" options="-parameters" />
+      <module name="study-hystrix" options="-parameters" />
     </option>
   </component>
 </project>
