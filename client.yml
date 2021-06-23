@@ -1,0 +1,6 @@
+server:
+  port: 8861
+spring:
+    application:
+        name: client
+label: master
